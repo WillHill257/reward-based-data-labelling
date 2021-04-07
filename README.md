@@ -1,5 +1,7 @@
 # jinx
 
+[![Node.js CI](https://github.com/andrewboyley/reward-based-data-labelling/actions/workflows/CI.yml/badge.svg)](https://github.com/andrewboyley/reward-based-data-labelling/actions/workflows/CI.yml)
+
 ## Project setup
 ```
 npm install
