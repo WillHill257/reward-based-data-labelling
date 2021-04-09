@@ -23,10 +23,19 @@
         </v-row>
 
         <v-card-text>
-          <v-text-field label="Username" prepend-icon="mdi-account-circle" />
-          <v-text-field label="Email" prepend-icon="mdi-at" />
+          <v-text-field
+            id="signup-username-input"
+            label="Username"
+            prepend-icon="mdi-account-circle"
+          />
+          <v-text-field
+            id="signup-email-input"
+            label="Email"
+            prepend-icon="mdi-at"
+          />
 
           <v-text-field
+            id="signup-password-input"
             label="Password"
             prepend-icon="mdi-lock"
             :type="showPassword ? 'text' : 'Password'"
@@ -36,6 +45,7 @@
           </v-text-field>
 
           <v-text-field
+            id="signup-confirmpassword-input"
             label="Confirm Password"
             prepend-icon="mdi-lock-check"
             :type="showPassword ? 'text' : 'Password'"
@@ -47,10 +57,16 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="success" @click="$router.push('/Home')"
+          <v-btn
+            id="signup-confirm-button"
+            color="success"
+            @click="$router.push('/Home')"
             >Sign Me UP</v-btn
           >
-          <v-btn color="info" @click="$router.push('/Login')"
+          <v-btn
+            id="signup-cancel-button"
+            color="info"
+            @click="$router.push('/Login')"
             >Already Registered</v-btn
           >
         </v-card-actions>
