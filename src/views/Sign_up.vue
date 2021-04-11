@@ -23,10 +23,12 @@
         </v-row>
 
         <v-card-text>
-          <v-text-field label="Username" prepend-icon="mdi-account-circle" />
-          <v-text-field label="Email" prepend-icon="mdi-at" />
+          <v-text-field label="First Name" prepend-icon="mdi-account-circle" v-model = "firstName" />
+          <v-text-field label="Surname" prepend-icon="mdi-account-circle" v-model = "surname" />
+          <v-text-field label="Email" prepend-icon="mdi-at" v-model = "email" />
 
           <v-text-field
+            v-model = "password"
             label="Password"
             prepend-icon="mdi-lock"
             :type="showPassword ? 'text' : 'Password'"
@@ -36,6 +38,7 @@
           </v-text-field>
 
           <v-text-field
+            v-model = "confirmPassword"
             label="Confirm Password"
             prepend-icon="mdi-lock-check"
             :type="showPassword ? 'text' : 'Password'"
@@ -47,7 +50,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="success" @click="$router.push('/Home')"
+          <v-btn color="success" @click="$router.push('/Home')" v-on:click="onSignUp"
             >Sign Me UP</v-btn
           >
           <v-btn color="info" @click="$router.push('/Login')"
@@ -60,11 +63,33 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
       showPassword: false,
-    };
+      firstName: '',
+      surname: '',
+      email: '',
+      password:'',
+      confirmPassword: ''
+    }
   },
+
+  methods: {
+    onSignUp() {
+      var newUser = {firstName: this.firstName,surname: this.surname,email: this.email, password:this.password}
+      axios.post("http://localhost:4000/api/user/", newUser).then().catch(function(error){
+        console.log(error)
+
+      });
+
+      console.log(newUser);
+    },
+
+  }
 };
+
 </script>
+
