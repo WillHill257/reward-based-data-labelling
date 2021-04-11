@@ -11,9 +11,14 @@
       <v-card width="500" class="mx-auto mt-9">
         <v-card-title>Login</v-card-title>
         <v-card-text>
-          <v-text-field label="Email" prepend-icon="mdi-account-circle" />
+          <v-text-field
+            class="login-email-input"
+            label="Email"
+            prepend-icon="mdi-account-circle"
+          />
 
           <v-text-field
+            class="login-password-input"
             label="Password"
             prepend-icon="mdi-lock"
             :type="showPassword ? 'text' : 'Password'"
@@ -36,6 +41,9 @@
 <script>
 export default {
   data() {
+
+
+    
     return {
       showPassword: false,
     };
