@@ -31,7 +31,6 @@ const routes: Array<RouteConfig> = [
     name: "Sign_up",
     component: Sign_up,
   },
-
 ];
 
 const router = new VueRouter({
