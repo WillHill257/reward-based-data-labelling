@@ -8,6 +8,13 @@
     "test:unit": "nyc vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
+  "nyc": {
+    "all": true,
+    "exclude": [
+      "node_modules",
+      "dist"
+    ]
+  },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
