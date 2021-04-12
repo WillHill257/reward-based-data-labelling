@@ -2,6 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
     <router-link to="/about">Go to about</router-link>
+    <router-link to="/login">Go to Login</router-link>
   </div>
 </template>
 
@@ -9,9 +10,6 @@
 import { Component, Vue } from "vue-property-decorator";
 // import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 
-@Component({
-
-
-})
+@Component({})
 export default class Home extends Vue {}
 </script>
