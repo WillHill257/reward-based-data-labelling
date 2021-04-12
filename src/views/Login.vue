@@ -72,7 +72,7 @@ export default {
   }),
 
   methods: {
-    LoginOnClick: function (event) {
+    LoginOnClick(event) {
       //getting data
       var emailText = this.email;
       var passwordText = this.password;
@@ -87,7 +87,7 @@ export default {
           .then((response) => {
             if (response.status === 200) {
               //login - request successful
-              this.$router.push({ name: "/Home" });
+              this.$router.push({ name: "HomePage" });
             } else if (response.status === 401) {
               //unsuccessful 401 error payload
               this.alert = true;
