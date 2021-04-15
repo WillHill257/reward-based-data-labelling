@@ -56,6 +56,9 @@
 </template>
 
 <script>
+
+import { mapActions } from "vuex";
+
 export default {
   data: () => ({
     valid: true,
@@ -72,34 +75,41 @@ export default {
   }),
 
   methods: {
+    ...mapActions("user", ["loginUser"]),
     LoginOnClick(event) {
       //getting data
       var emailText = this.email;
       var passwordText = this.password;
-      //this.alert = false
-      this.$refs.form.validate();
-      if (emailText != "" && passwordText != "") {
-        this.alert = false;
-        //checking against DB
-        const url = "http://localhost:4000/api/user/login";
-        this.axios
-          .get(url, { params: { email: emailText, password: passwordText } })
-          .then((response) => {
-            if (response.status === 200) {
-              //login - request successful
-              this.$router.push({ name: "HomePage" });
-            } else if (response.status === 401) {
-              //unsuccessful 401 error payload
-              this.alert = true;
-              this.Error = "Email and password combination not found";
-            } else {
-              //throw error
-              this.alert = true;
-              this.Error = "Something went wrong";
-            }
-            console.log(response);
-          });
+      var user = {
+        email: emailText,
+        password: passwordText
       }
+      this.loginUser(user);
+
+      // this.alert = false
+      // this.$refs.form.validate();
+      // if (emailText != "" && passwordText != "") {
+      //   this.alert = false;
+      //   //checking against DB
+      //   const url = "http://localhost:4000/api/user/login";
+      //   this.axios
+      //     .get(url, { params: { email: emailText, password: passwordText } })
+      //     .then((response) => {
+      //       if (response.status === 200) {
+      //         //login - request successful
+      //         this.$router.push({ name: "HomePage" });
+      //       } else if (response.status === 401) {
+      //         //unsuccessful 401 error payload
+      //         this.alert = true;
+      //         this.Error = "Email and password combination not found";
+      //       } else {
+      //         //throw error
+      //         this.alert = true;
+      //         this.Error = "Something went wrong";
+      //       }
+      //       console.log(response);
+      //     });
+      // }
     },
     validate() {
       this.$refs.form.validate();

@@ -93,6 +93,7 @@
 
 <script>
 import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -109,6 +110,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions("user", ["signupUser"]),
     onSignUp() {
       if (
         this.verifyFields(
@@ -125,15 +127,21 @@ export default {
           email: this.email,
           password: this.password,
         };
-        axios
-          .post("http://localhost:4000/api/user/", newUser)
-          .then()
-          .catch(function (error) {
-            console.log(error);
-          });
+        this.signupUser(
+          this.firstName,
+          this.surname,
+          this.email,
+          this.password
+        );
+        // axios
+        //   .post("http://localhost:4000/api/user/", newUser)
+        //   .then()
+        //   .catch(function (error) {
+        //     console.log(error);
+        //   });
 
-        console.log("Success!");
-        this.$router.push("/Home");
+        // console.log("Success!");
+        // this.$router.push("/Home");
       } else {
         console.log("Unsuccessful");
         this.errorAlert = this.verifyFields(
