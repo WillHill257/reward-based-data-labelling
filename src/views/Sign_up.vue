@@ -123,16 +123,11 @@ export default {
       ) {
         var newUser = {
           firstName: this.firstName,
-          surname: this.surname,
+          lastName: this.surname,
           email: this.email,
           password: this.password,
         };
-        this.signupUser(
-          this.firstName,
-          this.surname,
-          this.email,
-          this.password
-        );
+        this.signupUser(newUser);
         // axios
         //   .post("http://localhost:4000/api/user/", newUser)
         //   .then()

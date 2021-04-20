@@ -6,13 +6,19 @@ export enum MutationTypes {
   LOGIN_USER = "LOGIN_USER",
 }
 
+export type Mutations<S = UserState> = {
+  [MutationTypes.SIGNUP_USER](state: S, payload: any): void;
+  [MutationTypes.LOGIN_USER](state: S, payload: any): void;
+};
+
 export const mutations: MutationTree<UserState> = {
-  [MutationTypes.SIGNUP_USER](state, payload: any): void {
+  SIGNUP_USER(state, payload): void {
+    console.log("Mutating signup");
     state.firstName = payload.firstName;
     state.lastName = payload.lastName;
     state.email = payload.email;
   },
-  [MutationTypes.LOGIN_USER](state, payload: any): void {
+  LOGIN_USER(state, payload): void {
     state.firstName = payload.firstName;
     state.lastName = payload.lastName;
     state.email = payload.email;

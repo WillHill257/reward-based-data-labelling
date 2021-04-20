@@ -3,9 +3,10 @@ import httpClient from "./httpClient";
 const END_POINT = "/user";
 
 const loginUser = (email: string, password: string): Promise<any> => {
-  console.log('Logging in...');
+  console.log("Logging in...");
+  const params = { email: email, password: password };
   const req: Promise<any> = httpClient.get(END_POINT + "/login", {
-    params: { email: email, password: password },
+    params: params,
   });
   return req;
 };
@@ -17,14 +18,15 @@ const signupUser = (
   password: string
 ): Promise<any> => {
   console.log("Signing up...");
-  return httpClient.post(END_POINT, {
-    params: {
-      firstName: firstName,
-      surname: lastName,
-      email: email,
-      password: password,
-    },
-  });
+  const params = {
+    firstName: firstName,
+    surname: lastName,
+    email: email,
+    password: password,
+  };
+
+  console.log(params);
+  return httpClient.post(END_POINT, params);
 };
 
 export { loginUser, signupUser };
