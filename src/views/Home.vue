@@ -3,6 +3,7 @@
     <img alt="Vue logo" src="../assets/logo.png" />
     <router-link to="/about">Go to about</router-link>
     <router-link to="/login">Go to Login</router-link>
+    <router-link to="/landing">Go to landing Page</router-link>
   </div>
 </template>
 

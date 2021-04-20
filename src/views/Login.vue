@@ -1,17 +1,18 @@
 <template>
   <v-app>
     <!-- Nav bar-->
-    <v-app-bar app dark color="green">
-      <v-toolbar-title> Jinx </v-toolbar-title>
+    <v-app-bar id='AppBarIntro'>
+      <img id= AppBarlogo src="../assets/JinxLogo.png" />
+ 
       <v-spacer></v-spacer>
-      <v-btn text rounded> About </v-btn>
-      <v-btn text rounded> Contact us </v-btn>
+      <v-btn id='AppBarButton' text rounded> About </v-btn>
+      <v-btn id='AppBarButton' text rounded> Contact us </v-btn>
     </v-app-bar>
 
     <v-content>
       <v-card width="500" class="mx-auto mt-9">
-        <v-card-title>Login</v-card-title>
         <!-- Login form-->
+        <v-card-title >Login</v-card-title>
         <v-alert
           id="globalError"
           :value="alert"
@@ -47,6 +48,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
+          
           <v-btn color="info" @click="LoginOnClick">Login</v-btn>
           <v-btn color="info" @click="$router.push('/Sign_up')">Register</v-btn>
         </v-card-actions>
