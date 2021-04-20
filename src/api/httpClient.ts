@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 //https://haxzie.com/architecting-http-clients-vue-js-network-layer
 
@@ -12,7 +12,7 @@ const httpClient = axios.create({
 
 const getAuthToken = () => localStorage.getItem("token");
 
-const authInterceptor = (config: any) => {
+const authInterceptor = (config: AxiosRequestConfig) => {
   config.headers["Authorization"] = getAuthToken();
   return config;
 };
@@ -20,7 +20,7 @@ const authInterceptor = (config: any) => {
 httpClient.interceptors.request.use(authInterceptor);
 
 // interceptor to catch errors
-const errorInterceptor = (error:any) => {
+const errorInterceptor = (error: AxiosError) => {
   // check if it's a server error
   if (!error.response) {
     console.log("Network/Server error");
@@ -46,7 +46,7 @@ const errorInterceptor = (error:any) => {
 };
 
 // Interceptor for responses
-const responseInterceptor = (response:any) => {
+const responseInterceptor = (response: AxiosResponse) => {
   switch (response.status) {
     case 200:
       // yay!

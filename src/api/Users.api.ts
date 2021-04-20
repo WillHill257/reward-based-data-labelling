@@ -25,7 +25,6 @@ const signupUser = (
     password: password,
   };
 
-  console.log(params);
   return httpClient.post(END_POINT, params);
 };
 

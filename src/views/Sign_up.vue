@@ -7,16 +7,9 @@
       <v-btn text rounded> Contact us </v-btn>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <v-card width="500" class="mx-auto mt-9">
-        <v-card-title
-          v-model="paddingDirection"
-          :items="directions"
-          class="pr-2"
-          label="Padding"
-        >
-          Sign Up</v-card-title
-        >
+        <v-card-title class="pr-2" label="Padding"> Sign Up</v-card-title>
 
         <v-card-text>
           <v-alert
@@ -75,7 +68,6 @@
           <v-btn
             id="signup-confirm-button"
             color="success"
-            @click="$router.push('/Home')"
             v-on:click="onSignUp"
             >Sign Me UP</v-btn
           >
@@ -87,12 +79,12 @@
           >
         </v-card-actions>
       </v-card>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
-<script>
-import axios from "axios";
+<script lang="ts">
+import { AxiosResponse } from "axios";
 import { mapActions } from "vuex";
 
 export default {
@@ -111,7 +103,7 @@ export default {
   },
   methods: {
     ...mapActions("user", ["signupUser"]),
-    onSignUp() {
+    onSignUp(): void {
       if (
         this.verifyFields(
           this.firstName,
@@ -119,7 +111,7 @@ export default {
           this.email,
           this.password,
           this.confirmPassword
-        ) == "Passed"
+        ) === "Passed"
       ) {
         var newUser = {
           firstName: this.firstName,
@@ -127,42 +119,51 @@ export default {
           email: this.email,
           password: this.password,
         };
-        this.signupUser(newUser);
-        // axios
-        //   .post("http://localhost:4000/api/user/", newUser)
-        //   .then()
-        //   .catch(function (error) {
-        //     console.log(error);
-        //   });
-
-        // console.log("Success!");
-        // this.$router.push("/Home");
+        this.signupUser(newUser)
+          .then((res: AxiosResponse) => {
+            this.$router.push({ name: "HomePage" });
+          })
+          .catch((errorMessage: string) => {
+            this.setErrorAlert(errorMessage);
+          });
       } else {
         console.log("Unsuccessful");
-        this.errorAlert = this.verifyFields(
-          this.firstName,
-          this.surname,
-          this.email,
-          this.password,
-          this.confirmPassword
+        this.setErrorAlert(
+          this.verifyFields(
+            this.firstName,
+            this.surname,
+            this.email,
+            this.password,
+            this.confirmPassword
+          )
         );
-        this.errorVisibility = "visible";
-        this.errorHeight = 40;
       }
     },
 
-    verifyFields(fName, sName, email, pWord, cpWord) {
+    setErrorAlert(message: string): void {
+      this.errorAlert = message;
+      this.errorVisibility = "visible";
+      this.errorHeight = 40;
+    },
+
+    verifyFields(
+      fName: string,
+      sName: string,
+      email: string,
+      pWord: string,
+      cpWord: string
+    ): string {
       if (
-        fName == "" ||
-        sName == "" ||
-        email == "" ||
-        pWord == "" ||
-        cpWord == ""
+        fName === "" ||
+        sName === "" ||
+        email === "" ||
+        pWord === "" ||
+        cpWord === ""
       ) {
         return "All fields required";
-      } else if (email.search("@") == -1) {
+      } else if (email.search("@") === -1) {
         return "Email is invalid";
-      } else if (pWord != cpWord) {
+      } else if (pWord !== cpWord) {
         return "Passwords do not match";
       } else if (pWord.length < 8) {
         return "Password too short";

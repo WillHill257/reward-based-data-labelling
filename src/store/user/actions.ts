@@ -36,7 +36,8 @@ export const actions: ActionTree<UserState, RootState> = {
       console.log(response);
       commit(MutationTypes.SIGNUP_USER, response.data);
     } catch (error) {
-      console.log(error);
+      // pass back the error message
+      return Promise.reject(error.response.data.error);
     }
   },
 
@@ -45,7 +46,8 @@ export const actions: ActionTree<UserState, RootState> = {
       const response: any = await loginUser(payload.email, payload.password);
       commit(MutationTypes.LOGIN_USER, response.data);
     } catch (error) {
-      console.log(error);
+      // pass back the error message
+      return Promise.reject(error.response.data.error);
     }
   },
 };

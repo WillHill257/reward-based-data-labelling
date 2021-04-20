@@ -9,11 +9,11 @@ const state: UserState = {
   firstName: "",
   lastName: "",
   email: "",
-  password: ""
+  password: "",
 };
 
 export const user: Module<UserState, RootState> = {
-  namespaced : true,
+  namespaced: true,
   state,
   getters,
   actions,
