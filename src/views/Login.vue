@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <!-- Nav bar-->
-    <v-app-bar app dark color="green">
+    <!-- <v-app-bar app dark color="green">
       <v-toolbar-title> Jinx </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn text rounded> About </v-btn>
       <v-btn text rounded> Contact us </v-btn>
-    </v-app-bar>
+    </v-app-bar> -->
 
     <v-content>
       <v-card width="500" class="mx-auto mt-9">
