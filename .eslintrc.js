@@ -16,8 +16,6 @@ module.exports = {
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-    'prettier/prettier': 0,
-
   },
   overrides: [
     {
@@ -26,7 +24,7 @@ module.exports = {
         "**/tests/unit/**/*.spec.{j,t}s?(x)",
       ],
       env: {
-        mocha: true,
+        jest: true,
       },
     },
   ],
