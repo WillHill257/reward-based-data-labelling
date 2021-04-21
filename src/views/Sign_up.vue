@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar app dark color="green">
-      <v-toolbar-title> Jinx </v-toolbar-title>
+    <v-app-bar id='AppBarIntro'>
+      <img id= AppBarlogo src="../assets/JinxLogo.png" />
       <v-spacer></v-spacer>
       <v-btn text rounded> About </v-btn>
       <v-btn text rounded> Contact us </v-btn>
