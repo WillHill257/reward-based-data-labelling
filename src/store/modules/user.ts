@@ -7,7 +7,11 @@ export interface UserState {
   email: string;
 }
 
-@Module({ namespaced: true, name: "user" })
+@Module({
+  namespaced: true,
+  name: "user",
+  stateFactory: true, // prevents store caching - so each client app receives its own instance of global state
+})
 export default class UserModule extends VuexModule implements UserState {
   firstName = "";
   lastName = "";
