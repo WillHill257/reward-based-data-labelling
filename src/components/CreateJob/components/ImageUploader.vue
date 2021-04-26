@@ -5,6 +5,7 @@
     @dragenter.prevent="dragover = true"
     @dragleave.prevent="dragover = false"
     :class="{ 'grey lighten-2': dragover }"
+    id="dragAndDropContainer"
   >
     <v-card-text>
       <v-col align="center" justify="center">
@@ -22,7 +23,7 @@ export default Vue.extend({
   props: {
     onFilesUploaded: {
       type: Function,
-      required: true,
+      //required: true,
     },
   },
   data() {
@@ -33,9 +34,16 @@ export default Vue.extend({
   },
   methods: {
     onDrop(e: any) {
-      console.log("hey");
       this.dragover = false;
-      e.dataTransfer.files.forEach((element) => this.onFilesUploaded(element));
+      if (e != null) {
+        const files = e.dataTransfer?.files;
+        if (files) {
+          for (var i = 0; i < files.length; i++) {
+            const element: File = files[i];
+            this.onFilesUploaded(element);
+          }
+        }
+      }
     },
   },
 });

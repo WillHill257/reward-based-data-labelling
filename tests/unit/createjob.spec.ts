@@ -5,9 +5,10 @@ import Vuetify from "vuetify";
 
 Vue.use(Vuetify);
 describe("CreateJob", () => {
-  const wrapper = shallowMount(CreateJob);
   describe("When loaded", () => {
     test("should have all the necessary UI elements", () => {
+      const wrapper = shallowMount(CreateJob);
+
       expect(wrapper.isVueInstance()).toBeTruthy();
       expect(wrapper.find("#title-input").exists()).toBe(true);
       expect(wrapper.find("#description-input").exists()).toBe(true);

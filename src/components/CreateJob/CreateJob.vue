@@ -37,7 +37,7 @@ export default Vue.extend({
     return {
       title: "",
       description: "",
-      filesUploaded: [],
+      filesUploaded: [] as File[],
     };
   },
 
@@ -58,8 +58,8 @@ export default Vue.extend({
     onSubmitClicked(): void {
       console.log(this.filesUploaded);
     },
-    onFilesUploaded(files: never): void {
-      this.filesUploaded.push(files);
+    onFilesUploaded(file: File): void {
+      this.filesUploaded.push(file);
     },
   },
 });
