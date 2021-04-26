@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar id='AppBarIntro'>
-      <img id= AppBarlogo src="../assets/JinxLogo.png" />
+    <v-app-bar id="AppBarIntro">
+      <img id="AppBarlogo" src="../assets/JinxLogo.png" />
       <v-spacer></v-spacer>
       <v-btn text rounded> About </v-btn>
       <v-btn text rounded> Contact us </v-btn>
@@ -85,7 +85,8 @@
 
 <script lang="ts">
 import { AxiosResponse } from "axios";
-import { mapActions } from "vuex";
+import UserModule from "@/store/modules/user";
+import { getModule } from "vuex-module-decorators";
 
 export default {
   data() {
@@ -102,7 +103,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions("user", ["signupUser"]),
     onSignUp(): void {
       if (
         this.verifyFields(
@@ -119,8 +119,10 @@ export default {
           email: this.email,
           password: this.password,
         };
-        this.signupUser(newUser)
-          .then((res: AxiosResponse) => {
+        const userMod = getModule(UserModule, this.$store);
+        userMod
+          .signupUser(newUser)
+          .then((res) => {
             this.$router.push({ name: "HomePage" });
           })
           .catch((errorMessage: string) => {

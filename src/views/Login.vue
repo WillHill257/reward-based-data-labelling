@@ -1,18 +1,18 @@
 <template>
   <v-app>
     <!-- Nav bar-->
-    <v-app-bar id='AppBarIntro'>
-      <img id= AppBarlogo src="../assets/JinxLogo.png" />
- 
+    <v-app-bar id="AppBarIntro">
+      <img id="AppBarlogo" src="../assets/JinxLogo.png" />
+
       <v-spacer></v-spacer>
-      <v-btn id='AppBarButton' text rounded> About </v-btn>
-      <v-btn id='AppBarButton' text rounded> Contact us </v-btn>
+      <v-btn id="AppBarButton" text rounded> About </v-btn>
+      <v-btn id="AppBarButton" text rounded> Contact us </v-btn>
     </v-app-bar>
 
     <v-main>
       <v-card width="500" class="mx-auto mt-9">
         <!-- Login form-->
-        <v-card-title >Login</v-card-title>
+        <v-card-title>Login</v-card-title>
         <v-alert
           id="globalError"
           :value="alert"
@@ -57,9 +57,9 @@
 </template>
 
 <script lang="ts">
-import { AxiosResponse } from "axios";
-import { mapActions } from "vuex";
 import { VueForm } from "../componentTypes";
+import { getModule } from "vuex-module-decorators";
+import UserModule from "@/store/modules/user";
 
 export default {
   data: () => ({
@@ -84,7 +84,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("user", ["loginUser"]),
+    // ...mapActions("user", ["loginUser"])
     loginOnClick(): void {
       // getting data
       var user = {
@@ -95,8 +95,10 @@ export default {
       this.hideError();
       if (this.validate()) {
         // if form is valid, continue with login
-        this.loginUser(user)
-          .then((res: AxiosResponse) => {
+        const userMod = getModule(UserModule, this.$store);
+        userMod
+          .loginUser(user)
+          .then((res) => {
             // successful login - navigate to homepage, user object is in store
             this.$router.push({ name: "HomePage" });
           })
