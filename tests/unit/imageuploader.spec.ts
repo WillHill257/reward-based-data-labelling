@@ -1,5 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import ImageUploader from "@/components/CreateJob/components/ImageUploader.vue";
+import CreateJob from "@/components/CreateJob/CreateJob.vue";
 // import CreateJob from "@/components/CreateJob/CreateJob.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
@@ -19,29 +20,43 @@ describe("ImageUploader", () => {
   });
 
   describe("on files dropped", () => {
-    test("should call the onDrop function", () => {
+    const file = new File([new ArrayBuffer(1)], "file.jpg");
+
+    test("should call the onDrop function", async () => {
       const wrapper: any = shallowMount(ImageUploader, {
         propsData: { onFilesUploaded: jest.fn() },
       });
 
       const onDropSpy = jest.spyOn(wrapper.vm, "onDrop");
       const container = wrapper.find("#dragAndDropContainer");
-      container.trigger("drop");
+      await container.trigger("drop");
 
       expect(onDropSpy).toHaveBeenCalled();
     });
 
-    test("should call onFilesUploaded", () => {
-      // const createJob: any = shallowMount(CreateJob);
-      const mockOnFilesUploaded = jest.fn();
-      const wrapper: any = shallowMount(ImageUploader, {
+    test("should add to files uploaded variable in CreateJob, when files dropped", () => {
+      let testEvent = {
+        dataTransfer: {
+          files: [file, file],
+        },
+      };
+      const createJob: any = shallowMount(CreateJob, {
+        propsData: { isShowDialog: true },
+      });
+      const imageUploader: any = shallowMount(ImageUploader, {
         propsData: {
-          onFilesUploaded: mockOnFilesUploaded,
+          onFilesUploaded: createJob.vm.onFilesUploaded,
         },
       });
 
-      wrapper.vm.onDrop(); // calls the ondrop function in the ImageUploader component
-      expect(mockOnFilesUploaded).toHaveBeenCalled();
+      imageUploader.vm.onDrop(testEvent); // calls the ondrop function in the ImageUploader component
+      testEvent = {
+        dataTransfer: {
+          files: [file],
+        },
+      };
+      imageUploader.vm.onDrop(testEvent); // calls the ondrop function in the ImageUploader component
+      expect(createJob.vm.filesUploaded.length).toBe(3);
     });
   });
 });
