@@ -31,17 +31,17 @@ describe("ImageUploader", () => {
       expect(onDropSpy).toHaveBeenCalled();
     });
 
-    test("should call onFilesUploaded", () => {
-      // const createJob: any = shallowMount(CreateJob);
-      const mockOnFilesUploaded = jest.fn();
-      const wrapper: any = shallowMount(ImageUploader, {
-        propsData: {
-          onFilesUploaded: mockOnFilesUploaded,
-        },
-      });
-
-      wrapper.vm.onDrop(); // calls the ondrop function in the ImageUploader component
-      expect(mockOnFilesUploaded).toHaveBeenCalled();
-    });
+    // test("should call onFilesUploaded", () => {
+    //   // const createJob: any = shallowMount(CreateJob);
+    //   const mockOnFilesUploaded = jest.fn();
+    //   const wrapper: any = shallowMount(ImageUploader, {
+    //     propsData: {
+    //       onFilesUploaded: mockOnFilesUploaded,
+    //     },
+    //   });
+    //
+    //   wrapper.vm.onDrop(); // calls the ondrop function in the ImageUploader component
+    //   expect(mockOnFilesUploaded).toHaveBeenCalled();
+    // });
   });
 });
