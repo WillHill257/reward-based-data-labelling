@@ -8,7 +8,7 @@
     id="dragAndDropContainer"
   >
     <v-card-text>
-      <v-col align="center" justify="center">
+      <v-col align="center">
         <v-icon class="mt-5" size="60">mdi-cloud-upload</v-icon>
         <p>Drop your file(s) here, or click to select them.</p>
       </v-col>
@@ -29,7 +29,6 @@ export default Vue.extend({
   data() {
     return {
       dragover: false,
-      uploadedFiles: [],
     };
   },
   methods: {
@@ -48,3 +47,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+#dragAndDropContainer {
+  background-color: #ebebeb;
+}
+</style>
