@@ -34,6 +34,20 @@ describe("ImageUploader", () => {
       expect(onDropSpy).toHaveBeenCalled();
     });
 
+<<<<<<< HEAD
+    // test("should call onFilesUploaded", () => {
+    //   // const createJob: any = shallowMount(CreateJob);
+    //   const mockOnFilesUploaded = jest.fn();
+    //   const wrapper: any = shallowMount(ImageUploader, {
+    //     propsData: {
+    //       onFilesUploaded: mockOnFilesUploaded,
+    //     },
+    //   });
+    //
+    //   wrapper.vm.onDrop(); // calls the ondrop function in the ImageUploader component
+    //   expect(mockOnFilesUploaded).toHaveBeenCalled();
+    // });
+=======
     test("should add to files uploaded variable in CreateJob, when files dropped", () => {
       let testEvent = {
         dataTransfer: {
@@ -58,5 +72,6 @@ describe("ImageUploader", () => {
       imageUploader.vm.onDrop(testEvent); // calls the ondrop function in the ImageUploader component
       expect(createJob.vm.filesUploaded.length).toBe(3);
     });
+>>>>>>> 62c86cfc1a406f140487a9f23291936fa28f2fe5
   });
 });
