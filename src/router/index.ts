@@ -5,6 +5,7 @@ import Login from "../views/Login.vue";
 import Sign_up from "../views/Sign_up.vue";
 import HomePage from "../views/HomePage.vue";
 import Landing from "../views/Landing.vue";
+import CreateJob from "../components/CreateJob/CreateJob.vue";
 
 Vue.use(VueRouter);
 
@@ -42,6 +43,11 @@ const routes: Array<RouteConfig> = [
     path: "/landing",
     name: "Landing",
     component: Landing,
+  },
+  {
+    path: "/CreateJob",
+    name: "CreateJob",
+    component: CreateJob,
   },
 ];
 
