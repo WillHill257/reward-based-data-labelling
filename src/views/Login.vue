@@ -2,7 +2,7 @@
   <v-app>
     <!-- Nav bar-->
     <v-app-bar id='AppBarIntro'>
-      <img id= AppBarlogo src="../assets/JinxLogo.png" />
+      <img id= AppBarlogo src="../assets/images/JinxLogo.png" />
  
       <v-spacer></v-spacer>
       <v-btn id='AppBarButton' text rounded> About </v-btn>

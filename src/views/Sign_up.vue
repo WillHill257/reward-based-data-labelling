@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar id='AppBarIntro'>
-      <img id= AppBarlogo src="../assets/JinxLogo.png" />
+      <img id= AppBarlogo src="../assets/images/JinxLogo.png" />
       <v-spacer></v-spacer>
       <v-btn text rounded> About </v-btn>
       <v-btn text rounded> Contact us </v-btn>
