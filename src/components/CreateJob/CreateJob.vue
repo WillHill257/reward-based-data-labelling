@@ -110,11 +110,12 @@ export default Vue.extend({
         let file = this.filesUploaded[i];
         formData.append("image", file);
       }
+      formData.append("jobID", "60945c5832f50f55720f72e2");
 
       this.errorVisibility = "visible";
       this.errorHeight = 40;
 
-      const url = "http://localhost:4000/api/images/upload";
+      const url = "http://localhost:4000/api/images/";
       this.axios
         .post(url, formData, {
           headers: {
