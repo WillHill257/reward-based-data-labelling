@@ -64,6 +64,7 @@
 import Vue from "vue";
 import ImageUploader from "./components/ImageUploader.vue";
 
+//TODO: keep track of userID with author
 export default Vue.extend({
   name: "CreateJob",
   components: { ImageUploader },
@@ -75,6 +76,8 @@ export default Vue.extend({
       errorMessage: "",
       errorHeight: 0,
       errorVisibility: "Hidden",
+      author: "60942b9c1878e068fc0cf954",
+      jobJson: {},
     };
   },
 
@@ -95,39 +98,63 @@ export default Vue.extend({
     onSubmitClicked: function () {
       // checks if all fields are filled
 
-      // if (this.title == "") {
-      //   this.errorMessage = "Title required";
-      // } else if (this.description == "") {
-      //   this.errorMessage = "Description required";
-      // } else if (this.filesUploaded.length == 0) {
-      //   this.errorMessage = "No files to upload";
-      // } else {
-      //   return;
-      // }
+      if (this.title == "") {
+        this.errorMessage = "Title required";
+        this.errorVisibility = "visible";
+        this.errorHeight = 40;
+      } else if (this.description == "") {
+        this.errorMessage = "Description required";
+        this.errorVisibility = "visible";
+        this.errorHeight = 40;
+      } else if (this.filesUploaded.length == 0) {
+        this.errorMessage = "No files to upload";
+        this.errorVisibility = "visible";
+        this.errorHeight = 40;
+      } else {
+        this.jobJson = {
+          title: this.title,
+          description: this.description,
+          author: this.author,
+        };
 
-      let formData = new FormData();
-      for (var i in this.filesUploaded) {
-        let file = this.filesUploaded[i];
-        formData.append("image", file);
+        // makes api all to upload job
+        this.axios
+          .post("http://localhost:4000/api/job", this.jobJson)
+          .then((response) => {
+            // when job is successfully created, upload the images
+
+            // create the form data to contain the images
+            let formData = new FormData();
+
+            // append all the images to formData
+            for (var i in this.filesUploaded) {
+              let file = this.filesUploaded[i];
+              formData.append("image", file);
+            }
+            // append the job ID to the form data
+            formData.append("jobID", response.data._id);
+
+            // uploads all the images through the image api
+            const url = "http://localhost:4000/api/images/";
+            this.axios
+              .post(url, formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              })
+              .then((response) => {
+                console.log(response);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
-      formData.append("jobID", "60945c5832f50f55720f72e2");
 
-      this.errorVisibility = "visible";
-      this.errorHeight = 40;
-
-      const url = "http://localhost:4000/api/images/";
-      this.axios
-        .post(url, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // create the job json object
     },
     onFilesUploaded(file: File): void {
       this.filesUploaded.push(file);
