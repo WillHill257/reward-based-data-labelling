@@ -64,6 +64,8 @@
 import Vue from "vue";
 import ImageUploader from "./components/ImageUploader.vue";
 
+
+//TODO: keep track of userID with author
 export default Vue.extend({
   name: "CreateJob",
   components: { ImageUploader },
@@ -75,6 +77,8 @@ export default Vue.extend({
       errorMessage: "",
       errorHeight: 0,
       errorVisibility: "Hidden",
+      author: "60942b9c1878e068fc0cf954",
+      jobJson: {}
     };
   },
 
@@ -94,6 +98,15 @@ export default Vue.extend({
     },
     onSubmitClicked: function () {
       // checks if all fields are filled
+      this.jobJson = {"title": this.title, "description": this.description, "author": this.author};
+      this.axios
+        .post("http://localhost:4000/api/job", this.jobJson)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
       // if (this.title == "") {
       //   this.errorMessage = "Title required";
@@ -113,23 +126,24 @@ export default Vue.extend({
 
       this.errorVisibility = "visible";
       this.errorHeight = 40;
-
-      const url = "http://localhost:4000/api/images/upload";
-      this.axios
-        .post(url, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      //
+      // const url = "http://localhost:4000/api/images/upload";
+      // this.axios
+      //   .post(url, formData, {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   })
+      //   .then((response) => {
+      //     console.log(response);
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     },
     onFilesUploaded(file: File): void {
       this.filesUploaded.push(file);
+
     },
   },
 });
