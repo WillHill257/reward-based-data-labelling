@@ -34,33 +34,38 @@
             <v-text-field v-model="title" label="Title" id="title-input">
             </v-text-field>
 
-          <v-textarea
-            v-model="description"
-            label="Description"
-            id="description-input"
-          >
-          </v-textarea>
+            <v-textarea
+              v-model="description"
+              label="Description"
+              id="description-input"
+            >
+            </v-textarea>
 
-          <v-text-field
-            id = "label-input"
-            v-model="labelData"
-            label="Labels"
-            single-line
-            full-width
-            hide-details
-            @keydown.enter="makePill()"
-          ></v-text-field>
+            <v-text-field
+              id="label-input"
+              v-model="labelData"
+              label="Labels"
+              single-line
+              full-width
+              hide-details
+              @keydown.enter="makePill()"
+            ></v-text-field>
 
-          <v-chip-group 
-            active-class="primary--text"
-            column 
-          >
-            <v-col  style="padding: 0 0;">
-                <v-chip class = "pill" v-show="open" v-for="label in labelArray" :key="label" close deletable-chips @click:close="closePill(label)">
-                    {{ label }}
+            <v-chip-group active-class="primary--text" column>
+              <v-col style="padding: 0 0">
+                <v-chip
+                  class="pill"
+                  v-show="open"
+                  v-for="label in labelArray"
+                  :key="label"
+                  close
+                  deletable-chips
+                  @click:close="closePill(label)"
+                >
+                  {{ label }}
                 </v-chip>
-            </v-col>
-          </v-chip-group>
+              </v-col>
+            </v-chip-group>
 
             <v-card-actions style="padding-top: 25%">
               <v-btn color="green" id="submit-input" type="submit">
@@ -94,7 +99,7 @@ export default Vue.extend({
       title: "",
       description: "",
       labelData: "",
-      labelArray: new Array<string>(), 
+      labelArray: new Array<string>(),
       open: true,
       filesUploaded: [] as File[],
       errorMessage: "",
@@ -184,18 +189,18 @@ export default Vue.extend({
       this.filesUploaded.push(file);
     },
     makePill() {
-      let arr: Array<string> = this.labelData.split(',')
+      let arr: Array<string> = this.labelData.split(",");
       for (var i = 0; i < arr.length; i++) {
-          if (arr[i].trim() != "" && arr[i].trim() != " "){
-            this.labelArray.push(arr[i].trim())
-          } 
+        if (arr[i].trim() != "" && arr[i].trim() != " ") {
+          this.labelArray.push(arr[i].trim());
+        }
       }
-      this.labelData = ""
-      console.log("yo")
-    }, 
-    closePill(label: string){
-      this.labelArray.splice(this.labelArray.indexOf(label), 1)
-    }
+      this.labelData = "";
+      console.log("yo");
+    },
+    closePill(label: string) {
+      this.labelArray.splice(this.labelArray.indexOf(label), 1);
+    },
   },
 });
 </script>
