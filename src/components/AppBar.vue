@@ -14,7 +14,7 @@
     <!-- //this is the hamburger navigation bar. //this is declaring what it does and
     how it looks. -->
     <v-navigation-drawer
-      color= rgb(80,200,200)
+      color="rgb(80,200,200)"
       v-model="drawer"
       absolute
       bottom
@@ -33,14 +33,21 @@
             <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
+        <v-btn @click="isShowDialog = true" icon>
+          <v-icon size="30">mdi-plus</v-icon>
+        </v-btn>
       </v-list>
     </v-navigation-drawer>
+    <CreateJob :isShowDialog.sync="isShowDialog" />
   </div>
 </template>
 
 <script>
+import CreateJob from "@/components/CreateJob/CreateJob";
+
 export default {
   name: "AppBar",
+  components: { CreateJob },
   data: () => ({
     // these are the names and the directories for the buttons in the side bar.
     drawer: false,
@@ -62,11 +69,12 @@ export default {
         text: "Available Jobs",
         link: "/viewJob",
       },
-      {
-        text: "Create Job",
-        link: "/CreateJob",
-      },
+      // {
+      //   text: "Create Job",
+      //   link: "/CreateJob",
+      // },
     ],
+    isShowDialog: false,
   }),
   watch: {
     group() {
@@ -75,3 +83,20 @@ export default {
   },
 };
 </script>
+<style scoped>
+#AppBarIntro {
+  background-color: rgb(80, 200, 200);
+  max-height: 65px;
+  font-weight: 600;
+  max-width: 100%;
+}
+
+#AppBarlogo {
+  max-width: 65px;
+  margin-left: 5px;
+}
+
+#AppBarButton {
+  font-weight: 600;
+}
+</style>
