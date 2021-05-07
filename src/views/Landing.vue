@@ -1,15 +1,5 @@
 <template>
   <div>
-    <v-app-bar id="AppBarIntro">
-      <img id="AppBarlogo" src="../assets/images/JinxLogo.png" />
-      <v-spacer></v-spacer>
-      <v-btn id="AppBarButton" text rounded @click="$router.push('/Login')">
-        Login
-      </v-btn>
-      <v-btn id="AppBarButton" text rounded @click="$router.push('/Sign_up')">
-        Register
-      </v-btn>
-    </v-app-bar>
     <!-- :class="{'pl-0': $vuetify.breakpoint.mdAndUp, 'pl-5': $vuetify.breakpoint.xs}" -->
     <v-container fluid>
       <v-row
