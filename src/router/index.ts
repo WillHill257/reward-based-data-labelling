@@ -4,7 +4,7 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Sign_up from "../views/Sign_up.vue";
 import HomePage from "../views/HomePage.vue";
-import ViewJobs from "../components/ViewJobs.vue";
+import ViewJobs from "../views/ViewJobs.vue";
 
 Vue.use(VueRouter);
 

@@ -5,7 +5,7 @@ import {
   mount,
   shallowMount,
 } from "@vue/test-utils";
-import ViewJobs from "@/components/ViewJobs.vue";
+import ViewJobs from "@/views/ViewJobs.vue";
 import axios from "axios";
 import Vue from "vue";
 import Vuetify from "vuetify";
