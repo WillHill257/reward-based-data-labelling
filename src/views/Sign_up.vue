@@ -1,12 +1,5 @@
 <template>
   <v-app>
-    <v-app-bar id="AppBarIntro">
-      <img id="AppBarlogo" src="../assets/images/JinxLogo.png" />
-      <v-spacer></v-spacer>
-      <v-btn text rounded> About </v-btn>
-      <v-btn text rounded> Contact us </v-btn>
-    </v-app-bar>
-
     <v-main>
       <v-card width="500" class="mx-auto mt-9">
         <v-card-title class="pr-2" label="Padding"> Sign Up</v-card-title>
