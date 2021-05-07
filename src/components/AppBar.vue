@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar app dark color="green">
+    <v-app-bar app dark color="green" clipped-right>
       <v-toolbar-title> Jinx </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn text rounded> About </v-btn>
@@ -16,27 +16,17 @@
       bottom
       temporary
       right
+      fixed
+      clipped
     >
       <v-list nav dense>
         <v-list-item-group
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <!-- //these are the items in the nav bar. -->
-          <v-list-item>
-            <v-list-item-title>Foo</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Bar</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Fizz</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Buzz</v-list-item-title>
+          <!-- these are the items in the nav bar. -->
+          <v-list-item v-for="item in items" :key="item.text" :to="item.link">
+            <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -48,8 +38,27 @@
 export default {
   name: "AppBar",
   data: () => ({
+    // these are the names and the directories for the buttons in the side bar.
     drawer: false,
     group: null,
+    items: [
+      {
+        text: "Landing",
+        link: "/",
+      },
+      {
+        text: "About",
+        link: "/about",
+      },
+      {
+        text: "Home",
+        link: "/home",
+      },
+      {
+        text: "ViewJob",
+        link: "/viewJob",
+      },
+    ],
   }),
 
   watch: {
