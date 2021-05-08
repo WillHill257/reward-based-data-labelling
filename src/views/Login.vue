@@ -10,8 +10,8 @@
 
     <v-content>
       <v-card width="500" class="mx-auto mt-9">
-        <v-card-title>Login</v-card-title>
         <!-- Login form-->
+        <v-card-title>Login</v-card-title>
         <v-alert
           id="globalError"
           :value="alert"
