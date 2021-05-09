@@ -2,12 +2,25 @@
 <template>
   <v-container ma-10 pa-10 fill-height>
     <v-row align="center" justify="center">
-      <!-- <v-btn color="primary" elevation="7" large elavation="2" fab>Prev</v-btn> -->
-      <v-btn color="primary" large rounded>Accept Job </v-btn>
-      <!-- <v-btn color="primary" elevation="7" large elavation="2" fab>Next</v-btn> -->
+      <v-btn
+        color="primary"
+        large
+        rounded
+        id="btnAccept"
+        v-on:click.native="onAccept"
+        >Accept Job
+      </v-btn>
     </v-row>
 
+    <v-row align="center" justify="center">
+      <!-- card for the jobs descriptions and Title -->
+      <v-card width="95%" height="80%" class="jobs" id="job-summary">
+        <v-card-title> {{ jobTitle }}</v-card-title>
+        <v-card-text> {{ jobDescription }}</v-card-text>
+      </v-card>
+    </v-row>
     <v-row>
+      <!-- this is the scroll to top arrow -->
       <v-btn
         dark
         fab
@@ -16,14 +29,24 @@
         right
         color="indigo darken-3"
         fixed
-        @click="top"
+        @click="onScrollUp"
+        id="btnScrollUp"
+        v-on:click.native="onScrollUp"
       >
-        Go to top
+        <v-icon>mdi-arrow-up</v-icon>
       </v-btn>
-      <v-col v-for="n in 100" :key="n" class="d-flex child-flex" cols="3">
+      <!-- this handles the formating of the images -->
+      <v-col
+        v-for="image in images"
+        :key="image"
+        class="d-flex child-flex"
+        cols="3"
+        id="pic-display"
+      >
+        <!-- this is where the images are set to load -->
         <v-img
-          :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
-          :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
+          :src="image"
+          :lazy-src="image"
           aspect-ratio="1"
           class="grey lighten-2"
         >
@@ -42,10 +65,57 @@
 </template>
 
        
-  <script>
+<script>
+import axios from "axios";
 export default {
+  props: { jobID: String },
+  data() {
+    // these are the return vars used to the jobs information
+    return {
+      jobTitle: "",
+      jobDescription: "",
+      url: "",
+      images: [],
+    };
+  },
+  async mounted() {
+    // this is the jobs ID that is passed from the ViewJobs page
+    const jobID = this.$props.jobID;
+    this.url = "http://localhost:4000/api/job/" + jobID;
+    // get request for the title and description
+    await axios
+      .get(this.url)
+      .then((response) => {
+        this.jobTitle = response.data.title;
+        this.jobDescription = response.data.description;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    // get request for the images with a specific ID
+    await axios
+      .get("http://localhost:4000/api/images?jobID=" + jobID)
+      .then((response) => {
+        console.log(response);
+        for (var i in response.data) {
+          var imageName = response.data[i].value;
+          this.images.push(
+            "http://localhost:4000/uploads/jobs/" + jobID + "/" + imageName
+          );
+        }
+        console.log(this.images);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
   methods: {
-    top() {
+    // Accept Button
+    onAccept() {
+      return null;
+    },
+    // Scroll Up botton
+    onScrollUp() {
       window.scrollTo({
         top: 0,
         left: 0,

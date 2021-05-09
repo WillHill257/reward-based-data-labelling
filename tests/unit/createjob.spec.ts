@@ -41,7 +41,7 @@ describe("CreateJob", () => {
 
   describe("When loaded", () => {
     test("Checking errors throw correctly", () => {
-      const wrapper:any = shallowMount(CreateJob);
+      const wrapper: any = shallowMount(CreateJob);
       wrapper.vm.$data.title = ""
       wrapper.vm.onSubmitClicked()
       expect(wrapper.vm.$data.errorMessage).toEqual("Title required");

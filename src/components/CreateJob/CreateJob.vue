@@ -154,14 +154,14 @@ export default Vue.extend({
 
             // create the form data to contain the images
             let formData = new FormData();
+            // append the job ID to the form data
+            formData.append("jobID", response.data._id);
 
             // append all the images to formData
             for (var i in this.filesUploaded) {
               let file = this.filesUploaded[i];
               formData.append("image", file);
             }
-            // append the job ID to the form data
-            formData.append("jobID", response.data._id);
 
             // uploads all the images through the image api
             const url = "http://localhost:4000/api/images/";
