@@ -89,7 +89,6 @@
 <script lang="ts">
 import Vue from "vue";
 import ImageUploader from "./components/ImageUploader.vue";
-
 //TODO: keep track of userID with author
 export default Vue.extend({
   name: "CreateJob",
@@ -154,6 +153,7 @@ export default Vue.extend({
 
             // create the form data to contain the images
             let formData = new FormData();
+            formData.append("jobID", response.data._id);
 
             // append all the images to formData
             for (var i in this.filesUploaded) {
@@ -161,10 +161,10 @@ export default Vue.extend({
               formData.append("image", file);
             }
             // append the job ID to the form data
-            formData.append("jobID", response.data._id);
 
             // uploads all the images through the image api
             const url = "http://localhost:4000/api/images/";
+            console.log(formData);
             this.axios
               .post(url, formData, {
                 headers: {
