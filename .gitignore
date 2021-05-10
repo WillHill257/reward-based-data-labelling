@@ -2,7 +2,7 @@
 node_modules
 /dist
 
-
+.coveralls.yml
 # local env files
 .env.local
 .env.*.local
