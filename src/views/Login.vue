@@ -1,18 +1,18 @@
 <template>
   <v-app>
     <!-- Nav bar-->
-    <v-app-bar id='AppBarIntro'>
-      <img id= AppBarlogo src="../assets/JinxLogo.png" />
- 
+    <v-app-bar id="AppBarIntro">
+      <img id="AppBarlogo" src="../assets/JinxLogo.png" />
+
       <v-spacer></v-spacer>
-      <v-btn id='AppBarButton' text rounded> About </v-btn>
-      <v-btn id='AppBarButton' text rounded> Contact us </v-btn>
+      <v-btn id="AppBarButton" text rounded> About </v-btn>
+      <v-btn id="AppBarButton" text rounded> Contact us </v-btn>
     </v-app-bar>
 
-    <v-content>
+    <v-main>
       <v-card width="500" class="mx-auto mt-9">
         <!-- Login form-->
-        <v-card-title >Login</v-card-title>
+        <v-card-title>Login</v-card-title>
         <v-alert
           id="globalError"
           :value="alert"
@@ -48,69 +48,88 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          
-          <v-btn color="info" @click="LoginOnClick">Login</v-btn>
+          <v-btn color="info" @click="loginOnClick">Login</v-btn>
           <v-btn color="info" @click="$router.push('/Sign_up')">Register</v-btn>
         </v-card-actions>
       </v-card>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
-<script>
+<script lang="ts">
+import { VueForm } from "../componentTypes";
+import { getModule } from "vuex-module-decorators";
+import UserModule from "@/store/modules/user";
+
 export default {
   data: () => ({
     valid: true,
     password: "",
-    passwordRules: [(v) => !!v || "Password is required"],
+    passwordRules: [(v: string) => !!v || "Password is required"],
     email: "",
     emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      (v: string) => !!v || "E-mail is required",
+      (v: string) => /.+@.+\..+/.test(v) || "E-mail must be valid",
     ],
     showPassword: false,
     Error: "",
     alert: false,
   }),
 
+  computed: {
+    form(): VueForm {
+      // set form type
+      return this.$refs.form as VueForm;
+    },
+  },
+
   methods: {
-    LoginOnClick(event) {
-      //getting data
-      var emailText = this.email;
-      var passwordText = this.password;
-      //this.alert = false
-      this.$refs.form.validate();
-      if (emailText != "" && passwordText != "") {
-        this.alert = false;
-        //checking against DB
-        const url = "http://localhost:4000/api/user/login";
-        this.axios
-          .get(url, { params: { email: emailText, password: passwordText } })
-          .then((response) => {
-            if (response.status === 200) {
-              //login - request successful
-              this.$router.push({ name: "HomePage" });
-            } else if (response.status === 401) {
-              //unsuccessful 401 error payload
-              this.alert = true;
-              this.Error = "Email and password combination not found";
-            } else {
-              //throw error
-              this.alert = true;
-              this.Error = "Something went wrong";
-            }
-            console.log(response);
+    // ...mapActions("user", ["loginUser"])
+    loginOnClick(): void {
+      // getting data
+      var user = {
+        email: this.email,
+        password: this.password,
+      };
+
+      this.hideError();
+      if (this.validate()) {
+        // if form is valid, continue with login
+        const userMod = getModule(UserModule, this.$store);
+        userMod
+          .loginUser(user)
+          .then((res) => {
+            // successful login - navigate to homepage, user object is in store
+            this.$router.push({ name: "HomePage" });
+          })
+          .catch((errorMessage: string) => {
+            // login failed - display error and stop here
+            this.setErrorMessage(errorMessage);
           });
+      } else {
+        // form is invalid - complete it correctly
+        this.setErrorMessage("Please complete the form");
       }
     },
-    validate() {
-      this.$refs.form.validate();
+    setErrorMessage(message: string): void {
+      // display error with this message
+      this.alert = true;
+      this.Error = message;
     },
-    reset() {
-      this.$refs.form.reset();
+    hideError(): void {
+      // remove error
+      this.alert = false;
+      this.Error = "";
     },
-    resetValidation() {
-      this.$refs.form.resetValidation();
+    validate(): boolean {
+      // check form rules are adhered to
+      return this.form.validate();
+    },
+    reset(): void {
+      this.form.reset();
+    },
+    resetValidation(): void {
+      this.form.resetValidation();
     },
   },
 };
