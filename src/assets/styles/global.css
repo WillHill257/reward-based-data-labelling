@@ -1,0 +1,91 @@
+* {
+    font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: black;
+
+}
+
+#AppBarIntro{
+    background-color: rgb(80, 200, 200);
+    max-height: 65px;
+    font-weight: 600;
+    max-width: 1300px;
+}
+
+#AppBarlogo{
+    max-width: 65px;
+    margin-left: 5px;
+}
+
+#AppBarButton{
+    font-weight: 600;
+}
+
+
+
+h1{
+    text-align: center;
+    margin-top: 10%;
+    font-size: 50px;
+    color:  black;
+    font-weight: 600;
+    font-family:  Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}   
+
+.UndrawImage{
+    display: block;
+    margin-left: auto; 
+    margin-right: auto;
+    width: 100%;
+    min-height:100%;
+    max-height: 100%;
+}
+
+.LandingCard{
+    background-color: white;
+    border: 10px solid black;
+}
+
+.MobileLandingCard{
+    background-color: white;
+    border: 10px solid red;
+    @media (min-width: 480px) {
+        height: 1300px;
+    }
+    
+
+}
+
+
+.LabellingCaptions{
+    text-align: center;
+    font-size: 14px;
+
+    font-weight: 600;
+    font-family:  Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+    height: 120%;
+
+    color: yellow;
+}
+
+
+.LandingHeading{
+    
+    font-family:  Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 40px;
+    padding-top: 1%;
+    padding-bottom: 2%;
+}
+
+.LandingHeadingMobile{
+    
+    font-family:  Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 18px;
+    padding-top: 6%;
+    
+}
+
+
+
+
+

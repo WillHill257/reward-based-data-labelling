@@ -4,15 +4,14 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Sign_up from "../views/Sign_up.vue";
 import HomePage from "../views/HomePage.vue";
+import ViewJob from "../views/ViewJob.vue";
+import Landing from "../views/Landing.vue";
+import CreateJob from "../components/CreateJob/CreateJob.vue";
+import ViewJobs from "../views/ViewJobs.vue";
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
   {
     path: "/about",
     name: "About",
@@ -37,6 +36,28 @@ const routes: Array<RouteConfig> = [
     name: "HomePage",
     component: HomePage,
   },
+  {
+    path: "/viewJob",
+    name: "ViewJob",
+    component: ViewJob,
+    props: true
+  },
+  {
+    path: "/",
+    name: "Landing",
+    component: Landing,
+  },
+  {
+    path: "/CreateJob",
+    name: "CreateJob",
+    component: CreateJob,
+  },
+  {
+    path: "/view_jobs",
+    name: "ViewJobs",
+    component: ViewJobs,
+  },
+
 ];
 
 const router = new VueRouter({

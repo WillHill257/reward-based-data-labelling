@@ -1,21 +1,23 @@
-import { expect } from "chai";
 import { shallowMount } from "@vue/test-utils";
 import Login from "@/views/Login.vue";
 import axios from "axios";
+import Vue from "vue";
+import Vuetify from "vuetify";
 
+Vue.use(Vuetify);
 describe("Testing basic visual aspects of login screen", () => {
-  it("An email field is displayed", () => {
+  test("An email field is displayed", () => {
     const wrapper = shallowMount(Login, {
       mocks: { $http: axios },
     });
-    expect(wrapper.find("#login-email-input").exists()).is.equal(true);
+    expect(wrapper.find("#login-email-input").exists()).toBe(true);
   });
 
   it("A password field is displayed", () => {
     const wrapper = shallowMount(Login, {
       mocks: { $http: axios },
     });
-    expect(wrapper.find("#login-password-input").exists()).is.equal(true);
+    expect(wrapper.find("#login-password-input").exists()).toBe(true);
   });
 
   // it("The password input is not visible", () => {
