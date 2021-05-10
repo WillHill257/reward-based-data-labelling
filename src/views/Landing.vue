@@ -1,25 +1,18 @@
 <template>
   <div>
-    <!-- :class="{'pl-0': $vuetify.breakpoint.mdAndUp, 'pl-5': $vuetify.breakpoint.xs}" -->
     <v-container fluid>
-      <v-row
-        justify="center"
-        :class="{
-          LandingHeading: $vuetify.breakpoint.mdAndUp,
-          LandingHeadingMobile: $vuetify.breakpoint.xs,
-        }"
-      >
+      <v-row justify="center" class="LandingHeading">
         Welcome To Jinx Data Labelling Service
       </v-row>
       <!-- Heading row -->
 
       <v-row
+        v-if="$vuetify.breakpoint.mdAndUp"
         no-gutters
         style="margin-top: 20px; height: 320px"
-        v-show="$vuetify.breakpoint.xs ? false : true"
       >
         <v-spacer></v-spacer>
-        <v-card :height="150" :width="300" elevation="0">
+        <v-card id="step1" :height="150" :width="300" elevation="0">
           <img
             class="UndrawImage"
             src="../assets/UndrawImages/UndrawJobOffers.svg"
@@ -61,15 +54,29 @@
 
       <v-row v-show="$vuetify.breakpoint.xs ? false : true">
         <v-spacer></v-spacer>
-        <v-btn id="dataLblBtn" color="success" rounded elevation="6">
+        <v-btn
+          @click="labelImagesClick"
+          id="dataLblBtn"
+          color="success"
+          rounded
+          elevation="6"
+        >
           I Want My Images Labelled
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn id="availableJobs" color="primary" rounded elevation="6">
+        <v-btn
+          @click="viewJobsClick"
+          id="availableJobs"
+          color="primary"
+          rounded
+          elevation="6"
+        >
           View Available Jobs
         </v-btn>
         <v-spacer></v-spacer>
       </v-row>
+
+
 
       <!-- The mobile page starts here -->
       <v-row
@@ -141,6 +148,7 @@
       >
         <v-spacer></v-spacer>
         <v-btn
+          @click="viewJobsClick"
           large
           id="dataLblBtn"
           color="primary"
@@ -153,30 +161,39 @@
         <v-spacer></v-spacer>
       </v-row>
 
-      
       <v-row
         style="padding-top: 5%"
         v-show="$vuetify.breakpoint.xs ? true : false"
       >
-      <v-spacer></v-spacer>
-      <v-btn
-        large
-        id="dataLblBtn"
-        color="success"
-        outlined
-        elevation="6"
-        dark
-      >
-      
-        I Want My Images Labelled
-      </v-btn>
-      <v-spacer></v-spacer>
+        <v-spacer></v-spacer>
+        <v-btn
+          @click="labelImagesClick"
+          large
+          id="dataLblBtn"
+          color="success"
+          outlined
+          elevation="6"
+          dark
+        >
+          I Want My Images Labelled
+        </v-btn>
+        <v-spacer></v-spacer>
       </v-row>
     </v-container>
   </div>
 </template>
-
 <script>
 export default {
-  computed: {},
+  methods: {
+    viewJobsClick: function () {
+      console.log("Change this to the view jobs screen")
+    },
+
+    labelImagesClick: function () {
+      console.log("Change this to the create job component")
+    },
+  },
 };
+</script>
+
+
