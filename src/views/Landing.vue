@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container fluid>
-      <v-row justify="center" class="LandingHeading">
+      <v-row id="titleLanding" justify="center" class="LandingHeading">
         Welcome To Jinx Data Labelling Service
       </v-row>
       <!-- Heading row -->
@@ -25,7 +25,7 @@
           >
         </v-card>
         <v-spacer></v-spacer>
-        <v-card :height="150" :width="300" elevation="0">
+        <v-card id="step2" :height="150" :width="300" elevation="0">
           <img
             class="UndrawImage"
             src="../assets/UndrawImages/UndrawLabel.svg"
@@ -38,7 +38,7 @@
         </v-card>
 
         <v-spacer></v-spacer>
-        <v-card :height="150" :width="300" elevation="0">
+        <v-card id="step3" :height="150" :width="300" elevation="0">
           <img
             class="UndrawImage"
             src="../assets/UndrawImages/UndrawPaid.svg"

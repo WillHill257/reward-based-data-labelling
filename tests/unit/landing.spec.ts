@@ -6,8 +6,8 @@ const vuetify = new Vuetify();
 
 
 Vue.use(Vuetify);
-describe("Checking buttons", () => {
-  describe("When loaded", () => {
+describe("LandingPage", () => {
+  describe("Checking methods", () => {
     test("View Jobs function called when View Available Jobs button is clicked", () => {
       const wrapper = shallowMount(Landing, {vuetify});
       const viewJobsClick = jest.fn();
@@ -34,4 +34,19 @@ describe("Checking buttons", () => {
       
     });
   });
-});
+
+    describe("Loaded UI elements", () => {
+      test("should have all the necessary UI elements", () => {
+        const wrapper = shallowMount(Landing, {vuetify});
+        expect(wrapper.find("#titleLanding").exists()).toBe(true);
+        expect(wrapper.find("#step1").exists()).toBe(true);
+        expect(wrapper.find("#step2").exists()).toBe(true);
+        expect(wrapper.find("#step3").exists()).toBe(true);
+
+        expect(wrapper.find("#dataLblBtn").exists()).toBe(true);
+        expect(wrapper.find("#availableJobs").exists()).toBe(true);
+
+      });
+
+    });
+  });
