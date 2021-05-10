@@ -1,7 +1,7 @@
 <template>
   <v-dialog width="80%" v-model="isShowDialog" @click:outside="closeDialog">
     <v-card id="createJobCard">
-      <form @submit.prevent="onSubmitClicked" enctype="multipart/form-data">
+      <form @submit.prevent enctype="multipart/form-data">
         <v-row justify="center" align="center" no-gutters>
           <v-col align="start" class="mx-2">
             <ImageUploader
@@ -22,15 +22,15 @@
           </v-col>
 
           <v-col>
-                      <v-alert
-                        :style="{ visibility: errorVisibility }"
-                        :height="errorHeight"
-                        dense
-                        dismissible
-                        outlined
-                        type="warning"
-                      >{{ errorMessage}}</v-alert
-                      >
+            <v-alert
+              :style="{ visibility: errorVisibility }"
+              :height="errorHeight"
+              dense
+              dismissible
+              outlined
+              type="warning"
+              >{{ errorMessage }}</v-alert
+            >
             <v-text-field v-model="title" label="Title" id="title-input">
             </v-text-field>
 
@@ -54,7 +54,6 @@
             <v-chip-group active-class="primary--text" column>
               <v-col style="padding: 0 0">
                 <v-chip
-                  @submit.prevent="onSubmitClicked"
                   class="pill"
                   v-show="open"
                   v-for="label in labelArray"
@@ -69,7 +68,12 @@
             </v-chip-group>
 
             <v-card-actions style="padding-top: 25%">
-              <v-btn color="green" id="submit-input" type="submit" @click.native="onSubmitClicked">
+              <v-btn
+                color="green"
+                id="submit-input"
+                type="button"
+                @click="onSubmitClicked"
+              >
                 Submit
               </v-btn>
               <v-btn
@@ -90,6 +94,7 @@
 <script lang="ts">
 import Vue from "vue";
 import ImageUploader from "./components/ImageUploader.vue";
+
 //TODO: keep track of userID with author
 export default Vue.extend({
   name: "CreateJob",
@@ -201,7 +206,6 @@ export default Vue.extend({
         }
       }
       this.labelData = "";
-      console.log("yo");
     },
     closePill(label: string) {
       this.labelArray.splice(this.labelArray.indexOf(label), 1);
