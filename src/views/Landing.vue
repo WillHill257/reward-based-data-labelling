@@ -184,12 +184,12 @@
 export default {
   methods: {
     viewJobsClick: function () {
-      this.$router.push('ViewJobs');
+      this.$router.push({name: 'ViewJobs'});
     },
 
     labelImagesClick: function () {
 
-      this.$router.push('HomePage');
+      this.$router.push({name: 'HomePage'});
     },
   },
 };

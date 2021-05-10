@@ -21,7 +21,7 @@
             </v-card-text>
 
             <v-card-actions class="card-actions" flat>
-              <v-btn id="btn-view-job" color="blue" text> View job </v-btn>
+              <v-btn id="btn-view-job" color="blue" text @click="goToJob(job._id)"> View job </v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -59,6 +59,7 @@ export default Vue.extend({
         url: "http://localhost:4000/api/job",
         headers: {},
       };
+      console.log("here");
 
       axios(config)
         .then((response) => {
@@ -79,6 +80,7 @@ export default Vue.extend({
   },
   mounted() {
     this.getAllJobs();
+    console.log("mounted");
   },
 });
 </script>

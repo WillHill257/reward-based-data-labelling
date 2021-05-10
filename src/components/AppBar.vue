@@ -63,11 +63,11 @@ export default Vue.extend({
       },
       {
         text: "Home",
-        link: "/home",
+        link: "/homePage",
       },
       {
         text: "Available Jobs",
-        link: "/viewJob",
+        link: "/view_jobs",
       },
       // {
       //   text: "Create Job",

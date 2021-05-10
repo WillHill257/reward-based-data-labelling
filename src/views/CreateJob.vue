@@ -95,21 +95,24 @@ export default Vue.extend({
       this.description = "";
       this.filesUploaded = [];
     },
-    onSubmitClicked: function () {
+    onSubmitClicked: function (e: any) {
       // checks if all fields are filled
-
+      e.preventDefault();
       if (this.title == "") {
         this.errorMessage = "Title required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
+        return;
       } else if (this.description == "") {
         this.errorMessage = "Description required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
+        return;
       } else if (this.filesUploaded.length == 0) {
         this.errorMessage = "No files to upload";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
+        return;
       } else {
         this.jobJson = {
           title: this.title,
@@ -153,7 +156,7 @@ export default Vue.extend({
             console.log(error);
           });
       }
-
+      this.closeDialog();
       // create the job json object
     },
     onFilesUploaded(file: File): void {
