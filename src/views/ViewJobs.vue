@@ -40,14 +40,16 @@
 <script>
 import VClamp from "vue-clamp";
 import axios from "axios";
-
-export default {
+import Vue from "vue";
+export default Vue.extend({
   components: {
     VClamp,
   },
   data() {
     return {
-      jobs: [{ title: "Title", type: "Type", description: "Description" }],
+      jobs: [
+        { _id: "0", title: "Title", type: "Type", description: "Description" },
+      ],
     };
   },
   methods: {
@@ -78,5 +80,5 @@ export default {
   mounted() {
     this.getAllJobs();
   },
-};
+});
 </script>

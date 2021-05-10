@@ -35,7 +35,8 @@
 </template>
 
 <script>
-export default {
+import Vue from "vue";
+export default Vue.extend({
   name: "AppBar",
   data: () => ({
     // these are the names and the directories for the buttons in the side bar.
@@ -66,5 +67,5 @@ export default {
       this.drawer = false;
     },
   },
-};
+});
 </script>

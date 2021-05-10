@@ -24,7 +24,8 @@
 </template>
 
 <script>
-export default {
+import Vue from 'vue';
+export default Vue.extend({
   data() {
     return {
       // these are the colors for the slider for now but will be changed later because doubt we will need
@@ -39,5 +40,5 @@ export default {
       slides: ["First", "Second", "Third", "Fourth", "Fifth"],
     };
   },
-};
+});
 </script>

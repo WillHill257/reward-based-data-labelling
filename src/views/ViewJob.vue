@@ -1,4 +1,3 @@
-
 <template>
   <v-container ma-10 pa-10 fill-height>
     <v-row align="center" justify="center">
@@ -64,10 +63,10 @@
   </v-container>
 </template>
 
-       
 <script>
 import axios from "axios";
-export default {
+import Vue from "vue";
+export default Vue.extend({
   props: { jobID: String },
   data() {
     // these are the return vars used to the jobs information
@@ -123,9 +122,5 @@ export default {
       });
     },
   },
-};
+});
 </script>
-
-
-
-

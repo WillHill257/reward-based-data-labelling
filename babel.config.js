@@ -1,3 +1,24 @@
 module.exports = {
-  presets: ["@vue/cli-plugin-babel/preset"],
-};
+  "plugins": [
+    [
+      "dynamic-import-node",
+      {
+        "noInterop": true
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "presets": ["@vue/cli-plugin-babel/preset",
+        [
+          "@babel/preset-env",
+          {
+            "targets": {
+              "node": "current"
+            }
+          }
+        ]
+      ]
+    }
+  }
+}

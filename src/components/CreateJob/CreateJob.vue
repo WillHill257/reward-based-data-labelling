@@ -22,15 +22,15 @@
           </v-col>
 
           <v-col>
-            <!--          <v-alert-->
-            <!--            :style="{ visibility: errorVisibility }"-->
-            <!--            :height="errorHeight"-->
-            <!--            dense-->
-            <!--            dismissible-->
-            <!--            outlined-->
-            <!--            type="warning"-->
-            <!--          >{{ errorMessage}}</v-alert-->
-            <!--          >-->
+                      <v-alert
+                        :style="{ visibility: errorVisibility }"
+                        :height="errorHeight"
+                        dense
+                        dismissible
+                        outlined
+                        type="warning"
+                      >{{ errorMessage}}</v-alert
+                      >
             <v-text-field v-model="title" label="Title" id="title-input">
             </v-text-field>
 
@@ -48,12 +48,13 @@
               single-line
               full-width
               hide-details
-              @keydown.enter="makePill()"
+              @keydown.enter="makePill"
             ></v-text-field>
 
             <v-chip-group active-class="primary--text" column>
               <v-col style="padding: 0 0">
                 <v-chip
+                  @submit.prevent="onSubmitClicked"
                   class="pill"
                   v-show="open"
                   v-for="label in labelArray"
@@ -68,7 +69,7 @@
             </v-chip-group>
 
             <v-card-actions style="padding-top: 25%">
-              <v-btn color="green" id="submit-input" type="submit">
+              <v-btn color="green" id="submit-input" type="submit" @click.native="onSubmitClicked">
                 Submit
               </v-btn>
               <v-btn
@@ -89,7 +90,6 @@
 <script lang="ts">
 import Vue from "vue";
 import ImageUploader from "./components/ImageUploader.vue";
-
 //TODO: keep track of userID with author
 export default Vue.extend({
   name: "CreateJob",
@@ -131,14 +131,17 @@ export default Vue.extend({
         this.errorMessage = "Title required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
+        return;
       } else if (this.description == "") {
         this.errorMessage = "Description required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
+        return;
       } else if (this.filesUploaded.length == 0) {
         this.errorMessage = "No files to upload";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
+        return;
       } else {
         this.jobJson = {
           title: this.title,
@@ -165,6 +168,7 @@ export default Vue.extend({
 
             // uploads all the images through the image api
             const url = "http://localhost:4000/api/images/";
+            console.log(formData);
             this.axios
               .post(url, formData, {
                 headers: {
@@ -184,6 +188,7 @@ export default Vue.extend({
       }
 
       // create the job json object
+      console.log("Job Submitted");
     },
     onFilesUploaded(file: File): void {
       this.filesUploaded.push(file);

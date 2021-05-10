@@ -16,8 +16,9 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
+
 export default Vue.extend({
   name: "ImageUploader",
   props: {
@@ -32,13 +33,13 @@ export default Vue.extend({
     };
   },
   methods: {
-    onDrop(e: any) {
+    onDrop(e) {
       this.dragover = false;
       if (e != null) {
-        const files = e.dataTransfer?.files;
+        const files = e.dataTransfer.files;
         if (files) {
           for (var i = 0; i < files.length; i++) {
-            const element: File = files[i];
+            const element = files[i];
             this.onFilesUploaded(element);
           }
         }

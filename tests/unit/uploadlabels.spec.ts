@@ -25,7 +25,7 @@ describe("Enter functionality of component", () => {
         //test test
         it('Enter text and check the value of inputText', ()=>{
             const wrapper:any = shallowMount(CreateJob, {vuetify})
-            var textInput = wrapper.find("#label-input")
+            const textInput = wrapper.find("#label-input")
             textInput.setData({inputText: "a"})
             expect(wrapper.vm.inputText).toBe("a")
         })
