@@ -40,6 +40,7 @@ const routes: Array<RouteConfig> = [
     path: "/viewJob",
     name: "ViewJob",
     component: ViewJob,
+    props: true
   },
   {
     path: "/",

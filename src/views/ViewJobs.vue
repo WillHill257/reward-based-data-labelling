@@ -71,6 +71,9 @@ export default {
           console.log(error);
         });
     },
+    goToJob(jobId) {
+      this.$router.push({ name: "ViewJob", params: { jobID: jobId } });
+    },
   },
   mounted() {
     this.getAllJobs();
