@@ -1,16 +1,20 @@
 <template>
   <div>
-    <v-app-bar app dark color="green" clipped-right>
-      <v-toolbar-title> Jinx </v-toolbar-title>
+    <v-app-bar id="AppBarIntro">
+      <img id="AppBarlogo" src="../assets/images/JinxLogo.png" />
       <v-spacer></v-spacer>
-      <v-btn text rounded> About </v-btn>
-      <v-btn text rounded> Contact us </v-btn>
+      <v-btn id="AppBarButton" text rounded @click="$router.push('/Login')">
+        Login
+      </v-btn>
+      <v-btn id="AppBarButton" text rounded @click="$router.push('/Sign_up')">
+        Register
+      </v-btn>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     </v-app-bar>
     <!-- //this is the hamburger navigation bar. //this is declaring what it does and
     how it looks. -->
     <v-navigation-drawer
-      color="green"
+      color="rgb(80,200,200)"
       v-model="drawer"
       absolute
       bottom
@@ -29,15 +33,21 @@
             <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
+        <v-btn @click="isShowDialog = true" icon>
+          <v-icon size="30">mdi-plus</v-icon>
+        </v-btn>
       </v-list>
     </v-navigation-drawer>
+    <CreateJob :isShowDialog.sync="isShowDialog" />
   </div>
 </template>
 
 <script>
-import Vue from "vue";
+import CreateJob from "@/components/CreateJob/CreateJob";
+import Vue from 'vue';
 export default Vue.extend({
   name: "AppBar",
+  components: { CreateJob },
   data: () => ({
     // these are the names and the directories for the buttons in the side bar.
     drawer: false,
@@ -56,12 +66,16 @@ export default Vue.extend({
         link: "/home",
       },
       {
-        text: "ViewJob",
+        text: "Available Jobs",
         link: "/viewJob",
       },
+      // {
+      //   text: "Create Job",
+      //   link: "/CreateJob",
+      // },
     ],
+    isShowDialog: false,
   }),
-
   watch: {
     group() {
       this.drawer = false;
@@ -69,3 +83,20 @@ export default Vue.extend({
   },
 });
 </script>
+<style scoped>
+#AppBarIntro {
+  background-color: rgb(80, 200, 200);
+  max-height: 65px;
+  font-weight: 600;
+  max-width: 100%;
+}
+
+#AppBarlogo {
+  max-width: 65px;
+  margin-left: 5px;
+}
+
+#AppBarButton {
+  font-weight: 600;
+}
+</style>
