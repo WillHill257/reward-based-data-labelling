@@ -1,13 +1,6 @@
 <template>
   <v-app>
     <!-- Nav bar-->
-    <v-app-bar id="AppBarIntro">
-      <img id="AppBarlogo" src="../assets/JinxLogo.png" />
-
-      <v-spacer></v-spacer>
-      <v-btn id="AppBarButton" text rounded> About </v-btn>
-      <v-btn id="AppBarButton" text rounded> Contact us </v-btn>
-    </v-app-bar>
 
     <v-main>
       <v-card width="500" class="mx-auto mt-9">

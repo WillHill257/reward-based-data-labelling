@@ -11,9 +11,9 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/",
-    name: "Home",
-    component: Home,
+    path: "/landing",
+    name: "Landing",
+    component: Landing,
   },
   {
     path: "/about",
@@ -38,11 +38,6 @@ const routes: Array<RouteConfig> = [
     path: "/homePage",
     name: "HomePage",
     component: HomePage,
-  },
-  {
-    path: "/landing",
-    name: "Landing",
-    component: Landing,
   },
   {
     path: "/CreateJob",
