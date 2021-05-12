@@ -78,7 +78,7 @@ export default Vue.extend({
     };
   },
   async mounted() {
-    // this is the jobs ID that is passed from the ViewJobs page
+    // this is the jobs ID that is passed from the ListJobs page
     const jobID = this.$props.jobID;
     this.url = "http://localhost:4000/api/job/" + jobID;
     // get request for the title and description

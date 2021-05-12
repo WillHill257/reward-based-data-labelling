@@ -6,7 +6,7 @@ import HomePage from "../views/HomePage.vue";
 import ViewJob from "../views/ViewJob.vue";
 import Landing from "../views/Landing.vue";
 import CreateJob from "../components/CreateJob/CreateJob.vue";
-import ViewJobs from "../views/ViewJobs.vue";
+import ListJobs from "../views/ListJobs.vue";
 
 Vue.use(VueRouter);
 
@@ -52,9 +52,9 @@ const routes: Array<RouteConfig> = [
     component: CreateJob,
   },
   {
-    path: "/viewjobs",
-    name: "ViewJobs",
-    component: ViewJobs,
+    path: "/listjobs",
+    name: "ListJobs",
+    component: ListJobs,
   },
 ];
 

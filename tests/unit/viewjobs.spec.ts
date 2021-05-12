@@ -5,7 +5,7 @@
 //   mount,
 //   shallowMount,
 // } from "@vue/test-utils";
-// import ViewJobs from "@/views/ViewJobs.vue";
+// import ListJobs from "@/views/ListJobs.vue";
 // import axios from "axios";
 // import Vue from "vue";
 // import Vuetify from "vuetify";
@@ -22,7 +22,7 @@
 
 //   describe("when loaded", () => {
 //     it("should have all the necessary UI elements with correct information", () => {
-//       const wrapper = mount(ViewJobs, { localVue, vuetify });
+//       const wrapper = mount(ListJobs, { localVue, vuetify });
 //       expect(
 //         wrapper.find("#job-title").exists(),
 //         'Element with ID "job-title" is not found in the DOM, but is required.'
@@ -39,7 +39,7 @@
 //         wrapper.find("#btn-view-job").exists(),
 //         'Element with ID: "btn-view-job" is not found in the DOM, but is required'
 //       ).to.equal(true);
-      
+
 //     });
 //   });
 // });

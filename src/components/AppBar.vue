@@ -89,7 +89,7 @@ export default Vue.extend({
         },
         {
           text: "Available Jobs",
-          link: this.$router.resolve({ name: "ViewJobs" }).href,
+          link: this.$router.resolve({ name: "ListJobs" }).href,
         },
       ];
     },

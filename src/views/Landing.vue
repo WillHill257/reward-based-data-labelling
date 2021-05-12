@@ -65,7 +65,7 @@
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          @click="viewJobsClick"
+          @click="listJobsClick"
           id="availableJobs"
           color="primary"
           rounded
@@ -146,7 +146,7 @@
       >
         <v-spacer></v-spacer>
         <v-btn
-          @click="viewJobsClick"
+          @click="listJobsClick"
           large
           id="dataLblBtn"
           color="primary"
@@ -183,8 +183,8 @@
 <script>
 export default {
   methods: {
-    viewJobsClick: function () {
-      this.$router.push({ name: "ViewJobs" });
+    listJobsClick: function () {
+      this.$router.push({ name: "ListJobs" });
     },
 
     labelImagesClick: function () {
