@@ -17,6 +17,9 @@
                 <v-list-item-content>
                   <v-list-item-title v-text="file.name"></v-list-item-title>
                 </v-list-item-content>
+                <v-list-item-icon>
+                  <v-icon @click="removeItem(i)"> mdi-close</v-icon>
+                </v-list-item-icon>
               </v-list-item>
             </v-list>
           </v-col>
@@ -209,6 +212,9 @@ export default Vue.extend({
     },
     closePill(label: string) {
       this.labelArray.splice(this.labelArray.indexOf(label), 1);
+    },
+    removeItem(index: any) {
+      this.filesUploaded.splice(index, 1);
     },
   },
 });
