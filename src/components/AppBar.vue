@@ -17,7 +17,6 @@
       color="rgb(80,200,200)"
       v-model="drawer"
       absolute
-      bottom
       temporary
       right
       fixed
@@ -44,7 +43,7 @@
 
 <script>
 import CreateJob from "@/components/CreateJob/CreateJob";
-import Vue from 'vue';
+import Vue from "vue";
 export default Vue.extend({
   name: "AppBar",
   components: { CreateJob },

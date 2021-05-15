@@ -1,46 +1,42 @@
 <template>
-  <v-container ma-10 pa-10 fill-height>
-    <v-row align="center" justify="center">
+  <v-container fill-height>
+    <v-row align="center" justify="center" class="pb-2">
       <v-btn
         color="primary"
         large
         rounded
         id="btnAccept"
         v-on:click.native="onAccept"
+        pd-1
         >Accept Job
       </v-btn>
     </v-row>
 
-    <v-row align="center" justify="center">
+    <v-row align="center" justify="center" class="my4">
       <!-- card for the jobs descriptions and Title -->
-      <v-card width="95%" height="80%" class="jobs" id="job-summary">
+      <v-card
+        width="95%"
+        height="75%"
+        class="jobs"
+        id="job-summary"
+        color="light grey"
+      >
         <v-card-title> {{ jobTitle }}</v-card-title>
         <v-card-text> {{ jobDescription }}</v-card-text>
       </v-card>
     </v-row>
     <v-row>
-      <!-- this is the scroll to top arrow -->
-      <v-btn
-        dark
-        fab
-        button
-        bottom
-        right
-        color="indigo darken-3"
-        fixed
-        @click="onScrollUp"
-        id="btnScrollUp"
-        v-on:click.native="onScrollUp"
-      >
-        <v-icon>mdi-arrow-up</v-icon>
-      </v-btn>
       <!-- this handles the formating of the images -->
+
       <v-col
-        v-for="image in images"
-        :key="image"
+        v-for="(image, index) in images"
+        :key="index"
         class="d-flex child-flex"
-        cols="3"
         id="pic-display"
+        lg="3"
+        md="4"
+        sm="6"
+        xa="6"
       >
         <!-- this is where the images are set to load -->
         <v-img
@@ -51,10 +47,12 @@
         >
           <template v-slot:placeholder>
             <v-row class="fill-height" align="center" justify="center">
-              <v-progress-circular
-                indeterminate
-                color="grey lighten-5"
-              ></v-progress-circular>
+              <div v-if="images.length === 0">
+                <v-progress-circular
+                  indeterminate
+                  color="grey lighten-5"
+                ></v-progress-circular>
+              </div>
             </v-row>
           </template>
         </v-img>
@@ -75,6 +73,9 @@ export default Vue.extend({
       jobDescription: "",
       url: "",
       images: [],
+      paginatedImages: [],
+      count: 0,
+      bottom: false,
     };
   },
   async mounted() {
@@ -91,18 +92,23 @@ export default Vue.extend({
       .catch((error) => {
         console.log(error);
       });
-    // get request for the images with a specific ID
+    //get request for the images with a specific ID
     await axios
       .get("http://localhost:4000/api/images?jobID=" + jobID)
       .then((response) => {
         console.log(response);
-        for (var i in response.data) {
-          var imageName = response.data[i].value;
-          this.images.push(
-            "http://localhost:4000/uploads/jobs/" + jobID + "/" + imageName
-          );
-        }
+        const fetchedImages = response.data.map(
+          (image) =>
+            "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
+        );
         console.log(this.images);
+        const temp = [];
+        for (let i = 0; i < fetchedImages.length; i++) {
+          temp.push(fetchedImages.splice(0, 12));
+        }
+        this.paginatedImages = temp;
+        this.addImages();
+        //console.warn(temp);
       })
       .catch((error) => {
         console.log(error);
@@ -113,14 +119,45 @@ export default Vue.extend({
     onAccept() {
       return null;
     },
-    // Scroll Up botton
-    onScrollUp() {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
+    bottomVisible() {
+      const scrollY = window.scrollY;
+      const visible = document.documentElement.clientHeight;
+      const pageHeight = document.documentElement.scrollHeight;
+      const bottomOfPage = visible + scrollY >= pageHeight;
+      return bottomOfPage || pageHeight < visible;
+    },
+    //this implements the infite scrolling by adding another 12 pictures to the screen
+    //when the user scrolls to the bottom of the page
+    addImages() {
+      let arr = this.paginatedImages;
+      if (arr[this.count]) {
+        this.images.push(...arr[this.count]);
+        this.count = this.count + 1;
+      }
     },
   },
+  //this is the observer class for the infinite scrolling
+  watch: {
+    bottom(bottom) {
+      if (bottom && window.scrollY > 0) {
+        this.addImages();
+      }
+    },
+  },
+  created() {
+    window.addEventListener("scroll", () => {
+      this.bottom = this.bottomVisible();
+    });
+    this.addImages();
+  },
+  // Scroll Up botton
+  // onScrollUp() {
+  //   window.scrollTo({
+  //     top: 0,
+  //     left: 0,
+  //     behavior: "smooth",
+  //   });
+  // },
 });
 </script>
+
