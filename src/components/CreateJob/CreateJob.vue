@@ -129,12 +129,14 @@ export default Vue.extend({
   methods: {
     closeDialog(): void {
       this.$emit("update:isShowDialog", false);
+
+      // reset data values
       this.title = "";
       this.description = "";
       this.filesUploaded = [];
     },
     onSubmitClicked: function () {
-      // checks if all fields are filled
+      // checks if all fields are filled - return in the ifs stops the submission if fields are empty
 
       if (this.title == "") {
         this.errorMessage = "Title required";
@@ -163,6 +165,7 @@ export default Vue.extend({
           .post("http://localhost:4000/api/job", this.jobJson)
           .then((response) => {
             // when job is successfully created, upload the images
+            console.log(response);
 
             // create the form data to contain the images
             let formData = new FormData();
@@ -196,8 +199,8 @@ export default Vue.extend({
           });
       }
 
-      // create the job json object
-      console.log("Job Submitted");
+      // close the dialog after submit
+      this.closeDialog();
     },
     onFilesUploaded(file: File): void {
       this.filesUploaded.push(file);
