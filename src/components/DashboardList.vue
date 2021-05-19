@@ -15,7 +15,7 @@
       >
         <template v-slot:default="{ item }">
           <JobSummaryCard
-            v-if="item.title !== '!!!'"
+            v-if="item.title !== sentinel"
             class="job-card"
             :id="item._id"
             :title="item.title"
@@ -44,6 +44,12 @@ import ViewMoreButton from "./ViewMoreButton.vue";
 export default Vue.extend({
   components: { JobSummaryCard, ViewMoreButton },
 
+  data() {
+    return {
+      sentinel: "!@#@!",
+    };
+  },
+
   props: {
     // title is the list heading
     // jobs is the list of jobs to be displayed
@@ -61,7 +67,7 @@ export default Vue.extend({
       else returns = this.jobs.slice(0, this.limit);
 
       // add the View All button
-      returns.push({ title: "!!!" });
+      returns.push({ title: this.sentinel });
 
       return returns;
     },

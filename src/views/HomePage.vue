@@ -2,17 +2,12 @@
   <section id="home">
     <h3>Welcome to jinx</h3>
     <router-link to="/login">Go to Login</router-link>
-    <v-row class="dashboard-row" no-gutters>
-      <v-col cols="12" sm="6" md="4">
-        <DashboardList title="Mine" :jobs="jobs"></DashboardList>
-      </v-col>
-      <v-col cols="12" sm="6" md="4">
-        <DashboardList title="Currently Doing" :jobs="jobs"></DashboardList>
-      </v-col>
-      <v-col cols="12" sm="6" md="4">
-        <DashboardList title="Available" :jobs="jobs"></DashboardList>
-      </v-col>
-    </v-row>
+
+    <section class="dashboard-row basic-grid">
+      <DashboardList title="Mine" :jobs="jobs"></DashboardList>
+      <DashboardList title="Currently Doing" :jobs="jobs"></DashboardList>
+      <DashboardList title="Available" :jobs="jobs"></DashboardList>
+    </section>
   </section>
 </template>
 
@@ -96,5 +91,24 @@ export default Vue.extend({
 <style scoped>
 #home {
   max-height: 90vh;
+}
+
+.basic-grid {
+  /* define a grid layout */
+  display: grid;
+  gap: 1rem;
+
+  align-items: center;
+  justify-items: center;
+
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+@media (min-width: 1264px) {
+  .basic-grid {
+    /* add padding to prevent the grid becoming too wide on large screens */
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
 }
 </style>
