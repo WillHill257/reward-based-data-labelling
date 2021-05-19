@@ -6,6 +6,7 @@
       <v-layout row wrap>
         <v-flex xs12 sm6 md4 lg3 v-for="job in jobs" :key="job._id">
           <JobSummaryCard
+            class="card"
             :id="job._id"
             :title="job.title"
             :type="job.type"
@@ -69,3 +70,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.card {
+  width: 300px;
+}
+</style>

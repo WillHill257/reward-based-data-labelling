@@ -1,19 +1,20 @@
 <template>
-  <v-card elevation="5" width="300px" height="200px">
-    <v-card-title id="job-title">
+  <!-- width="300px" -->
+  <v-card elevation="4" outlined tile height="200px">
+    <v-card-title class="job-title">
       {{ title }}
     </v-card-title>
 
-    <v-card-subtitle id="job-type">
+    <v-card-subtitle class="job-type">
       {{ type }}
     </v-card-subtitle>
 
     <v-card-text>
-      <p id="job-description" class="clamp-lines">{{ description }}</p>
+      <p class="job-description clamp-lines">{{ description }}</p>
     </v-card-text>
 
     <v-card-actions class="card-actions" flat>
-      <v-btn id="btn-view-job" color="blue" text @click="goToJob(id)">
+      <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
         View job
       </v-btn>
     </v-card-actions>
