@@ -5,32 +5,12 @@
     <v-container grid-list-lg>
       <v-layout row wrap>
         <v-flex xs12 sm6 md4 lg3 v-for="job in jobs" :key="job._id">
-          <v-card elevation="5" width="300px" height="200px">
-            <v-card-title id="job-title">
-              {{ job.title }}
-            </v-card-title>
-
-            <v-card-subtitle id="job-type">
-              {{ job.type }}
-            </v-card-subtitle>
-
-            <v-card-text>
-              <v-clamp id="job-description" autoresize :max-lines="3">{{
-                job.description
-              }}</v-clamp>
-            </v-card-text>
-
-            <v-card-actions class="card-actions" flat>
-              <v-btn
-                id="btn-view-job"
-                color="blue"
-                text
-                @click="goToJob(job._id)"
-              >
-                View job
-              </v-btn>
-            </v-card-actions>
-          </v-card>
+          <JobSummaryCard
+            :id="job._id"
+            :title="job.title"
+            :type="job.type"
+            :description="job.description"
+          ></JobSummaryCard>
         </v-flex>
       </v-layout>
     </v-container>
@@ -45,13 +25,15 @@
 </style>
 
 <script>
-import VClamp from "vue-clamp";
 import axios from "axios";
 import Vue from "vue";
+import JobSummaryCard from "@/components/JobSummaryCard";
+
 export default Vue.extend({
   components: {
-    VClamp,
+    JobSummaryCard,
   },
+
   data() {
     return {
       jobs: [
@@ -80,10 +62,6 @@ export default Vue.extend({
         .catch(function (error) {
           console.log(error);
         });
-    },
-
-    goToJob(jobId) {
-      this.$router.push({ name: "ViewJob", params: { jobID: jobId } });
     },
   },
   mounted() {
