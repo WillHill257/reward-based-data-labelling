@@ -1,21 +1,19 @@
 <template>
-  <v-app>
+  <section id="list-jobs">
     <h1>Jobs</h1>
 
-    <v-container grid-list-lg>
-      <v-layout row wrap>
-        <v-flex xs12 sm6 md4 lg3 v-for="job in jobs" :key="job._id">
-          <JobSummaryCard
-            class="card"
-            :id="job._id"
-            :title="job.title"
-            :type="job.type"
-            :description="job.description"
-          ></JobSummaryCard>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </v-app>
+    <section class="basic-grid">
+      <div v-for="job in jobs" :key="job._id">
+        <JobSummaryCard
+          class="card"
+          :id="job._id"
+          :title="job.title"
+          :type="job.type"
+          :description="job.description"
+        ></JobSummaryCard>
+      </div>
+    </section>
+  </section>
 </template>
 
 <style>
@@ -55,12 +53,12 @@ export default Vue.extend({
 
       axios(config)
         .then((response) => {
+          // reassign the jobs from the response to this.data
           this.jobs = response.data;
           for (let i = 0; i < this.jobs.length; i++) {
+            // todo - currently force jobs to be of images, eventually becomes general type
             this.jobs[i].type = "Image";
           }
-          // console.log(JSON.stringify(response.data));
-          // console.log(this.jobs);
         })
         .catch(function (error) {
           console.log(error);
@@ -68,6 +66,7 @@ export default Vue.extend({
     },
   },
   mounted() {
+    // trigger the request to get the jibs from the server
     this.getAllJobs();
   },
 });
@@ -76,5 +75,24 @@ export default Vue.extend({
 <style scoped>
 .card {
   width: 300px;
+}
+
+.basic-grid {
+  /* define a grid layout */
+  display: grid;
+  gap: 1rem;
+
+  align-items: center;
+  justify-items: center;
+
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+@media (min-width: 1264px) {
+  .basic-grid {
+    /* add padding to prevent the grid becoming too wide on large screens */
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
 }
 </style>
