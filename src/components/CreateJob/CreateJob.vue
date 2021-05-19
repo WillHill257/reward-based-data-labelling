@@ -7,6 +7,7 @@
             <ImageUploader
               v-bind:filesUploaded="filesUploaded"
               :onFilesUploaded="onFilesUploaded"
+              v-on:filetypeerror="onFileTypeError"
             />
 
             <v-list dense id="image-list" class="mt-1">
@@ -27,13 +28,13 @@
           <v-col>
             <v-alert
               :style="{ visibility: errorVisibility }"
-              :height="errorHeight"
               dense
               dismissible
               outlined
               type="warning"
-              >{{ errorMessage }}</v-alert
-            >
+              >
+              {{ errorMessage }}
+            </v-alert>
             <v-text-field v-model="title" label="Title" id="title-input">
             </v-text-field>
 
@@ -200,6 +201,10 @@ export default Vue.extend({
     },
     onFilesUploaded(file: File): void {
       this.filesUploaded.push(file);
+    },
+    onFileTypeError(){
+      this.errorVisibility = "visible";
+      this.errorMessage = "Warning: the files uploaded contain forbidden file type/s. (Accepted file types: .jpg and .png)";
     },
     makePill() {
       let arr: Array<string> = this.labelData.split(",");

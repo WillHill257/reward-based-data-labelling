@@ -15,9 +15,10 @@
     </v-card-text>
   </v-container>
 </template>
-
+e
 <script>
 import Vue from "vue";
+import Compressor from "compressorjs";
 
 export default Vue.extend({
   name: "ImageUploader",
@@ -47,9 +48,12 @@ export default Vue.extend({
       //   }
       // }
       var items = e.dataTransfer.items;
-      console.log(items);
+      for (var j = 0; j < items.length; j++){
+        var file = items[j].webkitGetAsEntry();
+        console.log(file);
+      }
       for (var i = 0; i < items.length; i++) {
-        // webkitGetAsEntry is where the magic happens
+        // webkitGetAsEntry allows directory traversal
         var item = items[i].webkitGetAsEntry();
         if (item) {
           this.traverseFileTree(item);
@@ -60,10 +64,28 @@ export default Vue.extend({
     traverseFileTree(item, path) {
       path = path || "";
       if (item.isFile) {
-        // Get file
-        item.file((file) => {
-          this.onFilesUploaded(file);
-        });
+        // Get file extension to check if it is jpeg or png
+        const name = item.name;
+        const lastDot = name.lastIndexOf('.');
+        const extension = name.substring(lastDot +1 );
+        
+        if(extension == "png" || extension == "jpg"){
+          // compress the file if it is an image
+          item.file((file) => {
+            console.log(file);
+            new Compressor(file,{
+              quality:0.7,
+              success:(resultFile)=>{
+                console.log(resultFile);
+                this.onFilesUploaded(resultFile);
+              }
+            })
+          });
+        }else{
+          // emit an event to show forbidden type
+          this.$emit("filetypeerror");
+        }
+
       } else if (item.isDirectory) {
         // Get folder contents
         var dirReader = item.createReader();
