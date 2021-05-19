@@ -1,5 +1,6 @@
 <template>
   <v-container
+    @click="onClick"
     @drop.prevent="onDrop($event)"
     @dragover.prevent="dragover = true"
     @dragenter.prevent="dragover = true"
@@ -34,19 +35,40 @@ export default Vue.extend({
     };
   },
   methods: {
+    onClick(e){
+      this.openFileDialog("image/*", this.onFileDialogChange);
+    },
+
+    openFileDialog(accept, callback){
+      // create input element in DOM
+      var inputElement = document.createElement('input');
+      inputElement.type = 'file';
+      inputElement.accept = "image/*";
+      inputElement.multiple = "multiple";
+      inputElement.addEventListener("change", callback);
+      inputElement.dispatchEvent(new MouseEvent("click"));
+
+    },
+
+    onFileDialogChange(e){
+      var files = e.path[0].files;
+      for (var i = 0; i < files.length; i++){
+        var file = files[i];
+          new Compressor(file,{
+            quality:0.7,
+            success:(resultFile)=>{
+              console.log(resultFile);
+              this.onFilesUploaded(resultFile);
+            }
+          });
+      }
+
+    },
+
     onDrop(e) {
       e.preventDefault();
       this.dragover = false;
-      // if (e != null) {
-      //   const files = e.dataTransfer.files;
-      //   console.log(files);
-      //   if (files) {
-      //     for (var i = 0; i < files.length; i++) {
-      //       const element = files[i];
-      //       this.onFilesUploaded(element);
-      //     }
-      //   }
-      // }
+
       var items = e.dataTransfer.items;
       for (var j = 0; j < items.length; j++){
         var file = items[j].webkitGetAsEntry();

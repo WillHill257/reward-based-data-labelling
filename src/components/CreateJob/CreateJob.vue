@@ -32,7 +32,7 @@
               dismissible
               outlined
               type="warning"
-              >
+            >
               {{ errorMessage }}
             </v-alert>
             <v-text-field v-model="title" label="Title" id="title-input">
@@ -134,6 +134,7 @@ export default Vue.extend({
       this.title = "";
       this.description = "";
       this.filesUploaded = [];
+      this.labelArray = new Array<string>();
     },
     onSubmitClicked: function () {
       // checks if all fields are filled - return in the ifs stops the submission if fields are empty
@@ -189,6 +190,7 @@ export default Vue.extend({
               })
               .then((response) => {
                 console.log(response);
+                this.closeDialog();
               })
               .catch((error) => {
                 console.log(error);
@@ -200,14 +202,14 @@ export default Vue.extend({
       }
 
       // close the dialog after submit
-      this.closeDialog();
     },
     onFilesUploaded(file: File): void {
       this.filesUploaded.push(file);
     },
-    onFileTypeError(){
+    onFileTypeError() {
       this.errorVisibility = "visible";
-      this.errorMessage = "Warning: the files uploaded contain forbidden file type/s. (Accepted file types: .jpg and .png)";
+      this.errorMessage =
+        "Warning: the files uploaded contain forbidden file type/s. (Accepted file types: .jpg and .png)";
     },
     makePill() {
       let arr: Array<string> = this.labelData.split(",");
