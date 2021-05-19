@@ -97,6 +97,8 @@
 <script lang="ts">
 import Vue from "vue";
 import ImageUploader from "./components/ImageUploader.vue";
+import JobModule from "@/store/modules/job";
+import { getModule } from "vuex-module-decorators";
 
 //TODO: keep track of userID with author
 export default Vue.extend({
@@ -160,6 +162,7 @@ export default Vue.extend({
         };
 
         // makes api all to upload job
+        const jobMod = getModule(JobModule,this.$store)
         this.axios
           .post("http://localhost:4000/api/job", this.jobJson)
           .then((response) => {
