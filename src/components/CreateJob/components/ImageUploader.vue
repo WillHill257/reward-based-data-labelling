@@ -35,34 +35,34 @@ export default Vue.extend({
     };
   },
   methods: {
-    onClick(e){
+    onClick() {
+      // opens file explorer for file upload
       this.openFileDialog("image/*", this.onFileDialogChange);
     },
 
-    openFileDialog(accept, callback){
+    openFileDialog(accept, callback) {
       // create input element in DOM
-      var inputElement = document.createElement('input');
-      inputElement.type = 'file';
+      var inputElement = document.createElement("input");
+      inputElement.type = "file";
       inputElement.accept = "image/*";
       inputElement.multiple = "multiple";
       inputElement.addEventListener("change", callback);
       inputElement.dispatchEvent(new MouseEvent("click"));
-
     },
 
-    onFileDialogChange(e){
+    onFileDialogChange(e) {
+      // loop through the files chosen and compress it
       var files = e.path[0].files;
-      for (var i = 0; i < files.length; i++){
+      for (var i = 0; i < files.length; i++) {
         var file = files[i];
-          new Compressor(file,{
-            quality:0.7,
-            success:(resultFile)=>{
-              console.log(resultFile);
-              this.onFilesUploaded(resultFile);
-            }
-          });
+        new Compressor(file, {
+          quality: 0.7,
+          success: (resultFile) => {
+            console.log(resultFile);
+            this.onFilesUploaded(resultFile);
+          },
+        });
       }
-
     },
 
     onDrop(e) {
@@ -70,7 +70,7 @@ export default Vue.extend({
       this.dragover = false;
 
       var items = e.dataTransfer.items;
-      for (var j = 0; j < items.length; j++){
+      for (var j = 0; j < items.length; j++) {
         var file = items[j].webkitGetAsEntry();
         console.log(file);
       }
@@ -88,26 +88,25 @@ export default Vue.extend({
       if (item.isFile) {
         // Get file extension to check if it is jpeg or png
         const name = item.name;
-        const lastDot = name.lastIndexOf('.');
-        const extension = name.substring(lastDot +1 );
-        
-        if(extension == "png" || extension == "jpg"){
+        const lastDot = name.lastIndexOf(".");
+        const extension = name.substring(lastDot + 1);
+
+        if (extension == "png" || extension == "jpg") {
           // compress the file if it is an image
           item.file((file) => {
             console.log(file);
-            new Compressor(file,{
-              quality:0.7,
-              success:(resultFile)=>{
+            new Compressor(file, {
+              quality: 0.7,
+              success: (resultFile) => {
                 console.log(resultFile);
                 this.onFilesUploaded(resultFile);
-              }
-            })
+              },
+            });
           });
-        }else{
+        } else {
           // emit an event to show forbidden type
           this.$emit("filetypeerror");
         }
-
       } else if (item.isDirectory) {
         // Get folder contents
         var dirReader = item.createReader();
