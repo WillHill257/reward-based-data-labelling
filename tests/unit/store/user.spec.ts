@@ -38,6 +38,7 @@ describe("User Module Mutations", () => {
       firstName: "John",
       lastName: "Doe",
       email: "john.doe@example.com",
+      token: "sometoken"
     };
 
     // mutate
@@ -56,6 +57,7 @@ describe("User Module Mutations", () => {
       firstName: "Jane",
       lastName: "Doe",
       email: "jane.doe@example.com",
+      token: "sometoken"
     };
 
     // mutate

@@ -1,6 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-
+import UserModule from "@/store/modules/user";
+import { getModule } from "vuex-module-decorators";
+import router from "@/router";
 //https://haxzie.com/architecting-http-clients-vue-js-network-layer
+
+// const userMod = getModule(UserModule);
 
 const httpClient = axios.create({
   baseURL: `http://${process.env.VUE_APP_BASE_URL}:${process.env.VUE_APP_API_PORT}/api`,
@@ -12,14 +16,26 @@ const httpClient = axios.create({
 
 const getAuthToken = () => localStorage.getItem("token");
 
-const authInterceptor = (config: AxiosRequestConfig) => {
-  config.headers["Authorization"] = getAuthToken();
+const requestInterceptor = (config: AxiosRequestConfig) => {
+  const token = getAuthToken();
+  if (token) {
+    config.headers["Authorization"] = "Bearer " + token;
+  }
+  // config.headers['Content-Type'] = 'application/json';
   return config;
 };
 
-httpClient.interceptors.request.use(authInterceptor);
+const requestErrorInterceptor = (error: AxiosError) => {
+  Promise.reject(error);
+};
+
+httpClient.interceptors.request.use(
+  requestInterceptor,
+  requestErrorInterceptor
+);
 
 // interceptor to catch errors
+//TODO: Implement refresh tokens https://medium.com/swlh/handling-access-and-refresh-tokens-using-axios-interceptors-3970b601a5da
 const errorInterceptor = (error: AxiosError) => {
   // check if it's a server error
   if (!error.response) {
@@ -35,8 +51,9 @@ const errorInterceptor = (error: AxiosError) => {
 
     case 401: // authentication error, logout the user
       console.error(error.response.status, error.message);
-      localStorage.removeItem("token");
-      // router.push("/auth");
+      // localStorage.removeItem("token");
+      // userMod.logoutUser();
+      router.push("/login");
       break;
 
     default:

@@ -8,6 +8,11 @@ import ViewJob from "../views/ViewJob.vue";
 import Landing from "../views/Landing.vue";
 import CreateJob from "../components/CreateJob/CreateJob.vue";
 import ViewJobs from "../views/ViewJobs.vue";
+import store from "@/store";
+import UserModule from "@/store/modules/user";
+import { getModule } from "vuex-module-decorators";
+
+const userMod = getModule(UserModule, store);
 
 Vue.use(VueRouter);
 
@@ -40,7 +45,7 @@ const routes: Array<RouteConfig> = [
     path: "/viewJob",
     name: "ViewJob",
     component: ViewJob,
-    props: true
+    props: true,
   },
   {
     path: "/",
@@ -51,19 +56,35 @@ const routes: Array<RouteConfig> = [
     path: "/CreateJob",
     name: "CreateJob",
     component: CreateJob,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/view_jobs",
     name: "ViewJobs",
     component: ViewJobs,
   },
-
+  // otherwise redirect to home
+  { path: "*", redirect: "/" },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (userMod.isLoggedIn) {
+      next();
+      return;
+    }
+    next("/login");
+  } else {
+    next();
+  }
 });
 
 export default router;

@@ -1,10 +1,12 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { signupUser, loginUser } from "@/api/Users.api";
+import store from "@/store";
 
 export interface UserState {
   firstName: string;
   lastName: string;
   email: string;
+  token: string;
 }
 
 @Module({
@@ -16,10 +18,15 @@ export default class UserModule extends VuexModule implements UserState {
   firstName = "";
   lastName = "";
   email = "";
+  token = localStorage.getItem("token") || "";
 
   // Getters
-  get getFirstName() {
+  get getFirstName(): string {
     return this.firstName;
+  }
+
+  get isLoggedIn(): boolean {
+    return !!this.token;
   }
 
   //Mutations
@@ -30,6 +37,7 @@ export default class UserModule extends VuexModule implements UserState {
     this.firstName = payload.firstName;
     this.lastName = payload.lastName;
     this.email = payload.email;
+    this.token = payload.token;
   }
 
   @Mutation
@@ -37,6 +45,15 @@ export default class UserModule extends VuexModule implements UserState {
     this.firstName = payload.firstName;
     this.lastName = payload.lastName;
     this.email = payload.email;
+    this.token = payload.token;
+  }
+
+  @Mutation
+  LOGOUT_USER(payload: any): void {
+    this.firstName = "";
+    this.lastName = "";
+    this.email = "";
+    this.token = "";
   }
 
   //Actions
@@ -50,9 +67,11 @@ export default class UserModule extends VuexModule implements UserState {
         payload.password
       );
       console.log(response);
+      localStorage.setItem("token", this.token);
       this.context.commit("SIGNUP_USER", response.data);
     } catch (error) {
       // pass back the error message
+      localStorage.removeItem("token");
       return Promise.reject(error.response.data.error);
     }
   }
@@ -61,10 +80,19 @@ export default class UserModule extends VuexModule implements UserState {
   async loginUser(payload: any) {
     try {
       const response: any = await loginUser(payload.email, payload.password);
+      localStorage.setItem("token", response.data.token);
       this.context.commit("LOGIN_USER", response.data);
+      console.log(response.data.token);
     } catch (error) {
       // pass back the error message
+      localStorage.removeItem("token");
       return Promise.reject(error.response.data.error);
     }
+  }
+
+  @Action
+  async logoutUser() {
+    this.context.commit("LOGOUT_USER");
+    localStorage.removeItem("token");
   }
 }
