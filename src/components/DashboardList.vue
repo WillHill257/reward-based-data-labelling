@@ -10,17 +10,26 @@
       <v-virtual-scroll
         class="recycler-view"
         :items="items"
-        :bench="1"
-        item-height="210"
+        :bench="2"
+        :item-height="cardHeight"
       >
         <template v-slot:default="{ item }">
           <JobSummaryCard
+            v-if="item.title !== '!!!'"
             class="job-card"
             :id="item._id"
             :title="item.title"
             :type="item.type"
             :description="item.description"
           ></JobSummaryCard>
+          <v-row
+            v-else
+            :style="{ height: cardHeight + 'px' }"
+            align="center"
+            justify="center"
+          >
+            <ViewMoreButton @click.native="goToJobList()"></ViewMoreButton>
+          </v-row>
         </template>
       </v-virtual-scroll>
     </v-list>
@@ -30,54 +39,42 @@
 <script lang="ts">
 import Vue from "vue";
 import JobSummaryCard from "./JobSummaryCard.vue";
-import axios from "axios";
+import ViewMoreButton from "./ViewMoreButton.vue";
 
 export default Vue.extend({
-  components: { JobSummaryCard },
-  data() {
-    return {
-      jobs: [
-        { _id: "0", title: "Title", type: "Type", description: "Description" },
-        { _id: "0", title: "Title", type: "Type", description: "Description" },
-        { _id: "0", title: "Title", type: "Type", description: "Description" },
-        { _id: "0", title: "Title", type: "Type", description: "Description" },
-        { _id: "0", title: "Title", type: "Type", description: "Description" },
-      ],
-    };
-  },
+  components: { JobSummaryCard, ViewMoreButton },
+
   props: {
+    // title is the list heading
+    // jobs is the list of jobs to be displayed
     title: { type: String, required: true },
+    jobs: { type: Array, required: true },
+    limit: { type: Number, required: false, default: 6 },
   },
+
   computed: {
     items(): Array<any> {
-      // return Array.from({ length: 5 }, (k, v) => v + 1);
-      return this.jobs;
+      let returns: Array<any>;
+
+      // add the correct number of jobs to the array
+      if (this.jobs.length <= this.limit) returns = this.jobs;
+      else returns = this.jobs.slice(0, this.limit);
+
+      // add the View All button
+      returns.push({ title: "!!!" });
+
+      return returns;
+    },
+
+    cardHeight(): number {
+      return 210;
     },
   },
-  methods: {
-    async getAllJobs() {
-      // get all the available jobs from the server
-      const config: any = {
-        method: "get",
-        url: "http://localhost:4000/api/job",
-        headers: {},
-      };
 
-      const response = await axios(config);
-      // .then((response) => {
-      this.jobs = response.data;
-      for (let i = 0; i < this.jobs.length; i++) {
-        this.jobs[i].type = "Image";
-      }
-      // console.log(JSON.stringify(response.data));
-      // console.log(this.jobs);
-      // })
-      // .catch(function (error) {
-      // console.log(error);
-      // });
-    },
-    mounted() {
-      this.getAllJobs();
+  methods: {
+    goToJobList() {
+      // todo - Pass through argument so knows what kind of job to display
+      this.$router.push({ name: "ListJobs" });
     },
   },
 });

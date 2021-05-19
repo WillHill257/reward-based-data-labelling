@@ -35,6 +35,8 @@ export default Vue.extend({
     JobSummaryCard,
   },
 
+  // todo - define a prop so know what type of jobs to get
+
   data() {
     return {
       jobs: [
