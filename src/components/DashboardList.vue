@@ -56,6 +56,7 @@ export default Vue.extend({
     title: { type: String, required: true },
     jobs: { type: Array, required: true },
     limit: { type: Number, required: false, default: 6 },
+    endpoint: { type: String, required: true },
   },
 
   computed: {
@@ -80,7 +81,10 @@ export default Vue.extend({
   methods: {
     goToJobList() {
       // todo - Pass through argument so knows what kind of job to display
-      this.$router.push({ name: "ListJobs" });
+      this.$router.push({
+        name: "ListJobs",
+        params: { endpoint: this.endpoint },
+      });
     },
   },
 });

@@ -188,6 +188,7 @@ export default Vue.extend({
               })
               .then((response) => {
                 console.log(response);
+                this.closeDialog();
               })
               .catch((error) => {
                 console.log(error);
@@ -199,7 +200,6 @@ export default Vue.extend({
       }
 
       // close the dialog after submit
-      this.closeDialog();
     },
     onFilesUploaded(file: File): void {
       this.filesUploaded.push(file);

@@ -4,9 +4,21 @@
     <router-link to="/login">Go to Login</router-link>
 
     <section class="dashboard-row basic-grid">
-      <DashboardList title="Mine" :jobs="jobs"></DashboardList>
-      <DashboardList title="Currently Doing" :jobs="jobs"></DashboardList>
-      <DashboardList title="Available" :jobs="jobs"></DashboardList>
+      <DashboardList
+        title="Mine"
+        :jobs="authored"
+        endpoint="authored"
+      ></DashboardList>
+      <DashboardList
+        title="Currently Doing"
+        :jobs="accepted"
+        endpoint="accepted"
+      ></DashboardList>
+      <DashboardList
+        title="Available"
+        :jobs="available"
+        endpoint="available"
+      ></DashboardList>
     </section>
   </section>
 </template>
@@ -23,7 +35,23 @@ export default Vue.extend({
   data() {
     return {
       isShowDialog: false,
-      jobs: [
+      accepted: [
+        {
+          _id: "0",
+          title: "Title",
+          type: "Type",
+          description: "Description",
+        },
+      ],
+      authored: [
+        {
+          _id: "0",
+          title: "Title",
+          type: "Type",
+          description: "Description",
+        },
+      ],
+      available: [
         {
           _id: "0",
           title: "Title",
@@ -58,22 +86,26 @@ export default Vue.extend({
       );
     },
 
-    getAllJobs() {
+    getAllJobs(userId: string, endpoint: string) {
       // get all the available jobs from the server
       const config: any = {
         method: "get",
-        url: "http://localhost:4000/api/job",
+        url: "http://localhost:4000/api/job/" + endpoint + "/" + userId,
         headers: {},
       };
 
       axios(config)
         .then((response) => {
-          this.jobs = response.data;
-          for (let i = 0; i < this.jobs.length; i++) {
-            this.jobs[i].type = "Image";
+          let temp: Array<any>;
+
+          temp = response.data;
+          for (let i = 0; i < temp.length; i++) {
+            temp[i].type = "Image";
           }
-          // console.log(JSON.stringify(response.data));
-          // console.log(this.jobs);
+
+          if (endpoint === "available") this.available = temp;
+          else if (endpoint === "authored") this.authored = temp;
+          else this.accepted = temp;
         })
         .catch(function (error) {
           console.log(error);
@@ -83,7 +115,10 @@ export default Vue.extend({
 
   mounted() {
     this.determinListHeight();
-    this.getAllJobs();
+    const id = "60a62a9fab8896534b7a8d23";
+    this.getAllJobs(id, "available");
+    this.getAllJobs(id, "authored");
+    this.getAllJobs(id, "accepted");
   },
 });
 </script>

@@ -23,10 +23,10 @@
 }
 </style>
 
-<script>
+<script lang="ts">
 import axios from "axios";
 import Vue from "vue";
-import JobSummaryCard from "@/components/JobSummaryCard";
+import JobSummaryCard from "@/components/JobSummaryCard.vue";
 
 export default Vue.extend({
   components: {
@@ -42,23 +42,44 @@ export default Vue.extend({
       ],
     };
   },
+
+  props: {
+    userId: {
+      type: String,
+      required: false,
+      default: "60a62a9fab8896534b7a8d23",
+    },
+    endpoint: { type: String, required: false, default: "" },
+  },
+
   methods: {
-    getAllJobs() {
+    // todo - currently force jobs to be of images, eventually becomes general type
+
+    getJobsList(getAll: boolean) {
       // get all the available jobs from the server
-      const config = {
+      const config: any = {
         method: "get",
-        url: "http://localhost:4000/api/job",
+        url: getAll
+          ? "http://localhost:4000/api/job/"
+          : "http://localhost:4000/api/job/" +
+            this.endpoint +
+            "/" +
+            this.userId,
         headers: {},
       };
 
       axios(config)
         .then((response) => {
-          // reassign the jobs from the response to this.data
+          // let temp: Array<any>;
+
           this.jobs = response.data;
           for (let i = 0; i < this.jobs.length; i++) {
-            // todo - currently force jobs to be of images, eventually becomes general type
             this.jobs[i].type = "Image";
           }
+
+          // if (endpoint === "available") this.available = temp;
+          // else if (endpoint === "authored") this.authored = temp;
+          // else this.accepted = temp;
         })
         .catch(function (error) {
           console.log(error);
@@ -67,7 +88,7 @@ export default Vue.extend({
   },
   mounted() {
     // trigger the request to get the jibs from the server
-    this.getAllJobs();
+    this.getJobsList(this.endpoint === "");
   },
 });
 </script>
