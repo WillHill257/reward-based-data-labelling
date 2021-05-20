@@ -1,12 +1,12 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
-import { createJob, getJob, getImages, postImages } from "@/api/Job.api";
+import { createJob, getJob, getImages } from "@/api/Job.api";
 
 export interface JobState {
   title: string;
   description: string;
   author: string;
   url: string;
-  items: string[]
+  items: any
 }
 
 @Module({
@@ -39,13 +39,6 @@ export default class JobModule extends VuexModule implements JobState {
     this.url = payload.url;
   }
 
-  @Mutation
-  POST_IMAGES(payload: any) {
-    this.title = payload.title;
-    this.description = payload.description;
-    this.author = payload.author;
-    this.url = payload.url;
-  }
 
   @Mutation
   GET_JOB(payload: any): void {
@@ -73,18 +66,6 @@ export default class JobModule extends VuexModule implements JobState {
     }
   }
 
-  @Action
-  async postImages(payload: any) {
-    try {
-      console.log("trying");
-      const response: any = await postImages(payload.url);
-      this.context.commit("POST_IMAGES", response.data);
-      return response
-    } catch (error) {
-      // pass back the error message
-      return Promise.reject(error.response.data.error);
-    }
-  }
 
   @Action
   async getJob(payload: any) {

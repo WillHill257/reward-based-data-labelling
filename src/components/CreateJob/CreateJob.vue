@@ -165,8 +165,7 @@ export default Vue.extend({
 
         // makes api all to upload job
         const jobMod = getModule(JobModule,this.$store)
-        this.axios
-          .post("http://localhost:4000/api/job", this.jobJson)
+        jobMod.createJob(this.jobJson)
           .then((response) => {
             // when job is successfully created, upload the images
             console.log(response);

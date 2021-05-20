@@ -66,6 +66,8 @@
 <script>
 import axios from "axios";
 import Vue from "vue";
+import JobModule from "@/store/modules/job";
+import { getModule } from "vuex-module-decorators";
 export default Vue.extend({
   props: { jobID: String },
   data() {
@@ -82,9 +84,8 @@ export default Vue.extend({
     const jobID = this.$props.jobID;
     this.url = "http://localhost:4000/api/job/" + jobID;
     // get request for the title and description
-    await axios
-      .get(this.url)
-      .then((response) => {
+    const jobMod = getModule(JobModule,this.$store)
+    await jobMod.getJob(this.url).then((response) => {
         this.jobTitle = response.data.title;
         this.jobDescription = response.data.description;
       })
@@ -92,8 +93,7 @@ export default Vue.extend({
         console.log(error);
       });
     // get request for the images with a specific ID
-    await axios
-      .get("http://localhost:4000/api/images?jobID=" + jobID)
+    jobMod.getImages("http://localhost:4000/api/images?jobID=" + jobID)
       .then((response) => {
         console.log(response);
         for (var i in response.data) {
