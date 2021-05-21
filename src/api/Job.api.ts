@@ -2,17 +2,22 @@ import httpClient from "./httpClient";
 
 const END_POINT = "/job";
 
-
 const createJob = (
   title: string,
   description: string,
-  author: string
+  author: string,
+  labels: Array<string>,
+  rewards: number,
+  numLabellersRequired: number
 ): Promise<any> => {
   console.log("Creating Job...");
   const params = {
     title: title,
     description: description,
     author: author,
+    labels: labels,
+    rewards: rewards,
+    numLabellersRequired: numLabellersRequired,
   };
 
   return httpClient.post(END_POINT, params);
@@ -29,7 +34,5 @@ const getImages = (url: string): Promise<any> => {
   const req: Promise<any> = httpClient.get(url);
   return req;
 };
-
-
 
 export { createJob, getJob, getImages };

@@ -6,21 +6,30 @@ export interface JobState {
   description: string;
   author: string;
   url: string;
-  items: any
+  items: any;
 }
 
 @Module({
   namespaced: true,
   name: "job",
-  stateFactory: true
+  stateFactory: true,
 })
 export default class JobModule extends VuexModule implements JobState {
+  jobId = "";
   title = "";
   description = "";
   author = "";
   url = "";
   items = [];
-  jobId = "";
+
+  // ///
+  // title: this.title,
+  // description: this.description,
+  // author: this.author,
+  // labels: this.labelArray,
+  // rewards: this.reward,
+  // numLabellersRequired: this.selectedNumber,
+  // ///
 
   @Mutation
   GET_IMAGES(payload: any) {
@@ -30,7 +39,6 @@ export default class JobModule extends VuexModule implements JobState {
     this.url = payload.url;
   }
 
-
   @Mutation
   CREATE_JOB(payload: any) {
     this.title = payload.title;
@@ -38,7 +46,6 @@ export default class JobModule extends VuexModule implements JobState {
     this.author = payload.author;
     this.url = payload.url;
   }
-
 
   @Mutation
   GET_JOB(payload: any): void {
@@ -48,7 +55,6 @@ export default class JobModule extends VuexModule implements JobState {
     this.url = payload.url;
   }
 
-
   @Action
   async createJob(payload: any) {
     try {
@@ -56,7 +62,10 @@ export default class JobModule extends VuexModule implements JobState {
       const response: any = await createJob(
         payload.title,
         payload.description,
-        payload.author
+        payload.author,
+        payload.labels,
+        payload.rewards,
+        payload.numLabellersRequired
       );
       this.context.commit("CREATE_JOB", response.data);
       return response;
@@ -65,7 +74,6 @@ export default class JobModule extends VuexModule implements JobState {
       return Promise.reject(error.response.data.error);
     }
   }
-
 
   @Action
   async getJob(payload: any) {
@@ -90,6 +98,4 @@ export default class JobModule extends VuexModule implements JobState {
       return Promise.reject(error.response.data.error);
     }
   }
-
-
 }

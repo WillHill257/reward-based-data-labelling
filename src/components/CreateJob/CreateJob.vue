@@ -46,6 +46,14 @@
             </v-textarea>
 
             <v-text-field
+              v-model="reward"
+              label="Reward"
+              id="reward-input"
+              type="number"
+            >
+            </v-text-field>
+
+            <v-text-field
               id="label-input"
               v-model="labelData"
               label="Labels"
@@ -70,6 +78,13 @@
                 </v-chip>
               </v-col>
             </v-chip-group>
+
+            <v-select
+              v-model="selectedNumber"
+              id="numLabellers"
+              :items="this.items"
+              label="Number of labellers"
+            ></v-select>
 
             <v-card-actions style="padding-top: 25%">
               <v-btn
@@ -116,8 +131,11 @@ export default Vue.extend({
       errorMessage: "",
       errorHeight: 0,
       errorVisibility: "Hidden",
-      author: "60942b9c1878e068fc0cf954",
+      author: "60a62a9fab8896534b7a8d23",
       jobJson: {},
+      reward: 0,
+      items: [1, 2, 3, 4, 5, 7, 8, 9, 10],
+      selectedNumber: null,
     };
   },
 
@@ -156,16 +174,31 @@ export default Vue.extend({
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
+      } else if (this.labelArray.length == 0) {
+        this.errorMessage = "Label(s) required";
+        this.errorVisibility = "visible";
+        this.errorHeight = 40;
+        return;
+      } else if (this.selectedNumber == null) {
+        this.errorMessage = "Please select number of labellers required";
+        this.errorVisibility = "visible";
+        this.errorHeight = 40;
+        return;
       } else {
         this.jobJson = {
           title: this.title,
           description: this.description,
           author: this.author,
+          labels: this.labelArray,
+          rewards: this.reward,
+          numLabellersRequired: this.selectedNumber,
         };
 
+        console.log(this.jobJson);
         // makes api all to upload job
-        const jobMod = getModule(JobModule,this.$store)
-        jobMod.createJob(this.jobJson)
+        const jobMod = getModule(JobModule, this.$store);
+        jobMod
+          .createJob(this.jobJson)
           .then((response) => {
             // when job is successfully created, upload the images
             console.log(response);
@@ -180,6 +213,14 @@ export default Vue.extend({
               let file = this.filesUploaded[i];
               formData.append("image", file);
             }
+
+            // append all the labels to formData
+            for (var j in this.labelArray) {
+              let label = this.labelArray[j];
+              formData.append("labels", label);
+            }
+            //alternaticve
+            //formData.append("labels", this.labelArray)
 
             // uploads all the images through the image api
             const url = "http://localhost:4000/api/images/";

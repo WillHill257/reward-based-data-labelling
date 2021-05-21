@@ -1,7 +1,11 @@
 <template>
   <div>
     <v-app-bar id="AppBarIntro">
-      <img id="AppBarlogo" src="../assets/images/JinxLogo.png" />
+      <img
+        id="AppBarlogo"
+        src="../assets/images/JinxLogo.png"
+        @click="$router.push({ name: 'HomePage' })"
+      />
       <v-spacer></v-spacer>
       <v-btn
         id="AppBarButton"
@@ -27,7 +31,6 @@
       color="rgb(80,200,200)"
       v-model="drawer"
       absolute
-      bottom
       temporary
       right
       fixed
@@ -55,7 +58,6 @@
 <script>
 import CreateJob from "@/components/CreateJob/CreateJob";
 import Vue from "vue";
-
 export default Vue.extend({
   name: "AppBar",
   components: { CreateJob },
