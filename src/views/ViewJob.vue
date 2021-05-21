@@ -14,17 +14,25 @@
 
     <v-row align="center" justify="center" class="my4">
       <!-- card for the jobs descriptions and Title -->
-      <v-card
-        width="95%"
-        height="75%"
-        class="jobs"
-        id="job-summary"
-        color="light grey"
-      >
-        <v-card-title> {{ jobTitle }}</v-card-title>
-        <v-card-text> {{ jobDescription }}</v-card-text>
+      <v-card width="95%" height="75%" class="jobs" id="job-summary">
+        <v-card-title class=""> {{ jobTitle }}</v-card-title>
+        <v-card-subtitle class="pb-1 pt-1">
+          Reward: {{ reward }}
+        </v-card-subtitle>
+        <v-chip-group class="mx-4" active-class="primary--text" column>
+          <v-col style="padding: 0 0">
+            <v-chip class="pill" v-for="label in labels" :key="label">
+              {{ label }}
+            </v-chip>
+          </v-col>
+        </v-chip-group>
+        <v-card-text>
+          <v-divider class="mx-4 pb-2 pt-2"></v-divider>
+          Description: {{ jobDescription }}
+        </v-card-text>
       </v-card>
     </v-row>
+
     <v-row>
       <!-- this handles the formating of the images -->
 
@@ -76,18 +84,23 @@ export default Vue.extend({
       paginatedImages: [],
       count: 0,
       bottom: false,
+      labels: [],
+      reward: 0,
     };
   },
   async mounted() {
-    // this is the jobs ID that is passed from the ViewJobs page
+    // this is the jobs ID that is passed from the ListJobs page
     const jobID = this.$props.jobID;
     this.url = "http://localhost:4000/api/job/" + jobID;
-    // get request for the title and description
+    // get request for the title, description and labels
     await axios
       .get(this.url)
       .then((response) => {
         this.jobTitle = response.data.title;
         this.jobDescription = response.data.description;
+        this.labels = response.data.labels;
+        this.reward = response.data.rewards;
+        console.warn(response);
       })
       .catch((error) => {
         console.log(error);
@@ -143,6 +156,9 @@ export default Vue.extend({
         this.addImages();
       }
     },
+    test() {
+      alert(this.labels);
+    },
   },
   created() {
     window.addEventListener("scroll", () => {
@@ -160,4 +176,3 @@ export default Vue.extend({
   // },
 });
 </script>
-

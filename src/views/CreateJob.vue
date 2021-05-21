@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <v-dialog width="80%" v-model="isShowDialog" @click:outside="closeDialog">
     <v-card id="createJobCard">
       <form @submit.prevent="onSubmitClicked" enctype="multipart/form-data">
@@ -22,15 +22,6 @@
           </v-col>
 
           <v-col>
-            <!--          <v-alert-->
-            <!--            :style="{ visibility: errorVisibility }"-->
-            <!--            :height="errorHeight"-->
-            <!--            dense-->
-            <!--            dismissible-->
-            <!--            outlined-->
-            <!--            type="warning"-->
-            <!--          >{{ errorMessage}}</v-alert-->
-            <!--          >-->
             <v-text-field v-model="title" label="Title" id="title-input">
             </v-text-field>
 
@@ -58,119 +49,119 @@
       </form>
     </v-card>
   </v-dialog>
-</template>
+</template> -->
 
 <script lang="ts">
-import Vue from "vue";
-import ImageUploader from "./components/ImageUploader.vue";
+// import Vue from "vue";
+// import ImageUploader from "./components/ImageUploader.vue";
 
-//TODO: keep track of userID with author
-export default Vue.extend({
-  name: "CreateJob",
-  components: { ImageUploader },
-  data() {
-    return {
-      title: "",
-      description: "",
-      filesUploaded: [] as File[],
-      errorMessage: "",
-      errorHeight: 0,
-      errorVisibility: "Hidden",
-      author: "60942b9c1878e068fc0cf954",
-      jobJson: {},
-    };
-  },
+// //TODO: keep track of userID with author
+// export default Vue.extend({
+//   name: "CreateJob",
+//   components: { ImageUploader },
+//   data() {
+//     return {
+//       title: "",
+//       description: "",
+//       filesUploaded: [] as File[],
+//       errorMessage: "",
+//       errorHeight: 0,
+//       errorVisibility: "Hidden",
+//       author: "60942b9c1878e068fc0cf954",
+//       jobJson: {},
+//     };
+//   },
 
-  props: {
-    isShowDialog: {
-      type: Boolean,
-      required: true,
-    },
-  },
+//   props: {
+//     isShowDialog: {
+//       type: Boolean,
+//       required: true,
+//     },
+//   },
 
-  methods: {
-    closeDialog(): void {
-      this.$emit("update:isShowDialog", false);
-      this.title = "";
-      this.description = "";
-      this.filesUploaded = [];
-    },
-    onSubmitClicked: function (e: any) {
-      // checks if all fields are filled
-      e.preventDefault();
-      if (this.title == "") {
-        this.errorMessage = "Title required";
-        this.errorVisibility = "visible";
-        this.errorHeight = 40;
-        return;
-      } else if (this.description == "") {
-        this.errorMessage = "Description required";
-        this.errorVisibility = "visible";
-        this.errorHeight = 40;
-        return;
-      } else if (this.filesUploaded.length == 0) {
-        this.errorMessage = "No files to upload";
-        this.errorVisibility = "visible";
-        this.errorHeight = 40;
-        return;
-      } else {
-        this.jobJson = {
-          title: this.title,
-          description: this.description,
-          author: this.author,
-        };
+//   methods: {
+//     closeDialog(): void {
+//       this.$emit("update:isShowDialog", false);
+//       this.title = "";
+//       this.description = "";
+//       this.filesUploaded = [];
+//     },
+//     onSubmitClicked: function (e: any) {
+//       // checks if all fields are filled
+//       e.preventDefault();
+//       if (this.title == "") {
+//         this.errorMessage = "Title required";
+//         this.errorVisibility = "visible";
+//         this.errorHeight = 40;
+//         return;
+//       } else if (this.description == "") {
+//         this.errorMessage = "Description required";
+//         this.errorVisibility = "visible";
+//         this.errorHeight = 40;
+//         return;
+//       } else if (this.filesUploaded.length == 0) {
+//         this.errorMessage = "No files to upload";
+//         this.errorVisibility = "visible";
+//         this.errorHeight = 40;
+//         return;
+//       } else {
+//         this.jobJson = {
+//           title: this.title,
+//           description: this.description,
+//           author: this.author,
+//         };
 
-        // makes api all to upload job
-        this.axios
-          .post("http://localhost:4000/api/job", this.jobJson)
-          .then((response) => {
-            // when job is successfully created, upload the images
+//         // makes api all to upload job
+//         this.axios
+//           .post("http://localhost:4000/api/job", this.jobJson)
+//           .then((response) => {
+//             // when job is successfully created, upload the images
 
-            // create the form data to contain the images
-            let formData = new FormData();
+//             // create the form data to contain the images
+//             let formData = new FormData();
 
-            // append all the images to formData
-            for (var i in this.filesUploaded) {
-              let file = this.filesUploaded[i];
-              formData.append("image", file);
-            }
-            // append the job ID to the form data
-            formData.append("jobID", response.data._id);
+//             // append all the images to formData
+//             for (var i in this.filesUploaded) {
+//               let file = this.filesUploaded[i];
+//               formData.append("image", file);
+//             }
+//             // append the job ID to the form data
+//             formData.append("jobID", response.data._id);
 
-            // uploads all the images through the image api
-            const url = "http://localhost:4000/api/images/";
-            this.axios
-              .post(url, formData, {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              })
-              .then((response) => {
-                console.log(response);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      this.closeDialog();
-      // create the job json object
-    },
-    onFilesUploaded(file: File): void {
-      this.filesUploaded.push(file);
-    },
-  },
-});
+//             // uploads all the images through the image api
+//             const url = "http://localhost:4000/api/images/";
+//             this.axios
+//               .post(url, formData, {
+//                 headers: {
+//                   "Content-Type": "multipart/form-data",
+//                 },
+//               })
+//               .then((response) => {
+//                 console.log(response);
+//               })
+//               .catch((error) => {
+//                 console.log(error);
+//               });
+//           })
+//           .catch((error) => {
+//             console.log(error);
+//           });
+//       }
+//       this.closeDialog();
+//       // create the job json object
+//     },
+//     onFilesUploaded(file: File): void {
+//       this.filesUploaded.push(file);
+//     },
+//   },
+// });
 </script>
 <style scoped>
-#createJobCard {
+/* #createJobCard {
   padding: 2%;
 }
 #image-list {
-  height: 200px; /* or any height you want */
+  height: 200px; // or any height you want 
   overflow-y: auto;
-}
+} */
 </style>

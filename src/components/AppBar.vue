@@ -1,12 +1,26 @@
 <template>
   <div>
     <v-app-bar id="AppBarIntro">
-      <img id="AppBarlogo" src="../assets/images/JinxLogo.png" />
+      <img
+        id="AppBarlogo"
+        src="../assets/images/JinxLogo.png"
+        @click="$router.push({ name: 'HomePage' })"
+      />
       <v-spacer></v-spacer>
-      <v-btn id="AppBarButton" text rounded @click="$router.push('/Login')">
+      <v-btn
+        id="AppBarButton"
+        text
+        rounded
+        @click="$router.push({ name: 'Login' })"
+      >
         Login
       </v-btn>
-      <v-btn id="AppBarButton" text rounded @click="$router.push('/Sign_up')">
+      <v-btn
+        id="AppBarButton"
+        text
+        rounded
+        @click="$router.push({ name: 'Signup' })"
+      >
         Register
       </v-btn>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -51,34 +65,39 @@ export default Vue.extend({
     // these are the names and the directories for the buttons in the side bar.
     drawer: false,
     group: null,
-    items: [
-      {
-        text: "Landing",
-        link: "/",
-      },
-      {
-        text: "About",
-        link: "/about",
-      },
-      {
-        text: "Home",
-        link: "/homePage",
-      },
-      {
-        text: "Available Jobs",
-        link: "/view_jobs",
-      },
-      // {
-      //   text: "Create Job",
-      //   link: "/CreateJob",
-      // },
-    ],
+    items: [], // items is populated in populateNavItems - we require route resolving
     isShowDialog: false,
   }),
   watch: {
     group() {
       this.drawer = false;
     },
+  },
+  methods: {
+    populateNavItems() {
+      // set nav items and routes
+      this.items = [
+        {
+          text: "Landing",
+          link: this.$router.resolve({ name: "Landing" }).href,
+        },
+        {
+          text: "About",
+          link: this.$router.resolve({ name: "About" }).href,
+        },
+        {
+          text: "Home",
+          link: this.$router.resolve({ name: "HomePage" }).href,
+        },
+        {
+          text: "Available Jobs",
+          link: this.$router.resolve({ name: "ListJobs" }).href,
+        },
+      ];
+    },
+  },
+  mounted() {
+    this.populateNavItems();
   },
 });
 </script>
