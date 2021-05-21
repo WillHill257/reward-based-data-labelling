@@ -1,6 +1,8 @@
-<template>
+<template v-else>
   <v-app>
-    <h1>Jobs</h1>
+    <goBack/>
+    <h1 v-if="!jobs.length">There are no jobs available</h1>
+    <h1 v-else>Jobs</h1>
 
     <v-container grid-list-lg>
       <v-layout row wrap>
@@ -38,12 +40,14 @@
 </style>
 
 <script>
+import goBack from "@/components/BackButton.vue";
 import VClamp from "vue-clamp";
 import axios from "axios";
 import Vue from "vue";
 export default Vue.extend({
   components: {
     VClamp,
+    goBack,
   },
   data() {
     return {
