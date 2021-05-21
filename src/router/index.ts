@@ -55,6 +55,7 @@ const routes: Array<RouteConfig> = [
     path: "/listjobs",
     name: "ListJobs",
     component: ListJobs,
+    props: true,
   },
 ];
 
