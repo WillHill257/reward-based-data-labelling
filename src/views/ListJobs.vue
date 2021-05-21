@@ -10,12 +10,25 @@
               {{ job.title }}
             </v-card-title>
 
-            <v-card-subtitle id="job-type">
+            <v-card-subtitle class = "pb-0" id="job-type">
               {{ job.type }}
             </v-card-subtitle>
 
-            <v-card-text>
-              <v-clamp id="job-description" autoresize :max-lines="3">{{
+            <v-chip-group class="mx-4" active-class="primary--text" column>
+              <v-col style="padding: 0 0">
+                <v-chip
+                  class="pill"
+                  v-for="label in job.labels"
+                  :key="label"
+                  x-small
+                >
+                  {{ label }}
+                </v-chip>
+                  </v-col>
+            </v-chip-group>
+
+            <v-card-text class = "pt-0">
+              <v-clamp id="job-description" autoresize :max-lines="2">{{
                 job.description
               }}</v-clamp>
             </v-card-text>
@@ -55,7 +68,7 @@ export default Vue.extend({
   data() {
     return {
       jobs: [
-        { _id: "0", title: "Title", type: "Type", description: "Description" },
+        { _id: "0", title: "Title", type: "Type", description: "Description", labels: "Labels" },
       ],
     };
   },

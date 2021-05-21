@@ -45,6 +45,14 @@
             </v-textarea>
 
             <v-text-field
+              v-model="reward"
+              label="Reward"
+              id="reward-input"
+              type="number"
+            >
+            </v-text-field> 
+
+            <v-text-field
               id="label-input"
               v-model="labelData"
               label="Labels"
@@ -115,6 +123,7 @@ export default Vue.extend({
       errorVisibility: "Hidden",
       author: "60942b9c1878e068fc0cf954",
       jobJson: {},
+      reward: 0
     };
   },
 
@@ -133,6 +142,7 @@ export default Vue.extend({
       this.title = "";
       this.description = "";
       this.filesUploaded = [];
+      this.labelArray = [];
     },
     onSubmitClicked: function () {
       // checks if all fields are filled - return in the ifs stops the submission if fields are empty
@@ -152,13 +162,22 @@ export default Vue.extend({
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
+      } else if (this.labelArray.length == 0) {
+        this.errorMessage = "Label(s) required";
+        this.errorVisibility = "visible";
+        this.errorHeight = 40;
+        return;
       } else {
         this.jobJson = {
           title: this.title,
           description: this.description,
           author: this.author,
+          labels: this.labelArray,
+          rewards: this.reward,
         };
 
+
+        console.log(this.jobJson)
         // makes api all to upload job
         this.axios
           .post("http://localhost:4000/api/job", this.jobJson)
@@ -176,6 +195,14 @@ export default Vue.extend({
               let file = this.filesUploaded[i];
               formData.append("image", file);
             }
+
+            // append all the labels to formData
+            for (var j in this.labelArray) {
+              let label = this.labelArray[j];
+              formData.append("labels", label);
+            }
+            //alternaticve
+            //formData.append("labels", this.labelArray)
 
             // uploads all the images through the image api
             const url = "http://localhost:4000/api/images/";
