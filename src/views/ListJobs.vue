@@ -1,53 +1,20 @@
 <template>
-  <v-app>
+  <section id="list-jobs">
     <h1>Jobs</h1>
 
-    <v-container grid-list-lg>
-      <v-layout row wrap>
-        <v-flex xs12 sm6 md4 lg3 v-for="job in jobs" :key="job._id">
-          <v-card elevation="5" width="300px" height="200px">
-            <v-card-title id="job-title">
-              {{ job.title }}
-            </v-card-title>
-
-            <v-card-subtitle class = "pb-0" id="job-type">
-              {{ job.type }}
-            </v-card-subtitle>
-
-            <v-chip-group class="mx-4" active-class="primary--text" column>
-              <v-col style="padding: 0 0">
-                <v-chip
-                  class="pill"
-                  v-for="label in job.labels"
-                  :key="label"
-                  x-small
-                >
-                  {{ label }}
-                </v-chip>
-                  </v-col>
-            </v-chip-group>
-
-            <v-card-text class = "pt-0">
-              <v-clamp id="job-description" autoresize :max-lines="2">{{
-                job.description
-              }}</v-clamp>
-            </v-card-text>
-
-            <v-card-actions class="card-actions" flat>
-              <v-btn
-                id="btn-view-job"
-                color="blue"
-                text
-                @click="goToJob(job._id)"
-              >
-                View job
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </v-app>
+    <section class="basic-grid">
+      <div v-for="job in jobs" :key="job._id">
+        <JobSummaryCard
+          class="card"
+          :id="job._id"
+          :title="job.title"
+          :type="job.type"
+          :labels="job.labels"
+          :description="job.description"
+        ></JobSummaryCard>
+      </div>
+    </section>
+  </section>
 </template>
 
 <style>
@@ -57,50 +24,103 @@
 }
 </style>
 
-<script>
-import VClamp from "vue-clamp";
+<script lang="ts">
 import axios from "axios";
 import Vue from "vue";
+import JobSummaryCard from "@/components/JobSummaryCard.vue";
+
 export default Vue.extend({
   components: {
-    VClamp,
+    JobSummaryCard,
   },
+
+  // todo - define a prop so know what type of jobs to get
+
   data() {
     return {
       jobs: [
-        { _id: "0", title: "Title", type: "Type", description: "Description", labels: "Labels" },
+        {
+          _id: "0",
+          title: "Title",
+          type: "Type",
+          description: "Description",
+          labels: ["Labels"],
+        },
       ],
     };
   },
+
+  props: {
+    userId: {
+      type: String,
+      required: false,
+      default: "60a62a9fab8896534b7a8d23",
+    },
+    endpoint: { type: String, required: false, default: "" },
+  },
+
   methods: {
-    getAllJobs() {
+    // todo - currently force jobs to be of images, eventually becomes general type
+
+    getJobsList(getAll: boolean) {
       // get all the available jobs from the server
-      const config = {
+      const config: any = {
         method: "get",
-        url: "http://localhost:4000/api/job",
+        url: getAll
+          ? "http://localhost:4000/api/job/"
+          : "http://localhost:4000/api/job/" +
+            this.endpoint +
+            "/" +
+            this.userId,
         headers: {},
       };
 
       axios(config)
         .then((response) => {
+          // let temp: Array<any>;
+
           this.jobs = response.data;
           for (let i = 0; i < this.jobs.length; i++) {
             this.jobs[i].type = "Image";
           }
-          // console.log(JSON.stringify(response.data));
-          // console.log(this.jobs);
+
+          // if (endpoint === "available") this.available = temp;
+          // else if (endpoint === "authored") this.authored = temp;
+          // else this.accepted = temp;
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-
-    goToJob(jobId) {
-      this.$router.push({ name: "ViewJob", params: { jobID: jobId } });
-    },
   },
   mounted() {
-    this.getAllJobs();
+    // trigger the request to get the jibs from the server
+    this.getJobsList(this.endpoint === "");
   },
 });
 </script>
+
+<style scoped>
+.card {
+  width: 300px;
+}
+
+.basic-grid {
+  /* define a grid layout */
+  display: grid;
+  gap: 1rem;
+
+  align-items: center;
+  justify-items: center;
+
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+@media (min-width: 1264px) {
+  .basic-grid {
+    /* add padding to prevent the grid becoming too wide on large screens */
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+}
+</style>

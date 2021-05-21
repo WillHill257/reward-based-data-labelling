@@ -1,7 +1,11 @@
 <template>
   <div>
     <v-app-bar id="AppBarIntro">
-      <img id="AppBarlogo" src="../assets/images/JinxLogo.png" />
+      <img
+        id="AppBarlogo"
+        src="../assets/images/JinxLogo.png"
+        @click="$router.push({ name: 'HomePage' })"
+      />
       <v-spacer></v-spacer>
       <v-btn
         id="AppBarButton"
