@@ -35,13 +35,14 @@
             >
               {{ errorMessage }}
             </v-alert>
-            <v-text-field v-model="title" label="Title" id="title-input">
+            <v-text-field v-model="title" label="Title" id="title-input" :rules = "titleRules">
             </v-text-field>
 
             <v-textarea
               v-model="description"
               label="Description"
               id="description-input"
+              :rules = "descriptionRules"
             >
             </v-textarea>
 
@@ -50,6 +51,9 @@
               label="Reward"
               id="reward-input"
               type="number"
+              :rules = "rewardRules"
+              min = 1
+              step = 1
             >
             </v-text-field>
 
@@ -61,6 +65,7 @@
               full-width
               hide-details
               @keydown.enter="makePill"
+              :rules = "labelRules"
             ></v-text-field>
 
             <v-chip-group active-class="primary--text" column>
@@ -84,6 +89,7 @@
               id="numLabellers"
               :items="this.items"
               label="Number of labellers"
+              :rules = "labellerRules"
             ></v-select>
 
             <v-card-actions style="padding-top: 25%">
@@ -131,9 +137,23 @@ export default Vue.extend({
       errorVisibility: "Hidden",
       author: "60942b9c1878e068fc0cf954",
       jobJson: {},
-      reward: 0,
+      reward: 1,
       items: [1, 2, 3, 4, 5, 7, 8, 9, 10],
       selectedNumber: null,
+      //validation rules
+      descriptionRules: [(v: string) => !!v || "Description is required"],
+      titleRules: [(v: string) => !!v || "Title is required"],
+      labellerRules:[
+        [(v: string) => !!v || "The number of labellers is required"],
+        [(v: string) => (!isNaN(parseFloat(v))) || 'The number of labellers must be a numeric value'],
+        [(v: string) => (parseFloat(v) >= 1) || 'There must be at least one labeller'],
+      ],
+      rewardRules:[
+        [(v: string) => !!v || "Reward is required"],
+        [(v: string) => (!isNaN(parseFloat(v))) || 'The reward must be a numeric value'],
+        [(v: string) => (parseFloat(v) >= 1) || 'The reward must be at least one'],
+      ],
+      //labelRules: [(v: string) => (!!v || this.labelArray.length == 0) || "Enter labels as comma separated values and press enter"],
     };
   },
 
@@ -155,8 +175,9 @@ export default Vue.extend({
       this.labelArray = new Array<string>();
     },
     onSubmitClicked: function () {
+      //enters labels
+      this.makePill()
       // checks if all fields are filled - return in the ifs stops the submission if fields are empty
-
       if (this.title == "") {
         this.errorMessage = "Title required";
         this.errorVisibility = "visible";
