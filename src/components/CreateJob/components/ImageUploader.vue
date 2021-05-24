@@ -1,6 +1,6 @@
 <template>
   <v-container
-    @click="onClick"
+    @click.prevent="onClick"
     @drop.prevent="onDrop($event)"
     @dragover.prevent="dragover = true"
     @dragenter.prevent="dragover = true"
@@ -16,7 +16,7 @@
     </v-card-text>
   </v-container>
 </template>
-e
+
 <script>
 import Vue from "vue";
 import Compressor from "compressorjs";
@@ -44,7 +44,7 @@ export default Vue.extend({
       // create input element in DOM
       var inputElement = document.createElement("input");
       inputElement.type = "file";
-      inputElement.accept = "image/*";
+      inputElement.accept = accept;
       inputElement.multiple = "multiple";
       inputElement.addEventListener("change", callback);
       inputElement.dispatchEvent(new MouseEvent("click"));
@@ -55,6 +55,7 @@ export default Vue.extend({
       var files = e.path[0].files;
       for (var i = 0; i < files.length; i++) {
         var file = files[i];
+        console.log(file);
         new Compressor(file, {
           quality: 0.7,
           success: (resultFile) => {
@@ -70,10 +71,6 @@ export default Vue.extend({
       this.dragover = false;
 
       var items = e.dataTransfer.items;
-      for (var j = 0; j < items.length; j++) {
-        var file = items[j].webkitGetAsEntry();
-        console.log(file);
-      }
       for (var i = 0; i < items.length; i++) {
         // webkitGetAsEntry allows directory traversal
         var item = items[i].webkitGetAsEntry();
@@ -90,7 +87,6 @@ export default Vue.extend({
         const name = item.name;
         const lastDot = name.lastIndexOf(".");
         const extension = name.substring(lastDot + 1);
-
         if (extension == "png" || extension == "jpg") {
           // compress the file if it is an image
           item.file((file) => {
@@ -98,7 +94,6 @@ export default Vue.extend({
             new Compressor(file, {
               quality: 0.7,
               success: (resultFile) => {
-                console.log(resultFile);
                 this.onFilesUploaded(resultFile);
               },
             });
