@@ -67,7 +67,7 @@
           <v-btn
             id="signup-cancel-button"
             color="info"
-            @click="$router.push('/Login')"
+            @click="$router.push({ name: 'Login' })"
             >Already Registered</v-btn
           >
         </v-card-actions>

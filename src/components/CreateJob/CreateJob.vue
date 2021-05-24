@@ -1,12 +1,13 @@
 <template>
   <v-dialog width="80%" v-model="isShowDialog" @click:outside="closeDialog">
     <v-card id="createJobCard">
-      <form @submit.prevent="onSubmitClicked" enctype="multipart/form-data">
+      <form @submit.prevent enctype="multipart/form-data">
         <v-row justify="center" align="center" no-gutters>
           <v-col align="start" class="mx-2">
             <ImageUploader
               v-bind:filesUploaded="filesUploaded"
               :onFilesUploaded="onFilesUploaded"
+              v-on:filetypeerror="onFileTypeError"
             />
 
             <v-list dense id="image-list" class="mt-1">
@@ -17,29 +18,44 @@
                 <v-list-item-content>
                   <v-list-item-title v-text="file.name"></v-list-item-title>
                 </v-list-item-content>
+                <v-list-item-icon>
+                  <v-icon @click="removeItem(i)"> mdi-close</v-icon>
+                </v-list-item-icon>
               </v-list-item>
             </v-list>
           </v-col>
 
           <v-col>
-                      <v-alert
-                        :style="{ visibility: errorVisibility }"
-                        :height="errorHeight"
-                        dense
-                        dismissible
-                        outlined
-                        type="warning"
-                      >{{ errorMessage}}</v-alert
-                      >
-            <v-text-field v-model="title" label="Title" id="title-input">
+            <v-alert
+              :style="{ visibility: errorVisibility }"
+              dense
+              dismissible
+              outlined
+              type="warning"
+            >
+              {{ errorMessage }}
+            </v-alert>
+            <v-text-field v-model="title" label="Title" id="title-input" :rules = "titleRules">
             </v-text-field>
 
             <v-textarea
               v-model="description"
               label="Description"
               id="description-input"
+              :rules = "descriptionRules"
             >
             </v-textarea>
+
+            <v-text-field
+              v-model="reward"
+              label="Reward"
+              id="reward-input"
+              type="number"
+              :rules = "rewardRules"
+              min = 1
+              step = 1
+            >
+            </v-text-field>
 
             <v-text-field
               id="label-input"
@@ -48,13 +64,13 @@
               single-line
               full-width
               hide-details
-              @keydown.enter="makePill"
+              @keydown.enter.native="makePill"
+              :rules = "labelRules"
             ></v-text-field>
 
             <v-chip-group active-class="primary--text" column>
               <v-col style="padding: 0 0">
                 <v-chip
-                  @submit.prevent="onSubmitClicked"
                   class="pill"
                   v-show="open"
                   v-for="label in labelArray"
@@ -68,8 +84,21 @@
               </v-col>
             </v-chip-group>
 
+            <v-select
+              v-model="selectedNumber"
+              id="numLabellers"
+              :items="this.items"
+              label="Number of labellers"
+              :rules = "labellerRules"
+            ></v-select>
+
             <v-card-actions style="padding-top: 25%">
-              <v-btn color="green" id="submit-input" type="submit" @click.native="onSubmitClicked">
+              <v-btn
+                color="green"
+                id="submit-input"
+                type="button"
+                @click.native="onSubmitClicked"
+              >
                 Submit
               </v-btn>
               <v-btn
@@ -90,6 +119,9 @@
 <script lang="ts">
 import Vue from "vue";
 import ImageUploader from "./components/ImageUploader.vue";
+import JobModule from "@/store/modules/job";
+import { getModule } from "vuex-module-decorators";
+
 //TODO: keep track of userID with author
 export default Vue.extend({
   name: "CreateJob",
@@ -105,8 +137,25 @@ export default Vue.extend({
       errorMessage: "",
       errorHeight: 0,
       errorVisibility: "Hidden",
-      author: "60942b9c1878e068fc0cf954",
+      author: "60a62a9fab8896534b7a8d23",
       jobJson: {},
+      reward: 1,
+      items: [1, 2, 3, 4, 5, 7, 8, 9, 10],
+      selectedNumber: null,
+      //validation rules
+      descriptionRules: [(v: string) => !!v || "Description is required"],
+      titleRules: [(v: string) => !!v || "Title is required"],
+      labellerRules:[
+        [(v: string) => !!v || "The number of labellers is required"],
+        [(v: string) => (!isNaN(parseFloat(v))) || 'The number of labellers must be a numeric value'],
+        [(v: string) => (parseFloat(v) >= 1) || 'There must be at least one labeller'],
+      ],
+      rewardRules:[
+        [(v: string) => !!v || "Reward is required"],
+        [(v: string) => (!isNaN(parseFloat(v))) || 'The reward must be a numeric value'],
+        [(v: string) => (parseFloat(v) >= 1) || 'The reward must be at least one'],
+      ],
+      //labelRules: [(v: string) => (!!v || this.labelArray.length == 0) || "Enter labels as comma separated values and press enter"],
     };
   },
 
@@ -120,13 +169,17 @@ export default Vue.extend({
   methods: {
     closeDialog(): void {
       this.$emit("update:isShowDialog", false);
+
+      // reset data values
       this.title = "";
       this.description = "";
       this.filesUploaded = [];
+      this.labelArray = new Array<string>();
     },
     onSubmitClicked: function () {
-      // checks if all fields are filled
-
+      //enters labels
+      this.makePill()
+      // checks if all fields are filled - return in the ifs stops the submission if fields are empty
       if (this.title == "") {
         this.errorMessage = "Title required";
         this.errorVisibility = "visible";
@@ -142,18 +195,34 @@ export default Vue.extend({
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
+      } else if (this.labelArray.length == 0) {
+        this.errorMessage = "Label(s) required";
+        this.errorVisibility = "visible";
+        this.errorHeight = 40;
+        return;
+      } else if (this.selectedNumber == null) {
+        this.errorMessage = "Please select number of labellers required";
+        this.errorVisibility = "visible";
+        this.errorHeight = 40;
+        return;
       } else {
         this.jobJson = {
           title: this.title,
           description: this.description,
           author: this.author,
+          labels: this.labelArray,
+          rewards: this.reward,
+          numLabellersRequired: this.selectedNumber,
         };
 
+        console.log(this.jobJson);
         // makes api all to upload job
-        this.axios
-          .post("http://localhost:4000/api/job", this.jobJson)
+        const jobMod = getModule(JobModule, this.$store);
+        jobMod
+          .createJob(this.jobJson)
           .then((response) => {
             // when job is successfully created, upload the images
+            console.log(response);
 
             // create the form data to contain the images
             let formData = new FormData();
@@ -166,6 +235,14 @@ export default Vue.extend({
               formData.append("image", file);
             }
 
+            // append all the labels to formData
+            for (var j in this.labelArray) {
+              let label = this.labelArray[j];
+              formData.append("labels", label);
+            }
+            //alternaticve
+            //formData.append("labels", this.labelArray)
+
             // uploads all the images through the image api
             const url = "http://localhost:4000/api/images/";
             console.log(formData);
@@ -177,6 +254,7 @@ export default Vue.extend({
               })
               .then((response) => {
                 console.log(response);
+                this.closeDialog();
               })
               .catch((error) => {
                 console.log(error);
@@ -187,11 +265,15 @@ export default Vue.extend({
           });
       }
 
-      // create the job json object
-      console.log("Job Submitted");
+      // close the dialog after submit
     },
     onFilesUploaded(file: File): void {
       this.filesUploaded.push(file);
+    },
+    onFileTypeError() {
+      this.errorVisibility = "visible";
+      this.errorMessage =
+        "Warning: the files uploaded contain forbidden file type/s. (Accepted file types: .jpg and .png)";
     },
     makePill() {
       let arr: Array<string> = this.labelData.split(",");
@@ -201,10 +283,13 @@ export default Vue.extend({
         }
       }
       this.labelData = "";
-      console.log("yo");
+      console.log("pill")
     },
     closePill(label: string) {
       this.labelArray.splice(this.labelArray.indexOf(label), 1);
+    },
+    removeItem(index: any) {
+      this.filesUploaded.splice(index, 1);
     },
   },
 });
