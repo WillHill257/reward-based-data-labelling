@@ -5,16 +5,19 @@
 
     <section class="dashboard-row basic-grid">
       <DashboardList
+        class="authored"
         title="Mine"
         :jobs="authored"
         endpoint="authored"
       ></DashboardList>
       <DashboardList
+        class="accepted"
         title="Currently Doing"
         :jobs="accepted"
         endpoint="accepted"
       ></DashboardList>
       <DashboardList
+        class="available"
         title="Available"
         :jobs="available"
         endpoint="available"
@@ -41,6 +44,7 @@ export default Vue.extend({
           title: "Title",
           type: "Type",
           description: "Description",
+          labels: ["a", "b"],
         },
       ],
       authored: [
@@ -49,6 +53,7 @@ export default Vue.extend({
           title: "Title",
           type: "Type",
           description: "Description",
+          labels: ["a", "b"],
         },
       ],
       available: [
@@ -57,6 +62,7 @@ export default Vue.extend({
           title: "Title",
           type: "Type",
           description: "Description",
+          labels: ["a", "b"],
         },
       ],
     };

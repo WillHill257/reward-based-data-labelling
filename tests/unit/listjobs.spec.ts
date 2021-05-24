@@ -1,3 +1,4 @@
+
 import { shallowMount } from "@vue/test-utils";
 import ListJobs from "@/views/ListJobs.vue";
 import Vue from "vue";
@@ -11,4 +12,7 @@ describe("ViewJobs", () => {
         const wrapper = shallowMount(ListJobs);
         expect(wrapper.find("#list-jobs").exists()).toBe(true);
     });
+
 })
+
+
