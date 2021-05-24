@@ -42,7 +42,9 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn color="info" @click="loginOnClick">Login</v-btn>
-          <v-btn color="info" @click="$router.push('/Sign_up')">Register</v-btn>
+          <v-btn color="info" @click="$router.push({ name: 'Signup' })"
+            >Register</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-main>

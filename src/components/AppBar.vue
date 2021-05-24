@@ -1,14 +1,30 @@
 <template>
   <div>
     <v-app-bar id="AppBarIntro">
-      <img id="AppBarlogo" src="../assets/images/JinxLogo.png" />
+      <img
+        id="AppBarlogo"
+        src="../assets/images/JinxLogo.png"
+        @click="$router.push({ name: 'HomePage' })"
+      />
       <v-spacer></v-spacer>
-      <v-btn id="AppBarButton" text rounded @click="$router.push('/Login')">
-        Login
-      </v-btn>
-      <v-btn id="AppBarButton" text rounded @click="$router.push('/Sign_up')">
-        Register
-      </v-btn>
+      <div v-if="isLoggedIn == false">
+        <v-btn
+          id="AppBarButton"
+          text
+          rounded
+          @click="$router.push({ name: 'Login' })"
+        >
+          Login
+        </v-btn>
+        <v-btn
+          id="AppBarButton"
+          text
+          rounded
+          @click="$router.push({ name: 'Signup' })"
+        >
+          Register
+        </v-btn>
+      </div>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     </v-app-bar>
     <!-- //this is the hamburger navigation bar. //this is declaring what it does and
@@ -17,7 +33,6 @@
       color="rgb(80,200,200)"
       v-model="drawer"
       absolute
-      bottom
       temporary
       right
       fixed
@@ -33,9 +48,11 @@
             <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
-        <v-btn @click="isShowDialog = true" icon>
-          <v-icon size="30">mdi-plus</v-icon>
-        </v-btn>
+        <div v-if="isLoggedIn == true">
+          <v-btn @click="isShowDialog = true" icon>
+            <v-icon size="30">mdi-plus</v-icon>
+          </v-btn>
+        </div>
       </v-list>
     </v-navigation-drawer>
     <CreateJob :isShowDialog.sync="isShowDialog" />
@@ -44,7 +61,7 @@
 
 <script>
 import CreateJob from "@/components/CreateJob/CreateJob";
-import Vue from 'vue';
+import Vue from "vue";
 export default Vue.extend({
   name: "AppBar",
   components: { CreateJob },
@@ -52,34 +69,40 @@ export default Vue.extend({
     // these are the names and the directories for the buttons in the side bar.
     drawer: false,
     group: null,
-    items: [
-      {
-        text: "Landing",
-        link: "/",
-      },
-      {
-        text: "About",
-        link: "/about",
-      },
-      {
-        text: "Home",
-        link: "/homePage",
-      },
-      {
-        text: "Available Jobs",
-        link: "/view_jobs",
-      },
-      // {
-      //   text: "Create Job",
-      //   link: "/CreateJob",
-      // },
-    ],
+    items: [], // items is populated in populateNavItems - we require route resolving
     isShowDialog: false,
+    isLoggedIn: false,
   }),
   watch: {
     group() {
       this.drawer = false;
     },
+  },
+  methods: {
+    populateNavItems() {
+      // set nav items and routes
+      this.items = [
+        {
+          text: "Landing",
+          link: this.$router.resolve({ name: "Landing" }).href,
+        },
+        {
+          text: "About",
+          link: this.$router.resolve({ name: "About" }).href,
+        },
+        {
+          text: "Home",
+          link: this.$router.resolve({ name: "HomePage" }).href,
+        },
+        {
+          text: "Available Jobs",
+          link: this.$router.resolve({ name: "ListJobs" }).href,
+        },
+      ];
+    },
+  },
+  mounted() {
+    this.populateNavItems();
   },
 });
 </script>
