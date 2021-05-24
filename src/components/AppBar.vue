@@ -48,7 +48,7 @@
             <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
-        <div v-if="isLoggedIn == true">
+        <div v-if="isLoggedIn == false">
           <v-btn @click="isShowDialog = true" icon>
             <v-icon size="30">mdi-plus</v-icon>
           </v-btn>
