@@ -1,6 +1,5 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { signupUser, loginUser } from "@/api/Users.api";
-import store from "@/store";
 
 export interface UserState {
   firstName: string;
@@ -26,7 +25,9 @@ export default class UserModule extends VuexModule implements UserState {
   }
 
   get isLoggedIn(): boolean {
-    return !!this.token;
+    // return !!this.token;
+    //TODO: Fix this to use mutations
+    return !!localStorage.getItem("token");
   }
 
   //Mutations
