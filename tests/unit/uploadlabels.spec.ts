@@ -42,53 +42,46 @@ describe("Enter functionality of component", () => {
         it('One value entered, enter key pressed, it creates a pill', async () => {
             const wrapper:any = shallowMount(CreateJob, {vuetify})
             const value = "a"
-            //wrapper.setData({labelData: value})
 
-            wrapper.vm.$data.labelInput = value
+            wrapper.vm.$data.labelData = value
             wrapper.vm.makePill()
-            wrapper.vm.$data.labelArray.length = 1
-            /*const labelInput = wrapper.find("#label-input")
-            labelInput.vm.setData(value)
-            //await wrapper.trigger('keydown', {keyCode:13})
-            labelInput.vm.trigger('keydown', {keyCode:13})*/
             const expectedLength = value.split(",").length
-            //expect(wrapper.findAll(".pill").length).toBe(expectedLength)
             expect(wrapper.vm.$data.labelArray.length).toBe(expectedLength)
         })
 
         //if the contents of the textbox is comma separated (by n-1 commas) does it make n pills
         it('Many comma separated values entered, enter key pressed, it n pills', async () => {
-            const wrapper = shallowMount(CreateJob, {vuetify});
-
+            const wrapper:any = shallowMount(CreateJob, {vuetify});
             const value = "a, b, c"
-            await wrapper.find("#label-input").setData({value: value})
-            await wrapper.trigger('keydown.enter')
+
+            wrapper.vm.$data.labelData = value
+            wrapper.vm.makePill()
             const expectedLength = value.split(",").length
-            expect(wrapper.findAll(".pill").length).toBe(expectedLength)
+            expect(wrapper.vm.$data.labelArray.length).toBe(expectedLength)
         })
 
         //if the contents of the textbox contains two commas in a row ",," it should not enter an empty element in the array
         it('Should n,, creates 0 pills', async () => {
-            const wrapper = shallowMount(CreateJob, {vuetify});
-
+            const wrapper:any = shallowMount(CreateJob, {vuetify});
             const value = ",,"
-            await wrapper.find("#label-input").setData({value: value})
-            await wrapper.trigger('keydown.enter')
+
+            wrapper.vm.$data.labelData = value
+            wrapper.vm.makePill()
             const expectedLength = 0
             //TODO cancel out the empty ones
-            expect(wrapper.findAll(".pill").length).toBe(expectedLength)
+            expect(wrapper.vm.$data.labelArray.length).toBe(expectedLength)
         })
 
         //if the contents of the textbox contains two commas separated by a space ", ," it should not enter a space in the array
         it(', , creates 0 pills', async () => {
-            const wrapper = shallowMount(CreateJob, {vuetify});
-
+            const wrapper:any = shallowMount(CreateJob, {vuetify});
             const value = ", ,"
-            await wrapper.find("#label-input").setData({value: value})
-            await wrapper.trigger('keydown.enter')
+
+            wrapper.vm.$data.labelData = value
+            wrapper.vm.makePill()
             const expectedLength = 0
             //TODO cancel out the empty ones
-            expect(wrapper.findAll(".pill").length).toBe(expectedLength)
+            expect(wrapper.vm.$data.labelArray.length).toBe(expectedLength)
         })
 
         //if the user chooses to remove a pill it should also be removed from the array
@@ -96,13 +89,13 @@ describe("Enter functionality of component", () => {
 
         //if the user presses enter when the text box is empty or contains a space no array element is added
         it('nothing entered, nothing saved', async () => {
-            const wrapper = shallowMount(CreateJob, {vuetify});
-
+            const wrapper:any = shallowMount(CreateJob, {vuetify});
             const value = ""
-            await wrapper.find("#label-input").setData({value: value})
-            await wrapper.trigger('keydown.enter')
+
+            wrapper.vm.$data.labelData = value
+            wrapper.vm.makePill()
             const expectedLength = 0
-            expect(wrapper.findAll(".pill").length).toBe(expectedLength)
+            expect(wrapper.vm.$data.labelArray.length).toBe(expectedLength)
         })
 
         //if a user presses submit without any elements in the array it complains - ?
