@@ -29,7 +29,10 @@
             align="center"
             justify="center"
           >
-            <ViewMoreButton @click.native="goToJobList()"></ViewMoreButton>
+            <ViewMoreButton
+              class="view-more"
+              @click.native="goToJobList()"
+            ></ViewMoreButton>
           </v-row>
         </template>
       </v-virtual-scroll>
