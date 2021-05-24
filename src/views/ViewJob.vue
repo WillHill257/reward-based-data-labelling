@@ -1,65 +1,50 @@
 <template>
-  <v-container ma-10 pa-10 fill-height>
-    
-    <v-row align="center" justify="center">
+  <v-container fill-height>
+    <v-row align="center" justify="center" class="pb-2">
       <v-btn
         color="primary"
         large
         rounded
         id="btnAccept"
         v-on:click.native="onAccept"
+        pd-1
         >Accept Job
       </v-btn>
     </v-row>
 
-    <v-row align="center" justify="center">
-      <!-- card for the jobs descriptions and title -->
-      <v-card width="95%" height="80%" class="jobs" id="job-summary">
-        <v-card-title class = "pb-0"> {{ jobTitle }}</v-card-title>
-        <v-card-subtitle class = "pb-1 pt-1">
-          {{reward}}
+    <v-row align="center" justify="center" class="my4">
+      <!-- card for the jobs descriptions and Title -->
+      <v-card width="95%" height="75%" class="jobs" id="job-summary">
+        <v-card-title class=""> {{ jobTitle }}</v-card-title>
+        <v-card-subtitle class="pb-1 pt-1">
+          Reward: {{ reward }}
         </v-card-subtitle>
         <v-chip-group class="mx-4" active-class="primary--text" column>
           <v-col style="padding: 0 0">
-            <v-chip
-              class="pill"
-              v-for="label in labels"
-              :key="label"
-            >
+            <v-chip class="pill" v-for="label in labels" :key="label">
               {{ label }}
             </v-chip>
-              </v-col>
+          </v-col>
         </v-chip-group>
         <v-card-text>
           <v-divider class="mx-4 pb-2 pt-2"></v-divider>
-          {{ jobDescription }}
+          Description: {{ jobDescription }}
         </v-card-text>
       </v-card>
     </v-row>
 
     <v-row>
-      <!-- this is the scroll to top arrow -->
-      <v-btn
-        dark
-        fab
-        button
-        bottom
-        right
-        color="indigo darken-3"
-        fixed
-        @click="onScrollUp"
-        id="btnScrollUp"
-        v-on:click.native="onScrollUp"
-      >
-        <v-icon>mdi-arrow-up</v-icon>
-      </v-btn>
       <!-- this handles the formating of the images -->
+
       <v-col
-        v-for="image in images"
-        :key="image"
+        v-for="(image, index) in images"
+        :key="index"
         class="d-flex child-flex"
-        cols="3"
         id="pic-display"
+        lg="3"
+        md="4"
+        sm="6"
+        xa="6"
       >
         <!-- this is where the images are set to load -->
         <v-img
@@ -70,10 +55,12 @@
         >
           <template v-slot:placeholder>
             <v-row class="fill-height" align="center" justify="center">
-              <v-progress-circular
-                indeterminate
-                color="grey lighten-5"
-              ></v-progress-circular>
+              <div v-if="images.length === 0">
+                <v-progress-circular
+                  indeterminate
+                  color="grey lighten-5"
+                ></v-progress-circular>
+              </div>
             </v-row>
           </template>
         </v-img>
@@ -83,8 +70,11 @@
 </template>
 
 <script>
-import axios from "axios";
 import Vue from "vue";
+import router from "@/router";
+import JobModule from "@/store/modules/job";
+import { getModule } from "vuex-module-decorators";
+
 export default Vue.extend({
   props: { jobID: String },
   data() {
@@ -94,39 +84,52 @@ export default Vue.extend({
       jobDescription: "",
       url: "",
       images: [],
+      paginatedImages: [],
+      count: 0,
+      bottom: false,
       labels: [],
       reward: 0,
+      author: "",
+      labellers: [],
     };
   },
   async mounted() {
     // this is the jobs ID that is passed from the ListJobs page
     const jobID = this.$props.jobID;
     this.url = "http://localhost:4000/api/job/" + jobID;
-    // get request for the title, description and labels
-    await axios
-      .get(this.url)
+    // get request for the title and description
+    const jobMod = getModule(JobModule, this.$store);
+    await jobMod
+      .getJob(this.url)
       .then((response) => {
         this.jobTitle = response.data.title;
         this.jobDescription = response.data.description;
-        this.labels = response.data.labels; 
+        this.labels = response.data.labels;
         this.reward = response.data.rewards;
-        console.warn(response)
+        this.author = response.data.author;
+        this.labellers = response.data.labellers;
+        console.warn(response);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
     // get request for the images with a specific ID
-    await axios
-      .get("http://localhost:4000/api/images?jobID=" + jobID)
+    jobMod
+      .getImages("http://localhost:4000/api/images?jobID=" + jobID)
       .then((response) => {
         console.log(response);
-        for (var i in response.data) {
-          var imageName = response.data[i].value;
-          this.images.push(
-            "http://localhost:4000/uploads/jobs/" + jobID + "/" + imageName
-          );
-        }
+        const fetchedImages = response.data.map(
+          (image) =>
+            "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
+        );
         console.log(this.images);
+        const temp = [];
+        for (let i = 0; i < fetchedImages.length; i++) {
+          temp.push(fetchedImages.splice(0, 12));
+        }
+        this.paginatedImages = temp;
+        this.addImages();
+        //console.warn(temp);
       })
       .catch((error) => {
         console.log(error);
@@ -135,19 +138,69 @@ export default Vue.extend({
   methods: {
     // Accept Button
     onAccept() {
-      return null;
+      //TODO get the users actaul userID
+      var acceptJobJson = {
+        user: "60a62a9fab8896534b7a8d23",
+      };
+
+      if (this.labellers.includes("60a62a9fab8896534b7a8d23")) {
+        alert("You have already accepted this job!");
+        return;
+      }
+
+      if (this.author == "60a62a9fab8896534b7a8d23") {
+        alert("You cannot accept a job you have created");
+        return;
+      }
+
+      const jobID = this.$props.jobID;
+      const addLabellerUrl = "http://localhost:4000/api/job/labeller/" + jobID;
+
+      console.log(acceptJobJson, addLabellerUrl);
+      this.axios
+        .put(addLabellerUrl, acceptJobJson)
+        .then((response) => {
+          console.log(response);
+          alert(
+            "You have successfully accepted the job! \n Check it out in your dashboard"
+          );
+          router.push("/home");
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Oops something has gone wrong! \n Please try again later");
+        });
     },
-    // Scroll Up botton
-    onScrollUp() {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
+    bottomVisible() {
+      const scrollY = window.scrollY;
+      const visible = document.documentElement.clientHeight;
+      const pageHeight = document.documentElement.scrollHeight;
+      const bottomOfPage = visible + scrollY >= pageHeight;
+      return bottomOfPage || pageHeight < visible;
     },
-    test() {
-      alert(this.labels)
-    }
+    //this implements the infite scrolling by adding another 12 pictures to the screen
+    //when the user scrolls to the bottom of the page
+    addImages() {
+      let arr = this.paginatedImages;
+      if (arr[this.count]) {
+        this.images.push(...arr[this.count]);
+        this.count = this.count + 1;
+      }
+    },
+  },
+  //this is the observer class for the infinite scrolling
+  watch: {
+    bottom(bottom) {
+      if (bottom && window.scrollY > 0) {
+        this.addImages();
+      }
+    },
+  },
+  created() {
+    window.addEventListener("scroll", () => {
+      this.bottom = this.bottomVisible();
+    });
+    this.addImages();
   },
 });
 </script>

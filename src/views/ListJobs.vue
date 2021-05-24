@@ -1,6 +1,9 @@
 <template>
   <section id="list-jobs">
-    <h1>Jobs</h1>
+    <goBack />
+
+    <h1 v-if="!jobs.length">There are no jobs available</h1>
+    <h1 v-else>Jobs</h1>
 
     <section class="basic-grid">
       <div v-for="job in jobs" :key="job._id">
@@ -25,12 +28,15 @@
 </style>
 
 <script lang="ts">
+import goBack from "@/components/BackButton.vue";
+
 import axios from "axios";
 import Vue from "vue";
 import JobSummaryCard from "@/components/JobSummaryCard.vue";
 
 export default Vue.extend({
   components: {
+    goBack,
     JobSummaryCard,
   },
 

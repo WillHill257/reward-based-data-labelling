@@ -119,6 +119,8 @@
 <script lang="ts">
 import Vue from "vue";
 import ImageUploader from "./components/ImageUploader.vue";
+import JobModule from "@/store/modules/job";
+import { getModule } from "vuex-module-decorators";
 
 //TODO: keep track of userID with author
 export default Vue.extend({
@@ -135,7 +137,7 @@ export default Vue.extend({
       errorMessage: "",
       errorHeight: 0,
       errorVisibility: "Hidden",
-      author: "60942b9c1878e068fc0cf954",
+      author: "60a62a9fab8896534b7a8d23",
       jobJson: {},
       reward: 1,
       items: [1, 2, 3, 4, 5, 7, 8, 9, 10],
@@ -215,8 +217,9 @@ export default Vue.extend({
 
         console.log(this.jobJson);
         // makes api all to upload job
-        this.axios
-          .post("http://localhost:4000/api/job", this.jobJson)
+        const jobMod = getModule(JobModule, this.$store);
+        jobMod
+          .createJob(this.jobJson)
           .then((response) => {
             // when job is successfully created, upload the images
             console.log(response);

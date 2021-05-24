@@ -7,22 +7,24 @@
         @click="$router.push({ name: 'HomePage' })"
       />
       <v-spacer></v-spacer>
-      <v-btn
-        id="AppBarButton"
-        text
-        rounded
-        @click="$router.push({ name: 'Login' })"
-      >
-        Login
-      </v-btn>
-      <v-btn
-        id="AppBarButton"
-        text
-        rounded
-        @click="$router.push({ name: 'Signup' })"
-      >
-        Register
-      </v-btn>
+      <div v-if="isLoggedIn == false">
+        <v-btn
+          id="AppBarButton"
+          text
+          rounded
+          @click="$router.push({ name: 'Login' })"
+        >
+          Login
+        </v-btn>
+        <v-btn
+          id="AppBarButton"
+          text
+          rounded
+          @click="$router.push({ name: 'Signup' })"
+        >
+          Register
+        </v-btn>
+      </div>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
     </v-app-bar>
     <!-- //this is the hamburger navigation bar. //this is declaring what it does and
@@ -31,7 +33,6 @@
       color="rgb(80,200,200)"
       v-model="drawer"
       absolute
-      bottom
       temporary
       right
       fixed
@@ -47,9 +48,11 @@
             <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
-        <v-btn @click="isShowDialog = true" icon>
-          <v-icon size="30">mdi-plus</v-icon>
-        </v-btn>
+        <div v-if="isLoggedIn == true">
+          <v-btn @click="isShowDialog = true" icon>
+            <v-icon size="30">mdi-plus</v-icon>
+          </v-btn>
+        </div>
       </v-list>
     </v-navigation-drawer>
     <CreateJob :isShowDialog.sync="isShowDialog" />
@@ -59,7 +62,6 @@
 <script>
 import CreateJob from "@/components/CreateJob/CreateJob";
 import Vue from "vue";
-
 export default Vue.extend({
   name: "AppBar",
   components: { CreateJob },
@@ -69,6 +71,7 @@ export default Vue.extend({
     group: null,
     items: [], // items is populated in populateNavItems - we require route resolving
     isShowDialog: false,
+    isLoggedIn: false,
   }),
   watch: {
     group() {
