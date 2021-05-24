@@ -64,7 +64,7 @@
               single-line
               full-width
               hide-details
-              @keydown.enter="makePill"
+              @keydown.enter.native="makePill"
               :rules = "labelRules"
             ></v-text-field>
 
@@ -97,7 +97,7 @@
                 color="green"
                 id="submit-input"
                 type="button"
-                @click="onSubmitClicked"
+                @click.native="onSubmitClicked"
               >
                 Submit
               </v-btn>
@@ -280,6 +280,7 @@ export default Vue.extend({
         }
       }
       this.labelData = "";
+      console.log("pill")
     },
     closePill(label: string) {
       this.labelArray.splice(this.labelArray.indexOf(label), 1);
