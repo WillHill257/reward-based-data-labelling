@@ -15,6 +15,7 @@
       >
         <template v-slot:default="{ item }">
           <JobSummaryCard
+
             v-if="item.title !== sentinel"
             class="job-card"
             :id="item._id"
@@ -89,6 +90,10 @@ export default Vue.extend({
         name: "ListJobs",
         params: { endpoint: this.endpoint },
       });
+    },
+    // does not show jobs that are full
+    jobFull(labellers:Array<string>,  numLabellersRequired:number){
+      return labellers.length < numLabellersRequired
     },
   },
 });

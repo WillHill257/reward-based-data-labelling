@@ -6,7 +6,7 @@
     <h1 v-else>Jobs</h1>
 
     <section class="basic-grid">
-      <div v-for="job in jobs" :key="job._id">
+      <div v-for="job in jobs" :key="job._id" >
         <JobSummaryCard
           class="card"
           :id="job._id"
@@ -14,6 +14,7 @@
           :type="job.type"
           :labels="job.labels"
           :description="job.description"
+          v-if="jobFull(job.labellers, job.numLabellersRequired)"
         ></JobSummaryCard>
       </div>
     </section>
@@ -53,21 +54,32 @@ export default Vue.extend({
           labels: ["Labels"],
         },
       ],
+      labellers: [],
+      numLabellers: 0,
+      url: "",
+      dataReady: false,
     };
+  },
+  async mounted() {
+    // trigger the request to get the jobs from the server
+    this.getJobsList(this.endpoint === "");
   },
 
   props: {
     userId: {
       type: String,
       required: false,
-      default: "60a62a9fab8896534b7a8d23",
+      default: "60ae15438517d247b80aebef",
     },
     endpoint: { type: String, required: false, default: "" },
   },
 
   methods: {
     // todo - currently force jobs to be of images, eventually becomes general type
-
+    // does not show jobs that are full
+    jobFull(labellers:Array<string>,  numLabellersRequired:number){
+      return labellers.length < numLabellersRequired
+    },
     getJobsList(getAll: boolean) {
       // get all the available jobs from the server
       const config: any = {
@@ -98,10 +110,6 @@ export default Vue.extend({
           console.log(error);
         });
     },
-  },
-  mounted() {
-    // trigger the request to get the jibs from the server
-    this.getJobsList(this.endpoint === "");
   },
 });
 </script>

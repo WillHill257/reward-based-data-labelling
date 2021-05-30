@@ -140,18 +140,20 @@ export default Vue.extend({
     onAccept() {
       //TODO get the users actaul userID
       var acceptJobJson = {
-        user: "60a62a9fab8896534b7a8d23",
+        user: "60ae15438517d247b80aebef",
       };
 
-      if (this.labellers.includes("60a62a9fab8896534b7a8d23")) {
+      alert(this.labellers.length)
+
+      /*if (this.labellers.includes("60ae15438517d247b80aebef")) {
         alert("You have already accepted this job!");
         return;
       }
 
-      if (this.author == "60a62a9fab8896534b7a8d23") {
+      if (this.author == "60ae15438517d247b80aebef") {
         alert("You cannot accept a job you have created");
         return;
-      }
+      }*/
 
       const jobID = this.$props.jobID;
       const addLabellerUrl = "http://localhost:4000/api/job/labeller/" + jobID;
