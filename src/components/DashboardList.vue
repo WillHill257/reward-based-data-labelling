@@ -15,7 +15,6 @@
       >
         <template v-slot:default="{ item }">
           <JobSummaryCard
-
             v-if="item.title !== sentinel"
             class="job-card"
             :id="item._id"

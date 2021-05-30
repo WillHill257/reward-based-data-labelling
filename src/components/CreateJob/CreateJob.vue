@@ -83,13 +83,16 @@
               </v-col>
             </v-chip-group>
 
-            <v-select
+            <v-text-field
               v-model="selectedNumber"
-              id="numLabellers"
-              :items="this.items"
               label="Number of labellers"
+              id="numLabellers"
+              type="number"
               :rules = "labellerRules"
-            ></v-select>
+              min = 1
+              step = 1
+            >
+            </v-text-field>
 
             <v-card-actions style="padding-top: 25%">
               <v-btn
@@ -139,7 +142,6 @@ export default Vue.extend({
       author: "60a62a9fab8896534b7a8d23",
       jobJson: {},
       reward: 1,
-      items: [1, 2, 3, 4, 5, 7, 8, 9, 10],
       selectedNumber: null,
       //validation rules
       descriptionRules: [(v: string) => !!v || "Description is required"],
