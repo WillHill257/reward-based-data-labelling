@@ -14,7 +14,7 @@
           :type="job.type"
           :labels="job.labels"
           :description="job.description"
-          v-if="jobFull(job.labellers, job.numLabellersRequired)"
+          :jobfull="jobFull(job.labellers, job.numLabellersRequired)"
         ></JobSummaryCard>
       </div>
     </section>
@@ -78,7 +78,10 @@ export default Vue.extend({
     // todo - currently force jobs to be of images, eventually becomes general type
     // does not show jobs that are full
     jobFull(labellers:Array<string>,  numLabellersRequired:number){
-      return labellers.length < numLabellersRequired
+      if (labellers != null){
+        return labellers.length < numLabellersRequired
+      }
+      return true
     },
     getJobsList(getAll: boolean) {
       // get all the available jobs from the server

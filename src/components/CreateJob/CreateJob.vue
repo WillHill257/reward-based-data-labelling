@@ -201,7 +201,7 @@ export default Vue.extend({
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      } else if (this.selectedNumber == null) {
+      } else if (this.selectedNumber == "") {
         this.errorMessage = "Please select number of labellers required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
@@ -284,7 +284,6 @@ export default Vue.extend({
         }
       }
       this.labelData = "";
-      console.log("pill")
     },
     closePill(label: string) {
       this.labelArray.splice(this.labelArray.indexOf(label), 1);
