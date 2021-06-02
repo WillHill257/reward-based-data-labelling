@@ -1,9 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import UserModule from "../store/modules/user";
+import { UserModule } from "../store/modules/user";
+import store from "@/store/index";
 import { getModule } from "vuex-module-decorators";
 //https://haxzie.com/architecting-http-clients-vue-js-network-layer
-
-// const userMod = getModule(UserModule, store);
+console.log(UserModule);
+console.log(store);
 
 const httpClient = axios.create({
   baseURL: `http://${process.env.VUE_APP_BASE_URL}:${process.env.VUE_APP_API_PORT}/api`,
@@ -50,9 +51,8 @@ const errorInterceptor = (error: AxiosError) => {
 
     case 401: // authentication error, logout the user
       console.error(error.response.status, error.message);
-      localStorage.removeItem('token');
-      // userMod.logoutUser();
-      // router.push("/login");
+      localStorage.removeItem("token");
+      UserModule.logoutUser();
       break;
 
     default:

@@ -78,7 +78,7 @@
 
 <script lang="ts">
 import { AxiosResponse } from "axios";
-import UserModule from "@/store/modules/user";
+import { UserModule } from "@/store/modules/user";
 import { getModule } from "vuex-module-decorators";
 import Vue from "vue";
 
@@ -113,9 +113,7 @@ export default Vue.extend({
           email: this.email,
           password: this.password,
         };
-        const userMod = getModule(UserModule, this.$store);
-        userMod
-          .signupUser(newUser)
+        UserModule.signupUser(newUser)
           .then((res) => {
             this.$router.push({ name: "HomePage" });
           })

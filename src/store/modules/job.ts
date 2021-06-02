@@ -1,5 +1,6 @@
 import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
 import { createJob, getJob, getImages } from "@/api/Job.api";
+import store from "@/store";
 
 export interface JobState {
   title: string;
@@ -10,9 +11,10 @@ export interface JobState {
 }
 
 @Module({
-  namespaced: true,
+  dynamic: true,
   name: "job",
   stateFactory: true,
+  store,
 })
 export default class JobModule extends VuexModule implements JobState {
   jobId = "";
@@ -21,6 +23,10 @@ export default class JobModule extends VuexModule implements JobState {
   author = "";
   url = "";
   items = [];
+
+  get getTitle(): string {
+    return this.title;
+  }
 
   // ///
   // title: this.title,

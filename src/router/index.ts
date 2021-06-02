@@ -9,11 +9,10 @@ import CreateJob from "../components/CreateJob/CreateJob.vue";
 import ListJobs from "../views/ListJobs.vue";
 
 import store from "@/store";
-import UserModule from "@/store/modules/user";
-import { getModule } from "vuex-module-decorators";
+import { UserModule } from "@/store/modules/user";
 
-const userMod = getModule(UserModule, store);
-
+//const userMod = getModule(UserModule);
+console.log(store);
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -78,7 +77,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (userMod.isLoggedIn) {
+    if (UserModule.isLoggedIn) {
       next();
       return;
     }

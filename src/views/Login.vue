@@ -54,7 +54,7 @@
 <script lang="ts">
 import { VueForm } from "../componentTypes";
 import { getModule } from "vuex-module-decorators";
-import UserModule from "@/store/modules/user";
+import { UserModule } from "@/store/modules/user";
 import Vue from "vue";
 
 export default Vue.extend({
@@ -91,9 +91,8 @@ export default Vue.extend({
       this.hideError();
       if (this.validate()) {
         // if form is valid, continue with login
-        const userMod = getModule(UserModule, this.$store);
-        userMod
-          .loginUser(user)
+        //const userMod = getModule(UserModule, this.$store);
+        UserModule.loginUser(user)
           .then(() => {
             // successful login - navigate to homepage, user object is in store
             this.$router.push({ name: "HomePage" });

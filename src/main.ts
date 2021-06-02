@@ -7,10 +7,10 @@ import vuetify from "./plugins/vuetify";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import "./assets/styles/global.css";
-import httpClient from "@/api/httpClient";
+import httpClient from "./api/httpClient";
 Vue.config.productionTip = false;
 
-Vue.use(VueAxios, axios);
+Vue.use(VueAxios, httpClient);
 
 // Vue.use(networkmanager, { httpClient: httpClient });
 

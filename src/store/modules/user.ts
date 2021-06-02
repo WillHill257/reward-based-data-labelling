@@ -1,5 +1,13 @@
-import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
+import {
+  Action,
+  getModule,
+  Module,
+  Mutation,
+  VuexModule,
+} from "vuex-module-decorators";
 import { signupUser, loginUser } from "@/api/Users.api";
+import router from "@/router";
+import store from "@/store";
 
 export interface UserState {
   firstName: string;
@@ -9,11 +17,12 @@ export interface UserState {
 }
 
 @Module({
-  namespaced: true,
   name: "user",
+  dynamic: true,
   stateFactory: true, // prevents store caching - so each client app receives its own instance of global state
+  store,
 })
-export default class UserModule extends VuexModule implements UserState {
+class User extends VuexModule implements UserState {
   firstName = "";
   lastName = "";
   email = "";
@@ -95,5 +104,8 @@ export default class UserModule extends VuexModule implements UserState {
   async logoutUser() {
     this.context.commit("LOGOUT_USER");
     localStorage.removeItem("token");
+    router.push("/login");
   }
 }
+
+export const UserModule = getModule(User);

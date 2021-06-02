@@ -1,7 +1,7 @@
 import Vuex from "vuex";
 import { createLocalVue } from "@vue/test-utils";
 import { getModule } from "vuex-module-decorators";
-import UserModule, { UserState } from "@/store/modules/user";
+import { UserModule, UserState } from "@/store/modules/user";
 
 const Vue = createLocalVue();
 Vue.use(Vuex);
@@ -11,11 +11,11 @@ Vue.use(Vuex);
  */
 const factory = () => {
   const store = new Vuex.Store({
-    modules: {
-      user: UserModule,
-    },
+    // modules: {
+    //   user: UserModule,
+    // },
   });
-  return getModule(UserModule, store);
+  return UserModule;
 };
 
 /**
@@ -38,7 +38,7 @@ describe("User Module Mutations", () => {
       firstName: "John",
       lastName: "Doe",
       email: "john.doe@example.com",
-      token: "sometoken"
+      token: "sometoken",
     };
 
     // mutate
@@ -57,7 +57,7 @@ describe("User Module Mutations", () => {
       firstName: "Jane",
       lastName: "Doe",
       email: "jane.doe@example.com",
-      token: "sometoken"
+      token: "sometoken",
     };
 
     // mutate
