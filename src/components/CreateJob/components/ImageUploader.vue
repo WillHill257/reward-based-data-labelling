@@ -55,11 +55,10 @@ export default Vue.extend({
       var files = e.path[0].files;
       for (var i = 0; i < files.length; i++) {
         var file = files[i];
-        console.log(file);
         new Compressor(file, {
           quality: 0.7,
           success: (resultFile) => {
-            console.log(resultFile);
+            console.log("here");
             this.onFilesUploaded(resultFile);
           },
         });
@@ -90,7 +89,6 @@ export default Vue.extend({
         if (extension == "png" || extension == "jpg") {
           // compress the file if it is an image
           item.file((file) => {
-            console.log(file);
             new Compressor(file, {
               quality: 0.7,
               success: (resultFile) => {
