@@ -33,4 +33,32 @@ const getImages = (url: string): Promise<any> => {
   return req;
 };
 
-export { createJob, getJob, getImages };
+const acceptJob = (jobId: string): Promise<any> => {
+  console.log("Accepting job...");
+  return httpClient.put("/job/labeller/" + jobId);
+};
+
+const getAvailableJobs = (): Promise<any> => {
+  // get all the jobs the current user can accept
+  return httpClient.get("/job/available");
+};
+
+const getAuthoredJobs = (): Promise<any> => {
+  // get all the jobs the current user has created
+  return httpClient.get("/job/authored");
+};
+
+const getAcceptedJobs = (): Promise<any> => {
+  // get all the jobs the current user has accepted
+  return httpClient.get("/job/accepted");
+};
+
+export {
+  createJob,
+  getJob,
+  getImages,
+  acceptJob,
+  getAvailableJobs,
+  getAuthoredJobs,
+  getAcceptedJobs,
+};

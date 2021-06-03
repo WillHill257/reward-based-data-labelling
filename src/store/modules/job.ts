@@ -1,4 +1,10 @@
-import { Action, Module, Mutation, VuexModule } from "vuex-module-decorators";
+import {
+  Action,
+  Module,
+  Mutation,
+  getModule,
+  VuexModule,
+} from "vuex-module-decorators";
 import { createJob, getJob, getImages } from "@/api/Job.api";
 import store from "@/store";
 
@@ -104,3 +110,5 @@ export default class JobModule extends VuexModule implements JobState {
     }
   }
 }
+
+export const Job = getModule(JobModule);

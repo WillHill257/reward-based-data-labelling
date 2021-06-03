@@ -7,8 +7,8 @@ const httpClient = axios.create({
   baseURL: `http://${process.env.VUE_APP_BASE_URL}:${process.env.VUE_APP_API_PORT}/api`,
   timeout: 1000, // indicates, 1000ms ie. 1 second
   headers: {
-    "Content-Type": "application/json"
-  }
+    "Content-Type": "application/json",
+  },
 });
 
 const getAuthToken = () => localStorage.getItem("token");
