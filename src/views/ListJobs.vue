@@ -34,16 +34,28 @@ import goBack from "@/components/BackButton.vue";
 import axios from "axios";
 import Vue from "vue";
 import JobSummaryCard from "@/components/JobSummaryCard.vue";
+import Job from '@/store/modules/job';
+import { getModule } from "vuex-module-decorators";
+import Vuex from "vuex";
 
 export default Vue.extend({
   components: {
     goBack,
     JobSummaryCard,
   },
+  created () {
+    const Jobmod = getModule(Job, this.$store)
+
+    Jobmod.insert({
+      data: { id: 1, name: 'John' }
+    })
+  }, 
 
   // todo - define a prop so know what type of jobs to get
 
+
   data() {
+     
     return {
       jobs: [
         {
@@ -58,6 +70,7 @@ export default Vue.extend({
       numLabellers: 0,
       url: "",
       dataReady: false,
+      store: new Vuex.Store({})
     };
   },
   async mounted() {
@@ -77,7 +90,8 @@ export default Vue.extend({
   methods: {
     // todo - currently force jobs to be of images, eventually becomes general type
     // does not show jobs that are full
-    jobFull(labellers:Array<string>,  numLabellersRequired:number){
+    async jobFull(labellers:Array<string>,  numLabellersRequired:number){
+      //const entities = await this.store.$repo(Job).fresh({ id: 1, name: 'John Doe' })
       if (labellers != null){
         return labellers.length < numLabellersRequired
       }
