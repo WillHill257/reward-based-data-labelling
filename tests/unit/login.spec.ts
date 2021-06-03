@@ -3,6 +3,7 @@ import Login from "@/views/Login.vue";
 import axios from "axios";
 import Vue from "vue";
 import Vuetify from "vuetify";
+const vuetify = new Vuetify();
 
 Vue.use(Vuetify);
 describe("Testing basic visual aspects of login screen", () => {
@@ -27,6 +28,27 @@ describe("Testing basic visual aspects of login screen", () => {
   //     expect(wrapper.find('.field__slot').exists()).is.equal(true)
   // });
 });
+
+describe("Login functions", function(){
+  test("Submit function called when submit button is clicked", () => {
+    const wrapper = shallowMount(Login, {
+      vuetify,
+      mocks: { $http: axios },
+    });
+    const loginOnClick = jest.fn();
+    wrapper.setMethods({
+      loginOnClick: loginOnClick
+    });
+    wrapper.find("#login-click").trigger("click");
+    expect(loginOnClick).toHaveBeenCalled();
+  });
+
+
+})
+
+
+
+//login-password-input
 
 // describe("Login function", function(){
 //   it("Should return and error if user not found", function(){

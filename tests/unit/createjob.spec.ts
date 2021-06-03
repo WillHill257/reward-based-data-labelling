@@ -109,25 +109,28 @@ describe("CreateJob", () => {
   });
 
   describe("Validation", () => {
-    /*test("Checking errors throw correctly when full", () => {
+    test("Checking errors throw correctly when full", () => {
+      //TODO
       const wrapper:any = shallowMount(CreateJob, {
         vuetify
       });
       wrapper.vm.$data.title = "Something"
       wrapper.vm.$data.description = "Something"
-      wrapper.vm.$data.reward = "2"
+      wrapper.vm.$data.reward = 2
       wrapper.vm.$data.labelData = "a, b, c"
-      wrapper.vm.$data.selectedNumber = "2"
+      wrapper.vm.$data.labelArray = ["a", "b", "c"]
+      wrapper.vm.$data.selectedNumber = 2
       wrapper.vm.onSubmitClicked()
-      expect(wrapper.vm.$data.descriptionRules).toBeFalsy();
+      //expect(true).toBe(true);
+      /*expect(wrapper.vm.$data.descriptionRules).toBeFalsy();
       expect(wrapper.vm.$data.titleRules).toBeFalsy();
       expect(wrapper.vm.$data.labellerRules).toBeFalsy();
-      expect(wrapper.vm.$data.rewardRules).toBeFalsy();
-      /*expect(wrapper.vm.$data.descriptionRules).toEqual("Description is required");
+      expect(wrapper.vm.$data.rewardRules).toBeFalsy();*/
+      expect(wrapper.vm.$data.descriptionRules).toEqual("Description is required");
       expect(wrapper.vm.$data.titleRules).toEqual("Title is required");
       expect(wrapper.vm.$data.labellerRules).toEqual("The number of labellers is required");
       expect(wrapper.vm.$data.rewardRules).toEqual("Reward is required");
-    });*/
+    });
 
   
     test("Checking errors throw correctly when empty", () => {
@@ -245,6 +248,8 @@ describe("CreateJob", () => {
     });
   });  
 
-  
+  /*removeItem(index: any) {
+      this.filesUploaded.splice(index, 1);
+    },*/
 
 });

@@ -22,7 +22,7 @@
     </v-card-text>
 
     <v-card-actions class="card-actions" flat>
-      <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
+      <v-btn class="btn-view-job" color="blue" text @click="goToJob(id, jobfull)">
         View job
       </v-btn>
     </v-card-actions>
