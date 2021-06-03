@@ -8,6 +8,10 @@ import Landing from "../views/Landing.vue";
 import CreateJob from "../components/CreateJob/CreateJob.vue";
 import ListJobs from "../views/ListJobs.vue";
 
+import store from "@/store";
+import { UserModule } from "@/store/modules/user";
+
+//const userMod = getModule(UserModule);
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -50,6 +54,9 @@ const routes: Array<RouteConfig> = [
     path: "/createjob",
     name: "CreateJob",
     component: CreateJob,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/listjobs",
@@ -57,12 +64,27 @@ const routes: Array<RouteConfig> = [
     component: ListJobs,
     props: true,
   },
+  // otherwise redirect to home
+  { path: "*", redirect: "/" },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    console.log(UserModule.isLoggedIn);
+    if (UserModule.isLoggedIn) {
+      next();
+      return;
+    }
+    next("/login");
+  } else {
+    next();
+  }
 });
 
 export default router;

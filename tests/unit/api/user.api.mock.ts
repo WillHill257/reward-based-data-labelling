@@ -13,6 +13,7 @@ let user: UserState = {
   firstName: "",
   lastName: "",
   email: "",
+  token: ""
 };
 
 // test login
