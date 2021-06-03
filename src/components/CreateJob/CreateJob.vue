@@ -70,7 +70,6 @@
               full-width
               hide-details
               @keydown.enter.native="makePill"
-              :rules="labelRules"
             ></v-text-field>
 
             <v-chip-group active-class="primary--text" column>
