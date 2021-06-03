@@ -1,5 +1,5 @@
 import { shallowMount, mount } from "@vue/test-utils";
-import HomePage from "@/views/homePage.vue";
+import HomePage from "@/views/HomePage.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
 

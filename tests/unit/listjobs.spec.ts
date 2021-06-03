@@ -12,4 +12,7 @@ describe("ViewJobs", () => {
         const wrapper = shallowMount(ListJobs);
         expect(wrapper.find("#list-jobs").exists()).toBe(true);
     });
+
 })
+
+

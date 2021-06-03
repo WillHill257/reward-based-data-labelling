@@ -48,7 +48,7 @@
             <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
-        <div v-if="isLoggedIn == true">
+        <div v-if="isLoggedIn()">
           <v-btn @click="isShowDialog = true" icon>
             <v-icon size="30">mdi-plus</v-icon>
           </v-btn>
@@ -62,9 +62,15 @@
 <script>
 import CreateJob from "@/components/CreateJob/CreateJob";
 import Vue from "vue";
+import { UserModule } from "@/store/modules/user";
 export default Vue.extend({
   name: "AppBar",
   components: { CreateJob },
+  computed: {
+    isLoggedIn() {
+      return UserModule.isLoggedIn;
+    },
+  },
   data: () => ({
     // these are the names and the directories for the buttons in the side bar.
     drawer: false,
