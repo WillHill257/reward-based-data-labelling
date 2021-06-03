@@ -1,17 +1,14 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { UserModule } from "../store/modules/user";
+import { UserModule } from "@/store/modules/user";
 import store from "@/store/index";
-import { getModule } from "vuex-module-decorators";
-//https://haxzie.com/architecting-http-clients-vue-js-network-layer
-console.log(UserModule);
-console.log(store);
 
+//https://haxzie.com/architecting-http-clients-vue-js-network-layer
 const httpClient = axios.create({
   baseURL: `http://${process.env.VUE_APP_BASE_URL}:${process.env.VUE_APP_API_PORT}/api`,
   timeout: 1000, // indicates, 1000ms ie. 1 second
   headers: {
-    "Content-Type": "application/json",
-  },
+    "Content-Type": "application/json"
+  }
 });
 
 const getAuthToken = () => localStorage.getItem("token");

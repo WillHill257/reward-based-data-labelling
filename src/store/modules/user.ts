@@ -34,9 +34,7 @@ class User extends VuexModule implements UserState {
   }
 
   get isLoggedIn(): boolean {
-    // return !!this.token;
-    //TODO: Fix this to use mutations
-    return !!localStorage.getItem("token");
+    return !!this.token;
   }
 
   //Mutations
@@ -77,7 +75,7 @@ class User extends VuexModule implements UserState {
         payload.password
       );
       console.log(response);
-      localStorage.setItem("token", this.token);
+      localStorage.setItem("token", response.data.token);
       this.context.commit("SIGNUP_USER", response.data);
     } catch (error) {
       // pass back the error message

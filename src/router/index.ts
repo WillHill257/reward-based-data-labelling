@@ -12,7 +12,6 @@ import store from "@/store";
 import { UserModule } from "@/store/modules/user";
 
 //const userMod = getModule(UserModule);
-console.log(store);
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -77,6 +76,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
+    console.log(UserModule.isLoggedIn);
     if (UserModule.isLoggedIn) {
       next();
       return;
