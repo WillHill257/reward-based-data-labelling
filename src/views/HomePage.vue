@@ -1,7 +1,7 @@
 <template>
   <section id="home">
     <h3>Welcome to jinx</h3>
-    <router-link to="/login">Go to Login</router-link>
+    <!-- <router-link to="/login">Go to Login</router-link> -->
 
     <section class="dashboard-row basic-grid">
       <DashboardList

@@ -43,12 +43,18 @@ const routes: Array<RouteConfig> = [
     path: "/home",
     name: "HomePage",
     component: HomePage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/viewjob",
     name: "ViewJob",
     component: ViewJob,
     props: true,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/createjob",
