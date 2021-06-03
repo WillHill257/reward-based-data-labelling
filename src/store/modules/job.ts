@@ -68,7 +68,6 @@ export default class JobModule extends VuexModule implements JobState {
       const response: any = await createJob(
         payload.title,
         payload.description,
-        payload.author,
         payload.labels,
         payload.rewards,
         payload.numLabellersRequired

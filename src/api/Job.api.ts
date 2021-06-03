@@ -5,7 +5,6 @@ const END_POINT = "/job";
 const createJob = (
   title: string,
   description: string,
-  author: string,
   labels: Array<string>,
   rewards: number,
   numLabellersRequired: number
@@ -14,7 +13,6 @@ const createJob = (
   const params = {
     title: title,
     description: description,
-    author: author,
     labels: labels,
     rewards: rewards,
     numLabellersRequired: numLabellersRequired,
