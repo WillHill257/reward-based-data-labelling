@@ -90,10 +90,6 @@ export default Vue.extend({
         params: { endpoint: this.endpoint },
       });
     },
-    // does not show jobs that are full
-    jobFull(labellers:Array<string>,  numLabellersRequired:number){
-      return labellers.length < numLabellersRequired
-    },
   },
 });
 </script>

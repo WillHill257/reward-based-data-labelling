@@ -14,7 +14,6 @@
           :type="job.type"
           :labels="job.labels"
           :description="job.description"
-          :jobfull="jobFull(job.labellers, job.numLabellersRequired)"
         ></JobSummaryCard>
       </div>
     </section>
@@ -46,9 +45,6 @@ export default Vue.extend({
   created () {
     const Jobmod = getModule(Job, this.$store)
 
-    Jobmod.insert({
-      data: { id: 1, name: 'John' }
-    })
   }, 
 
   // todo - define a prop so know what type of jobs to get
@@ -66,8 +62,8 @@ export default Vue.extend({
           labels: ["Labels"],
         },
       ],
-      labellers: [],
-      numLabellers: 0,
+      //labellers: [],
+      //numLabellers: 0,
       url: "",
       dataReady: false,
       store: new Vuex.Store({})
@@ -76,6 +72,7 @@ export default Vue.extend({
   async mounted() {
     // trigger the request to get the jobs from the server
     this.getJobsList(this.endpoint === "");
+
   },
 
   props: {
@@ -89,14 +86,6 @@ export default Vue.extend({
 
   methods: {
     // todo - currently force jobs to be of images, eventually becomes general type
-    // does not show jobs that are full
-    async jobFull(labellers:Array<string>,  numLabellersRequired:number){
-      //const entities = await this.store.$repo(Job).fresh({ id: 1, name: 'John Doe' })
-      if (labellers != null){
-        return labellers.length < numLabellersRequired
-      }
-      return true
-    },
     getJobsList(getAll: boolean) {
       // get all the available jobs from the server
       const config: any = {

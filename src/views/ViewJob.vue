@@ -8,7 +8,7 @@
         id="btnAccept"
         v-on:click.native="onAccept"
         pd-1
-        v-show = "jobfull"
+        v-show = "showAccept()"
         >Accept Job
       </v-btn>
     </v-row>
@@ -77,7 +77,7 @@ import JobModule from "@/store/modules/job";
 import { getModule } from "vuex-module-decorators";
 
 export default Vue.extend({
-  props: { jobID: String },
+  props: { jobID: String},
   data() {
     // these are the return vars used to the jobs information
     return {

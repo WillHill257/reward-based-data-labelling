@@ -22,7 +22,7 @@
     </v-card-text>
 
     <v-card-actions class="card-actions" flat>
-      <v-btn class="btn-view-job" color="blue" text @click="goToJob(id, jobfull)">
+      <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
         View job
       </v-btn>
     </v-card-actions>
@@ -45,7 +45,7 @@ export default Vue.extend({
   methods: {
     goToJob(jobId: string) {
       // view in-depth details for the job
-      this.$router.push({ name: "ViewJob", params: { jobID: jobId } });
+      this.$router.push({ name: "ViewJob", params: { jobID: jobId}});
     },
   },
 });
