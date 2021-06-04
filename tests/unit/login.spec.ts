@@ -20,22 +20,48 @@ describe("Testing basic visual aspects of login screen", () => {
     expect(wrapper.find("#login-password-input").exists()).toBe(true);
   });
 
-  // it("The password input is not visible", () => {
-  //     const wrapper = shallowMount(Login, {
-  //         mocks: { $http: axios },
-  //     });
-  //     expect(wrapper.find('.field__slot').exists()).is.equal(true)
-  // });
+  describe("testing buttons", () => 
+  {
+    test("checking login", () =>
+    {
+    const wrapper  = shallowMount(Login);
+
+    const loginOnClick = jest.fn();
+    wrapper.setMethods({
+      loginOnClick: loginOnClick
+    });
+
+    wrapper.vm.$data.email = "";
+    wrapper.vm.$data.password = "";
+    wrapper.find("#login-confirm-button").trigger("click");
+    expect(loginOnClick).toHaveBeenCalled();
+    })
+
+    test("checkin register", () =>
+    {
+      const mockRouter = {
+        push: jest.fn()
+      }
+    const wrapper  = shallowMount(Login,{
+      mocks: {
+        $router: mockRouter
+      }});
+
+
+
+    wrapper.vm.$data.email = "";
+    wrapper.vm.$data.password = "";
+    wrapper.find("#register-button").trigger("click");
+    expect(mockRouter.push).toHaveBeenCalled();
+    })
+
+  })
+
+  describe("testing errors",  () =>
+  {
+
+  });
+
 });
 
-// describe("Login function", function(){
-//   it("Should return and error if user not found", function(){
-//     const wrapper = shallowMount(Login, {
-//       mocks: { $http: axios },
-//     });
-//     expect(
-//       wrapper.find("#globalError").exists(),
-//       'Element with ID "globalError" is not found in the DOM, but is required.'
-//     ).to.equal(true);
-//   })
-// })
+

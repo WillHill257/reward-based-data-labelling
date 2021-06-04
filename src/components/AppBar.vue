@@ -9,7 +9,7 @@
       <v-spacer></v-spacer>
       <div v-if="isLoggedIn == false">
         <v-btn
-          id="AppBarButton"
+          id=""
           text
           rounded
           @click="$router.push({ name: 'Login' })"
@@ -72,6 +72,7 @@ export default Vue.extend({
     items: [], // items is populated in populateNavItems - we require route resolving
     isShowDialog: false,
     isLoggedIn: false,
+  
   }),
   watch: {
     group() {
