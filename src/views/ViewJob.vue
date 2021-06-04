@@ -8,7 +8,6 @@
         id="btnAccept"
         v-on:click.native="onAccept"
         pd-1
-        v-show = "showAccept()"
         >Accept Job
       </v-btn>
     </v-row>
