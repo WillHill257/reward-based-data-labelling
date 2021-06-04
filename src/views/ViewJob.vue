@@ -98,19 +98,18 @@ export default Vue.extend({
     const jobID = this.$props.jobID;
     this.url = "http://localhost:4000/api/job/" + jobID;
     // get request for the title and description
-    await Job.getJob(this.url)
-      .then((response) => {
-        this.jobTitle = response.data.title;
-        this.jobDescription = response.data.description;
-        this.labels = response.data.labels;
-        this.reward = response.data.rewards;
-        this.author = response.data.author;
-        this.labellers = response.data.labellers;
-        console.warn(response);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const response = await Job.getJob(this.url);
+    // .then((response) => {
+    this.jobTitle = response.data.title;
+    this.jobDescription = response.data.description;
+    this.labels = response.data.labels;
+    this.reward = response.data.rewards;
+    this.author = response.data.author;
+    this.labellers = response.data.labellers;
+    this.numLabellersRequired = response.data.numLabellersRequired;
+
+    this.changeAcceptVisibility(response.data.canAccept);
+
     // get request for the images with a specific ID
     Job.getImages("http://localhost:4000/api/images?jobID=" + jobID)
       .then((response) => {
@@ -181,6 +180,15 @@ export default Vue.extend({
         this.count = this.count + 1;
       }
     },
+
+    changeAcceptVisibility(isVisible) {
+      const button = document.getElementById("btnAccept");
+      if (isVisible) {
+        button.classList.remove("hidden");
+      } else {
+        button.classList.add("hidden");
+      }
+    },
   },
   //this is the observer class for the infinite scrolling
   watch: {
@@ -198,3 +206,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.hidden {
+  display: none;
+}
+</style>

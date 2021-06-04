@@ -53,6 +53,11 @@ const getAcceptedJobs = (): Promise<any> => {
   return httpClient.get("/job/accepted");
 };
 
+const getAllJobs = (): Promise<any> => {
+  // get all the jobs
+  return httpClient.get("/job");
+};
+
 export {
   createJob,
   getJob,
@@ -61,4 +66,5 @@ export {
   getAvailableJobs,
   getAuthoredJobs,
   getAcceptedJobs,
+  getAllJobs,
 };
