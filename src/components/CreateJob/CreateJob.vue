@@ -148,7 +148,10 @@ export default Vue.extend({
       labellerRules:[
         [(v: string) => !!v || "The number of labellers is required"],
         [(v: string) => (!isNaN(parseFloat(v))) || 'The number of labellers must be a numeric value'],
-        [(v: string) => (parseFloat(v) >= 1) || 'There must be at least one labeller'],
+        [
+          (v: string) =>
+            parseFloat(v) >= 1 || "There must be at least one labeller",
+        ],
       ],
       rewardRules:[
         [(v: string) => !!v || "Reward is required"],
