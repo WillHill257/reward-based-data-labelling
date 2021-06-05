@@ -72,8 +72,8 @@
 <script>
 import Vue from "vue";
 import router from "@/router";
-import JobModule from "@/store/modules/job";
-import { getModule } from "vuex-module-decorators";
+import { Job } from "@/store/modules/job";
+import { acceptJob } from "@/api/Job.api";
 
 export default Vue.extend({
   props: { jobID: String },
@@ -98,24 +98,20 @@ export default Vue.extend({
     const jobID = this.$props.jobID;
     this.url = "http://localhost:4000/api/job/" + jobID;
     // get request for the title and description
-    const jobMod = getModule(JobModule, this.$store);
-    await jobMod
-      .getJob(this.url)
-      .then((response) => {
-        this.jobTitle = response.data.title;
-        this.jobDescription = response.data.description;
-        this.labels = response.data.labels;
-        this.reward = response.data.rewards;
-        this.author = response.data.author;
-        this.labellers = response.data.labellers;
-        console.warn(response);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    const response = await Job.getJob(this.url);
+    // .then((response) => {
+    this.jobTitle = response.data.title;
+    this.jobDescription = response.data.description;
+    this.labels = response.data.labels;
+    this.reward = response.data.rewards;
+    this.author = response.data.author;
+    this.labellers = response.data.labellers;
+    this.numLabellersRequired = response.data.numLabellersRequired;
+
+    this.changeAcceptVisibility(response.data.canAccept);
+
     // get request for the images with a specific ID
-    jobMod
-      .getImages("http://localhost:4000/api/images?jobID=" + jobID)
+    Job.getImages("http://localhost:4000/api/images?jobID=" + jobID)
       .then((response) => {
         console.log(response);
         const fetchedImages = response.data.map(
@@ -154,17 +150,14 @@ export default Vue.extend({
       }
 
       const jobID = this.$props.jobID;
-      const addLabellerUrl = "http://localhost:4000/api/job/labeller/" + jobID;
 
-      console.log(acceptJobJson, addLabellerUrl);
-      this.axios
-        .put(addLabellerUrl, acceptJobJson)
+      acceptJob(jobID)
         .then((response) => {
           console.log(response);
-          alert(
-            "You have successfully accepted the job! \n Check it out in your dashboard"
-          );
-          router.push("/home");
+          // alert(
+          //   "You have successfully accepted the job! \n Check it out in your dashboard"
+          // );
+          router.push({ name: "HomePage" });
         })
         .catch((error) => {
           console.log(error);
@@ -187,6 +180,15 @@ export default Vue.extend({
         this.count = this.count + 1;
       }
     },
+
+    changeAcceptVisibility(isVisible) {
+      const button = document.getElementById("btnAccept");
+      if (isVisible) {
+        button.classList.remove("hidden");
+      } else {
+        button.classList.add("hidden");
+      }
+    },
   },
   //this is the observer class for the infinite scrolling
   watch: {
@@ -204,3 +206,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.hidden {
+  display: none;
+}
+</style>

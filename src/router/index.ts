@@ -43,12 +43,18 @@ const routes: Array<RouteConfig> = [
     path: "/home",
     name: "HomePage",
     component: HomePage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/viewjob",
     name: "ViewJob",
     component: ViewJob,
     props: true,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/createjob",
@@ -76,7 +82,6 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    console.log(UserModule.isLoggedIn);
     if (UserModule.isLoggedIn) {
       next();
       return;
