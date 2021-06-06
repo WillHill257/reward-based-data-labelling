@@ -52,6 +52,11 @@
           <v-btn @click="isShowDialog = true" icon>
             <v-icon size="30">mdi-plus</v-icon>
           </v-btn>
+
+          <!-- logout -->
+          <v-list-item @click="logout()">
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item>
         </div>
       </v-list>
     </v-navigation-drawer>
@@ -104,6 +109,10 @@ export default Vue.extend({
           link: this.$router.resolve({ name: "ListJobs" }).href,
         },
       ];
+    },
+
+    logout() {
+      UserModule.logoutUser();
     },
   },
   mounted() {
