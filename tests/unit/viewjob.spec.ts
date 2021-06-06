@@ -8,6 +8,8 @@ import Vuex, { Store } from "vuex";
 import * as Job from "@/api/Job.api";
 jest.mock("../../src/api/Job.api", () => ({
   getJob: jest.fn(),
+  getImages: jest.fn(),
+  acceptJob: jest.fn().mockImplementation(() => Promise.resolve()),
 }));
 
 const vuetify = new Vuetify();
@@ -60,10 +62,6 @@ describe("testing mounted", () => {
     const getJobSpy = jest.spyOn(Job, "getJob");
     getJobSpy.mockResolvedValue(mockJobResponse);
 
-    // const getImagesSpy = jest.spyOn(Job, "getImages");
-    // const mockImagesResponse = ["1", "2", "3"];
-    // getImagesSpy.mockResolvedValue(mockImagesResponse);
-
     const wrapper: any = shallowMount(viewJob, { vuetify });
     // const addImageSpy = jest.spyOn(wrapper.vm, "addImages");
     const changeAcceptVisibilitySpy = jest.spyOn(
@@ -82,7 +80,37 @@ describe("testing mounted", () => {
 
     //expect(addImageSpy).toHaveBeenCalled();
 
-    expect(changeAcceptVisibilitySpy).toHaveBeenCalled();
+    expect(changeAcceptVisibilitySpy).toHaveBeenCalledTimes(1);
+    // expect(fetchImageSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test("test fetch job error", async () => {
+    const mockJobResponse = {
+      data: {
+        error: "test error",
+      },
+    };
+
+    const getJobSpy = jest.spyOn(Job, "getJob");
+    getJobSpy.mockRejectedValue(mockJobResponse);
+
+    const wrapper: any = shallowMount(viewJob, { vuetify });
+    // const addImageSpy = jest.spyOn(wrapper.vm, "addImages");
+    const changeAcceptVisibilitySpy = jest.spyOn(
+      wrapper.vm,
+      "changeAcceptVisibility"
+    );
+
+    await flushPromises();
+    expect(wrapper.vm.$data.jobTitle).toEqual("");
+    expect(wrapper.vm.$data.jobDescription).toEqual("");
+    expect(wrapper.vm.$data.labels.length).toEqual(0);
+    expect(wrapper.vm.$data.reward).toEqual(0);
+    expect(wrapper.vm.$data.author).toEqual("");
+    expect(wrapper.vm.$data.labellers.length).toEqual(0);
+    expect(wrapper.vm.$data.numLabellersRequired).toEqual(0);
+    expect(changeAcceptVisibilitySpy).toHaveBeenCalledTimes(0);
+    // expect(fetchImageSpy).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -110,5 +138,59 @@ describe("testing methods", () => {
     wrapper.find("#btnAccept").trigger("click");
     expect(onAccept).toHaveBeenCalled();
     return expect(p).rejects.toBe("error");
+  });
+
+  test("fetch image function", async () => {
+    const getImagesSpy = jest.spyOn(Job, "getImages");
+    const mockImagesResponse = {
+      data: [
+        "./testImages/testImage0.png",
+        "./testImages/testImage1.png",
+        "./testImages/testImage2.png",
+      ],
+    };
+    getImagesSpy.mockResolvedValue(mockImagesResponse);
+
+    const wrapper: any = shallowMount(viewJob, { vuetify });
+    const addImagesSpy = jest.spyOn(wrapper.vm, "addImages");
+    await wrapper.vm.fetchImages();
+    expect(addImagesSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test("fetch image function error", async () => {
+    const getImagesSpy = jest.spyOn(Job, "getImages");
+    const mockImagesResponse = {
+      data: {
+        error: "test error",
+      },
+    };
+
+    getImagesSpy.mockResolvedValue(mockImagesResponse);
+
+    const wrapper: any = shallowMount(viewJob, { vuetify });
+    const addImagesSpy = jest.spyOn(wrapper.vm, "addImages");
+    await wrapper.vm.fetchImages();
+    expect(addImagesSpy).toHaveBeenCalledTimes(0);
+  });
+
+  test("on accept function called", () => {
+    const wrapper: any = shallowMount(viewJob, {
+      vuetify,
+      propsData: { jobID: "123" },
+    });
+    wrapper.vm.onAccept();
+    const acceptJobSpy = jest.spyOn(Job, "acceptJob");
+    acceptJobSpy.mockResolvedValue({ status: 200 });
+
+    expect(acceptJobSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test("test bottom visible", () => {
+    const wrapper: any = shallowMount(viewJob, {
+      vuetify,
+    });
+
+    const bottomVisible = wrapper.vm.bottomVisible();
+    expect(bottomVisible).toEqual(true || false);
   });
 });

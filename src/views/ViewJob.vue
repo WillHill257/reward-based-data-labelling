@@ -101,17 +101,18 @@ export default Vue.extend({
     // get request for the title and description
     const response = await Job.getJob(this.url);
     // .then((response) => {
-    this.jobTitle = response.data.title;
-    this.jobDescription = response.data.description;
-    this.labels = response.data.labels;
-    this.reward = response.data.rewards;
-    this.author = response.data.author;
-    this.labellers = response.data.labellers;
-    this.numLabellersRequired = response.data.numLabellersRequired;
+    if (!response.data.error) {
+      this.jobTitle = response.data.title;
+      this.jobDescription = response.data.description;
+      this.labels = response.data.labels;
+      this.reward = response.data.rewards;
+      this.author = response.data.author;
+      this.labellers = response.data.labellers;
+      this.numLabellersRequired = response.data.numLabellersRequired;
 
-    this.changeAcceptVisibility(response.data.canAccept);
-    await this.fetchImages();
-
+      this.changeAcceptVisibility(response.data.canAccept);
+      await this.fetchImages();
+    }
     // get request for the images with a specific ID
 
     //console.warn(temp);
@@ -122,19 +123,18 @@ export default Vue.extend({
       const imageResponse = await Job.getImages(
         "http://localhost:4000/api/images?jobID=" + jobID
       );
-
-      console.log(imageResponse);
-      const fetchedImages = imageResponse.data.map(
-        (image) =>
-          "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
-      );
-      console.log(this.images);
-      const temp = [];
-      for (let i = 0; i < fetchedImages.length; i++) {
-        temp.push(fetchedImages.splice(0, 12));
+      if (!imageResponse.data.error) {
+        const fetchedImages = imageResponse.data.map(
+          (image) =>
+            "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
+        );
+        const temp = [];
+        for (let i = 0; i < fetchedImages.length; i++) {
+          temp.push(fetchedImages.splice(0, 12));
+        }
+        this.paginatedImages = temp;
+        this.addImages();
       }
-      this.paginatedImages = temp;
-      this.addImages();
     },
     // Accept Button
     onAccept() {
