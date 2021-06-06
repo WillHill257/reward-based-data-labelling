@@ -7,9 +7,9 @@
         @click="$router.push({ name: 'HomePage' })"
       />
       <v-spacer></v-spacer>
-      <div v-if="isLoggedIn == false">
+      <div v-if="!isLoggedIn">
         <v-btn
-          id="AppBarButton"
+          id="appbar-login"
           text
           rounded
           @click="$router.push({ name: 'Login' })"
@@ -17,7 +17,7 @@
           Login
         </v-btn>
         <v-btn
-          id="AppBarButton"
+          id="appbar-register"
           text
           rounded
           @click="$router.push({ name: 'Signup' })"
@@ -48,7 +48,7 @@
             <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
-        <div v-if="isLoggedIn()">
+        <div v-if="isLoggedIn">
           <v-btn @click="isShowDialog = true" icon>
             <v-icon size="30">mdi-plus</v-icon>
           </v-btn>
@@ -77,7 +77,6 @@ export default Vue.extend({
     group: null,
     items: [], // items is populated in populateNavItems - we require route resolving
     isShowDialog: false,
-    isLoggedIn: false,
   }),
   watch: {
     group() {
