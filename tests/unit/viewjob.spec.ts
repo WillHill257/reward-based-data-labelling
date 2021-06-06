@@ -8,7 +8,6 @@ import Vuex, { Store } from "vuex";
 import * as Job from "@/api/Job.api";
 jest.mock("../../src/api/Job.api", () => ({
   getJob: jest.fn(),
-  getImages: jest.fn(),
 }));
 
 const vuetify = new Vuetify();
@@ -54,17 +53,23 @@ describe("testing mounted", () => {
         author: "test author",
         labellers: ["testLabellers"],
         numLabellersRequired: 3,
+        canAccept: true,
       },
     };
 
     const getJobSpy = jest.spyOn(Job, "getJob");
     getJobSpy.mockResolvedValue(mockJobResponse);
 
-    const getImagesSpy = jest.spyOn(Job, "getImages");
-    const mockImagesResponse = ["1", "2", "3"];
-    getImagesSpy.mockResolvedValue(mockImagesResponse);
+    // const getImagesSpy = jest.spyOn(Job, "getImages");
+    // const mockImagesResponse = ["1", "2", "3"];
+    // getImagesSpy.mockResolvedValue(mockImagesResponse);
 
     const wrapper: any = shallowMount(viewJob, { vuetify });
+    // const addImageSpy = jest.spyOn(wrapper.vm, "addImages");
+    const changeAcceptVisibilitySpy = jest.spyOn(
+      wrapper.vm,
+      "changeAcceptVisibility"
+    );
 
     await flushPromises();
     expect(wrapper.vm.$data.jobTitle).toEqual("testTitle");
@@ -75,8 +80,9 @@ describe("testing mounted", () => {
     expect(wrapper.vm.$data.labellers).toEqual(["testLabellers"]);
     expect(wrapper.vm.$data.numLabellersRequired).toEqual(3);
 
-    const addImageSpy = jest.spyOn(wrapper.vm, "addImages");
-    expect(addImageSpy).toHaveBeenCalled();
+    //expect(addImageSpy).toHaveBeenCalled();
+
+    expect(changeAcceptVisibilitySpy).toHaveBeenCalled();
   });
 });
 
