@@ -6,7 +6,7 @@
         large
         rounded
         id="btnAccept"
-        v-on:click.native="onAccept"
+        @click.native="onAccept"
         pd-1
         >Accept Job
       </v-btn>
@@ -135,19 +135,19 @@ export default Vue.extend({
     // Accept Button
     onAccept() {
       //TODO get the users actaul userID
-      var acceptJobJson = {
-        user: "60a62a9fab8896534b7a8d23",
-      };
+      // var acceptJobJson = {
+      //   user: "60a62a9fab8896534b7a8d23",
+      // };
 
-      if (this.labellers.includes("60a62a9fab8896534b7a8d23")) {
-        alert("You have already accepted this job!");
-        return;
-      }
+      // if (this.labellers.includes("60a62a9fab8896534b7a8d23")) {
+      //   alert("You have already accepted this job!");
+      //   return;
+      // }
 
-      if (this.author == "60a62a9fab8896534b7a8d23") {
-        alert("You cannot accept a job you have created");
-        return;
-      }
+      // if (this.author == "60a62a9fab8896534b7a8d23") {
+      //   alert("You cannot accept a job you have created");
+      //   return;
+      // }
 
       const jobID = this.$props.jobID;
 
