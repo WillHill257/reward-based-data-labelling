@@ -103,12 +103,6 @@ test("testing module functions", async () =>{
   
 })
 
-test("testing rules",async ()=>{
-  const wrapper:any = shallowMount(Login);
-  wrapper.vm.$data.password = "";
-  console.log(wrapper.find({div:"#login-password-input"}))
-
-})
 
 
   })

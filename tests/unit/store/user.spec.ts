@@ -50,7 +50,7 @@ describe("User Module Mutations", () => {
     expect(service.email).toBe(user.email);
   });
 
-  it("logs in user", () => {
+  it("logs in user",  () => {
     // get mock store and create mock user
     const service = factory();
     const user: UserState = {
@@ -62,6 +62,7 @@ describe("User Module Mutations", () => {
 
     // mutate
     service.LOGIN_USER(user);
+
 
     // check the fields are the correct values
     expect(service.firstName).toBe(user.firstName);
