@@ -112,26 +112,23 @@ export default Vue.extend({
     this.changeAcceptVisibility(response.data.canAccept);
 
     // get request for the images with a specific ID
-    await Job.getImages("http://localhost:4000/api/images?jobID=" + jobID)
-      .then((response) => {
-        console.log(response);
-        const fetchedImages = response.data.map(
-          (image) =>
-            "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
-        );
-        console.log(this.images);
-        const temp = [];
-        for (let i = 0; i < fetchedImages.length; i++) {
-          temp.push(fetchedImages.splice(0, 12));
-        }
-        this.paginatedImages = temp;
-        console.log("this is called");
-        this.addImages();
-        //console.warn(temp);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const imageResponse = await Job.getImages(
+      "http://localhost:4000/api/images?jobID=" + jobID
+    );
+
+    console.log(imageResponse);
+    const fetchedImages = imageResponse.data.map(
+      (image) =>
+        "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
+    );
+    console.log(this.images);
+    const temp = [];
+    for (let i = 0; i < fetchedImages.length; i++) {
+      temp.push(fetchedImages.splice(0, 12));
+    }
+    this.paginatedImages = temp;
+    this.addImages();
+    //console.warn(temp);
   },
   methods: {
     // Accept Button
