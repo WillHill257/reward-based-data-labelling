@@ -6,7 +6,7 @@
         large
         rounded
         id="btnAccept"
-        v-on:click.native="onAccept"
+        @click.native="onAccept"
         pd-1
         >Accept Job
       </v-btn>
@@ -91,6 +91,7 @@ export default Vue.extend({
       reward: 0,
       author: "",
       labellers: [],
+      numLabellersRequired: 0,
     };
   },
   async mounted() {
@@ -100,54 +101,57 @@ export default Vue.extend({
     // get request for the title and description
     const response = await Job.getJob(this.url);
     // .then((response) => {
-    this.jobTitle = response.data.title;
-    this.jobDescription = response.data.description;
-    this.labels = response.data.labels;
-    this.reward = response.data.rewards;
-    this.author = response.data.author;
-    this.labellers = response.data.labellers;
-    this.numLabellersRequired = response.data.numLabellersRequired;
+    if (!response.data.error) {
+      this.jobTitle = response.data.title;
+      this.jobDescription = response.data.description;
+      this.labels = response.data.labels;
+      this.reward = response.data.rewards;
+      this.author = response.data.author;
+      this.labellers = response.data.labellers;
+      this.numLabellersRequired = response.data.numLabellersRequired;
 
-    this.changeAcceptVisibility(response.data.canAccept);
-
+      this.changeAcceptVisibility(response.data.canAccept);
+      await this.fetchImages();
+    }
     // get request for the images with a specific ID
-    Job.getImages("http://localhost:4000/api/images?jobID=" + jobID)
-      .then((response) => {
-        console.log(response);
-        const fetchedImages = response.data.map(
+
+    //console.warn(temp);
+  },
+  methods: {
+    async fetchImages() {
+      const jobID = this.$props.jobID;
+      const imageResponse = await Job.getImages(
+        "http://localhost:4000/api/images?jobID=" + jobID
+      );
+      if (!imageResponse.data.error) {
+        const fetchedImages = imageResponse.data.map(
           (image) =>
             "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
         );
-        console.log(this.images);
         const temp = [];
         for (let i = 0; i < fetchedImages.length; i++) {
           temp.push(fetchedImages.splice(0, 12));
         }
         this.paginatedImages = temp;
         this.addImages();
-        //console.warn(temp);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-  methods: {
+      }
+    },
     // Accept Button
     onAccept() {
       //TODO get the users actaul userID
-      var acceptJobJson = {
-        user: "60a62a9fab8896534b7a8d23",
-      };
+      // var acceptJobJson = {
+      //   user: "60a62a9fab8896534b7a8d23",
+      // };
 
-      if (this.labellers.includes("60a62a9fab8896534b7a8d23")) {
-        alert("You have already accepted this job!");
-        return;
-      }
+      // if (this.labellers.includes("60a62a9fab8896534b7a8d23")) {
+      //   alert("You have already accepted this job!");
+      //   return;
+      // }
 
-      if (this.author == "60a62a9fab8896534b7a8d23") {
-        alert("You cannot accept a job you have created");
-        return;
-      }
+      // if (this.author == "60a62a9fab8896534b7a8d23") {
+      //   alert("You cannot accept a job you have created");
+      //   return;
+      // }
 
       const jobID = this.$props.jobID;
 
