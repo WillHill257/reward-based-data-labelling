@@ -91,6 +91,7 @@ export default Vue.extend({
       reward: 0,
       author: "",
       labellers: [],
+      numLabellersRequired: 0,
     };
   },
   async mounted() {
@@ -111,7 +112,7 @@ export default Vue.extend({
     this.changeAcceptVisibility(response.data.canAccept);
 
     // get request for the images with a specific ID
-    Job.getImages("http://localhost:4000/api/images?jobID=" + jobID)
+    await Job.getImages("http://localhost:4000/api/images?jobID=" + jobID)
       .then((response) => {
         console.log(response);
         const fetchedImages = response.data.map(
@@ -124,6 +125,7 @@ export default Vue.extend({
           temp.push(fetchedImages.splice(0, 12));
         }
         this.paginatedImages = temp;
+        console.log("this is called");
         this.addImages();
         //console.warn(temp);
       })
