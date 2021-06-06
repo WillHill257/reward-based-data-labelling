@@ -1,16 +1,15 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Signup from "@/views/Sign_up.vue";
-
 import Vue from "vue";
 import Vuetify from "vuetify";
-import { getModule, VuexModule } from "vuex-module-decorators";
-import user from "@/store/modules/user";
 import Vuex from "vuex";
-import { signupUser } from "@/api/Users.api";
-import UserModule from "@/store/modules/user";
-const vuetify = new Vuetify();
+import VueRouter from "vue-router";
+import { UserModule } from "@/store/modules/user";
 
+
+const vuetify = new Vuetify();
 Vue.use(Vuetify);
+
 describe("Testing sign up screen", () => {
   describe("when loaded", () => {
     test("should have all the necessary UI elements", () => {
@@ -24,7 +23,22 @@ describe("Testing sign up screen", () => {
       expect(wrapper.find("#signup-cancel-button").exists()).toBe(true);
     });
   });
-  describe("checking buttons", () => {
+  describe("checking buttons",  () => {
+
+    // test("Checking signup-cancel-button", async () => {
+    //   const mockRouter = {
+    //     push: jest.fn()
+    //   }
+    //   const wrapper: any = shallowMount(Signup, {
+    //     mocks: {
+    //       $router: mockRouter
+    //     }
+    //   })
+
+    //   await wrapper.find("#signup-cancel-button").trigger("click");
+    //   expect(mockRouter.push).toHaveBeenCalled();
+    // });
+
     test("Checking signup-confirm-button", () => {
       const wrapper = shallowMount(Signup);
       const onSignUp = jest.fn();
@@ -35,29 +49,12 @@ describe("Testing sign up screen", () => {
       expect(onSignUp).toHaveBeenCalled();
     });
 
-    test("Checking signup-cancel-button", () => {
-      const mockRouter = {
-        push: jest.fn()
-      }
-      const wrapper = shallowMount(Signup, {
-        mocks: {
-          $router: mockRouter
-        }
-      });
 
-      wrapper.find("#signup-cancel-button").trigger("click");
-      expect(mockRouter.push).toHaveBeenCalled();
-    });
-  });
+   });
   describe("testing errors", () => {
-    const mockRouter = {
-      push: jest.fn()
-    }
-    const wrapper = shallowMount(Signup, {
-      mocks: {
-        $router: mockRouter
-      }
-    });
+    
+    const wrapper: any = shallowMount(Signup, {vuetify});
+    const setErrorAlertSpy = jest.spyOn(wrapper.vm, "setErrorAlert");
 
     wrapper.vm.$data.firstName = "";
     wrapper.vm.$data.surname = "";
@@ -76,28 +73,32 @@ describe("Testing sign up screen", () => {
       wrapper.vm.$data.confirmPassword = "password1";
 
       wrapper.find("#signup-confirm-button").trigger("click");
+      expect(setErrorAlertSpy).toHaveBeenCalledTimes(1)
       expect(wrapper.vm.$data.errorAlert).toEqual("");
 
       wrapper.vm.$data.errorAlert = "";
       wrapper.vm.$data.email = "fnamegmail.com";
       wrapper.find("#signup-confirm-button").trigger("click");
+      expect(setErrorAlertSpy).toHaveBeenCalledTimes(2)
       expect(wrapper.vm.$data.errorAlert).toEqual("Email is invalid");
       wrapper.vm.$data.email = "fname@gmail.com";
 
       wrapper.vm.$data.errorAlert = "";
       wrapper.vm.$data.password = "password";
       wrapper.find("#signup-confirm-button").trigger("click");
+      expect(setErrorAlertSpy).toHaveBeenCalledTimes(3)
       expect(wrapper.vm.$data.errorAlert).toEqual("Passwords do not match");
 
       wrapper.vm.$data.password = "pwrd";
       wrapper.vm.$data.confirmPassword = "pwrd";
       wrapper.find("#signup-confirm-button").trigger("click");
+      expect(setErrorAlertSpy).toHaveBeenCalledTimes(4)
       expect(wrapper.vm.$data.errorAlert).toEqual("Password too short");
     });
   });
 
 
-  describe("testing usermodule", () => {
+  describe("testing usermodule",async  () => {
     const localVue = createLocalVue();
     localVue.use(Vuex);
     const modules = {
@@ -110,20 +111,17 @@ describe("Testing sign up screen", () => {
       } 
     };
 
-    
     const store = new Vuex.Store({modules});
-    const wrapper = shallowMount(Signup,{localVue,store});
-
+    const wrapper:any = shallowMount(Signup,{localVue,store});
+    const signup = jest.spyOn(UserModule, "signupUser")
+    wrapper.vm.validate = jest.fn().mockReturnValue(true)
     wrapper.vm.$data.firstName = "fname";
     wrapper.vm.$data.surname = "sname";
     wrapper.vm.$data.email = "fname@gmail.com";
     wrapper.vm.$data.password = "password1";
     wrapper.vm.$data.confirmPassword = "password1";
-    
-    it("when button is pressed , user is signed up", async () => {
-     wrapper.find("#signup-confirm-button").trigger("click");
-     await modules.UserModule.actions.signupUser();
-     expect(modules.UserModule.actions.signupUser).toHaveBeenCalled();
+    await wrapper.find("#signup-confirm-button").trigger("click");
+    expect(signup).toHaveBeenCalled();
     });
-  })
+
 });

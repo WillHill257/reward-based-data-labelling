@@ -1,7 +1,10 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, createLocalVue } from "@vue/test-utils";
 import CreateJob from "@/components/CreateJob/CreateJob.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import Vuex from "vuex"
+import  {Job} from "@/store/modules/job";
+
 const vuetify = new Vuetify();
 
 Vue.use(Vuetify);
@@ -70,5 +73,36 @@ describe("CreateJob", () => {
       expect(wrapper.vm.$data.errorMessage).toEqual("No files to upload");
     });
 
+  });
+
+  describe("Store", () => {
+
+    it("Job module", async () => {
+      const modules = {
+        Job: {
+          state: {},
+          actions: {
+            createJob: jest.fn()
+          },
+          namespaced: true
+        } 
+      };
+      const localVue = createLocalVue();
+      localVue.use(Vuex);
+
+      const store = new Vuex.Store({modules});
+      const wrapper:any = shallowMount(CreateJob,{localVue,store,vuetify});
+      const jobSpy = jest.spyOn(Job, "createJob")
+      //enter data
+      wrapper.vm.$data.title = "Something"
+      wrapper.vm.$data.description = "Something"
+      wrapper.vm.$data.reward = "2"
+      wrapper.vm.$data.labelData = "a, b, c"
+      wrapper.vm.$data.selectedNumber = "2"
+      wrapper.vm.$data.filesUploaded= ["1", "2"]
+      await wrapper.find("#submit-input").trigger("click");
+      
+      expect(jobSpy).toHaveBeenCalled();
+    });
   });
 });

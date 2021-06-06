@@ -37,6 +37,7 @@
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               @click:append="showPassword = !showPassword"
             ></v-text-field>
+            
           </v-form>
         </v-card-text>
         <v-divider></v-divider>
@@ -70,11 +71,15 @@ export default Vue.extend({
     showPassword: false,
     Error: "",
     alert: false,
+
+    
   }),
 
   computed: {
+  
     form(): VueForm {
       // set form type
+      
       return this.$refs.form as VueForm;
     },
   },
@@ -94,6 +99,7 @@ export default Vue.extend({
         //const userMod = getModule(UserModule, this.$store);
         UserModule.loginUser(user)
           .then(() => {
+
             // successful login - navigate to homepage, user object is in store
             this.$router.push({ name: "HomePage" });
           })
