@@ -41,7 +41,13 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="info" @click.native ="loginOnClick" class = "login-click" id = "login-click">Login</v-btn>
+          <v-btn
+            color="info"
+            @click.native="loginOnClick"
+            class="login-click"
+            id="login-click"
+            >Login</v-btn
+          >
           <v-btn color="info" @click="$router.push({ name: 'Signup' })"
             >Register</v-btn
           >
@@ -51,7 +57,7 @@
   </v-app>
 </template>
 
-<script lang="ts"> 
+<script lang="ts">
 import { VueForm } from "../componentTypes";
 import { getModule } from "vuex-module-decorators";
 import { UserModule } from "@/store/modules/user";
@@ -75,6 +81,7 @@ export default Vue.extend({
   computed: {
     form(): VueForm {
       // set form type
+
       return this.$refs.form as VueForm;
     },
   },

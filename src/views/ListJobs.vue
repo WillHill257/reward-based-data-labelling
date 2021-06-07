@@ -6,7 +6,7 @@
     <h1 v-else>Jobs</h1>
 
     <section class="basic-grid">
-      <div v-for="job in jobs" :key="job._id" >
+      <div v-for="job in jobs" :key="job._id">
         <JobSummaryCard
           class="card"
           :id="job._id"
@@ -30,28 +30,24 @@
 <script lang="ts">
 import goBack from "@/components/BackButton.vue";
 
-import axios from "axios";
 import Vue from "vue";
 import JobSummaryCard from "@/components/JobSummaryCard.vue";
-import Job from '@/store/modules/job';
-import { getModule } from "vuex-module-decorators";
-import Vuex from "vuex";
+import {
+  getAvailableJobs,
+  getAuthoredJobs,
+  getAcceptedJobs,
+  getAllJobs,
+} from "@/api/Job.api";
 
 export default Vue.extend({
   components: {
     goBack,
     JobSummaryCard,
   },
-  created () {
-    const Jobmod = getModule(Job, this.$store)
-
-  }, 
 
   // todo - define a prop so know what type of jobs to get
 
-
   data() {
-     
     return {
       jobs: [
         {
@@ -66,13 +62,8 @@ export default Vue.extend({
       //numLabellers: 0,
       url: "",
       dataReady: false,
-      store: new Vuex.Store({})
+      // store: new Vuex.Store({}),
     };
-  },
-  async mounted() {
-    // trigger the request to get the jobs from the server
-    this.getJobsList(this.endpoint === "");
-
   },
 
   props: {
@@ -86,36 +77,39 @@ export default Vue.extend({
 
   methods: {
     // todo - currently force jobs to be of images, eventually becomes general type
-    getJobsList(getAll: boolean) {
-      // get all the available jobs from the server
-      const config: any = {
-        method: "get",
-        url: getAll
-          ? "http://localhost:4000/api/job/"
-          : "http://localhost:4000/api/job/" +
-            this.endpoint +
-            "/" +
-            this.userId,
-        headers: {},
-      };
 
-      axios(config)
-        .then((response) => {
-          // let temp: Array<any>;
+    handleResponseList(list: Array<any>) {
+      // assign the job data type
+      for (let i = 0; i < list.length; i++) {
+        list[i].type = "Image";
+      }
 
-          this.jobs = response.data;
-          for (let i = 0; i < this.jobs.length; i++) {
-            this.jobs[i].type = "Image";
-          }
-
-          // if (endpoint === "available") this.available = temp;
-          // else if (endpoint === "authored") this.authored = temp;
-          // else this.accepted = temp;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      return list;
     },
+  },
+  mounted() {
+    // trigger the request to get the jobs from the server
+    switch (this.endpoint) {
+      case "authored":
+        getAuthoredJobs().then((response: any) => {
+          this.jobs = this.handleResponseList(response.data);
+        });
+        break;
+      case "accepted":
+        getAcceptedJobs().then((response: any) => {
+          this.jobs = this.handleResponseList(response.data);
+        });
+        break;
+      case "available":
+        getAvailableJobs().then((response: any) => {
+          this.jobs = this.handleResponseList(response.data);
+        });
+        break;
+      default:
+        getAllJobs().then((response: any) => {
+          this.jobs = this.handleResponseList(response.data);
+        });
+    }
   },
 });
 </script>

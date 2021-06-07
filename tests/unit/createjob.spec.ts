@@ -3,10 +3,7 @@ import CreateJob from "@/components/CreateJob/CreateJob.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import Vuex from "vuex";
-import JobModule from "@/store/modules/job";
-//import {createUser} from "@/api/Job.api";
 import { Job } from "@/store/modules/job";
-import { getModule } from "vuex-module-decorators";
 
 const vuetify = new Vuetify();
 
@@ -16,7 +13,7 @@ describe("CreateJob", () => {
     propsData: {
       isShowDialog: false,
     },
-    vuetify
+    vuetify,
   });
   describe("When loaded", () => {
     it("should be vue instance", () => {
@@ -41,22 +38,22 @@ describe("CreateJob", () => {
   describe("Checking buttons", () => {
     test("Close function called when discard button is clicked", () => {
       const wrapper = shallowMount(CreateJob, {
-        vuetify
+        vuetify,
       });
       const closeDialog = jest.fn();
       wrapper.setMethods({
-        closeDialog: closeDialog
+        closeDialog: closeDialog,
       });
       wrapper.find("#discard-input").trigger("click");
       expect(closeDialog).toHaveBeenCalled();
     });
     test("Submit function called when submit button is clicked", () => {
       const wrapper = shallowMount(CreateJob, {
-        vuetify
+        vuetify,
       });
       const onSubmitClicked = jest.fn();
       wrapper.setMethods({
-        onSubmitClicked: onSubmitClicked
+        onSubmitClicked: onSubmitClicked,
       });
       wrapper.find("#submit-input").trigger("click");
       expect(onSubmitClicked).toHaveBeenCalled();
@@ -65,53 +62,54 @@ describe("CreateJob", () => {
 
   describe("When loaded", () => {
     test("Checking errors throw correctly", () => {
-      const wrapper:any = shallowMount(CreateJob, {
-        vuetify
+      const wrapper: any = shallowMount(CreateJob, {
+        vuetify,
       });
       //title missing
-      wrapper.vm.$data.title = ""
-      wrapper.vm.onSubmitClicked()
+      wrapper.vm.$data.title = "";
+      wrapper.vm.onSubmitClicked();
       expect(wrapper.vm.$data.errorMessage).toEqual("Title required");
       //description missing
-      wrapper.vm.$data.title = "Something"
-      wrapper.vm.$data.description = ""
-      wrapper.vm.onSubmitClicked()
+      wrapper.vm.$data.title = "Something";
+      wrapper.vm.$data.description = "";
+      wrapper.vm.onSubmitClicked();
       expect(wrapper.vm.$data.errorMessage).toEqual("Description required");
       //No files uploaded
-      wrapper.vm.$data.description = "Something"
-      wrapper.vm.$data.filesUploaded = []
-      wrapper.vm.onSubmitClicked()
+      wrapper.vm.$data.description = "Something";
+      wrapper.vm.$data.filesUploaded = [];
+      wrapper.vm.onSubmitClicked();
       expect(wrapper.vm.$data.errorMessage).toEqual("No files to upload");
       //labels missing
-      wrapper.vm.$data.description = "Something"
-      wrapper.vm.$data.filesUploaded = [""]
-      wrapper.vm.$data.labelArray = []
-      wrapper.vm.onSubmitClicked()
+      wrapper.vm.$data.description = "Something";
+      wrapper.vm.$data.filesUploaded = [""];
+      wrapper.vm.$data.labelArray = [];
+      wrapper.vm.onSubmitClicked();
       expect(wrapper.vm.$data.errorMessage).toEqual("Label(s) required");
       //number of labellers left empty
-      wrapper.vm.$data.description = "Something"
-      wrapper.vm.$data.filesUploaded = [""]
-      wrapper.vm.$data.labelArray = ["a"]
-      wrapper.vm.$data.selectedNumber = ""
-      wrapper.vm.onSubmitClicked()
-      expect(wrapper.vm.$data.errorMessage).toEqual("Please select number of labellers required");
+      wrapper.vm.$data.description = "Something";
+      wrapper.vm.$data.filesUploaded = [""];
+      wrapper.vm.$data.labelArray = ["a"];
+      wrapper.vm.$data.selectedNumber = "";
+      wrapper.vm.onSubmitClicked();
+      expect(wrapper.vm.$data.errorMessage).toEqual(
+        "Please select number of labellers required"
+      );
       //successful request - no error message
-      wrapper.vm.$data.description = "Something"
-      wrapper.vm.$data.filesUploaded = [""]
-      wrapper.vm.$data.labelArray = ["a"]
-      wrapper.vm.$data.selectedNumber = 2
-      wrapper.vm.onSubmitClicked()
+      wrapper.vm.$data.description = "Something";
+      wrapper.vm.$data.filesUploaded = [""];
+      wrapper.vm.$data.labelArray = ["a"];
+      wrapper.vm.$data.selectedNumber = 2;
+      wrapper.vm.onSubmitClicked();
       let expectedJson = {
-        title: wrapper.vm.$data.title, 
+        title: wrapper.vm.$data.title,
         description: wrapper.vm.$data.description,
         labels: wrapper.vm.$data.labelArray,
         rewards: wrapper.vm.$data.reward,
         numLabellersRequired: wrapper.vm.$data.selectedNumber,
-      }
+      };
       expect(wrapper.vm.$data.jobJson).toEqual(expectedJson);
       //expect(true).toEqual(true);
     });
-
   });
 
   describe("Validation", () => {
@@ -138,9 +136,8 @@ describe("CreateJob", () => {
       expect(wrapper.vm.$data.rewardRules).toEqual("Reward is required");
     });*/
 
-  
     test("Checking errors throw correctly when empty", () => {
-      const wrapper:any = shallowMount(CreateJob, {
+      const wrapper: any = shallowMount(CreateJob, {
         vuetify,
         propsData: {
           descriptionRules: [(v: string) => !!v || "Description is required"],
@@ -170,12 +167,12 @@ describe("CreateJob", () => {
           ],
         },
       });
-      wrapper.vm.$data.title = ""
-      wrapper.vm.$data.description = ""
-      wrapper.vm.$data.reward = ""
-      wrapper.vm.$data.labelData = ""
-      wrapper.vm.$data.selectedNumber = ""
-      wrapper.vm.onSubmitClicked()
+      wrapper.vm.$data.title = "";
+      wrapper.vm.$data.description = "";
+      wrapper.vm.$data.reward = "";
+      wrapper.vm.$data.labelData = "";
+      wrapper.vm.$data.selectedNumber = "";
+      wrapper.vm.onSubmitClicked();
       expect(wrapper.vm.$data.descriptionRules).toBeTruthy();
       expect(wrapper.vm.$data.titleRules).toBeTruthy();
       expect(wrapper.vm.$data.labellerRules).toBeTruthy();
@@ -188,16 +185,15 @@ describe("CreateJob", () => {
     });
 
     test("Checking errors throw correctly numeric values out of bounds", () => {
-      const wrapper:any = shallowMount(CreateJob, {
+      const wrapper: any = shallowMount(CreateJob, {
         vuetify,
-        
       });
-      wrapper.vm.$data.title = "Something"
-      wrapper.vm.$data.description = "Something"
-      wrapper.vm.$data.reward = "-1"
-      wrapper.vm.$data.labelData = "Something"
-      wrapper.vm.$data.selectedNumber = "-1"
-      wrapper.vm.onSubmitClicked()
+      wrapper.vm.$data.title = "Something";
+      wrapper.vm.$data.description = "Something";
+      wrapper.vm.$data.reward = "-1";
+      wrapper.vm.$data.labelData = "Something";
+      wrapper.vm.$data.selectedNumber = "-1";
+      wrapper.vm.onSubmitClicked();
       /*const labelRules = [
       [[expect.]]
       ]
@@ -209,15 +205,15 @@ describe("CreateJob", () => {
     });
 
     test("Checking errors throw correctly for non-numeric values", () => {
-      const wrapper:any = shallowMount(CreateJob, {
-        vuetify
+      const wrapper: any = shallowMount(CreateJob, {
+        vuetify,
       });
-      wrapper.vm.$data.title = "Something"
-      wrapper.vm.$data.description = "Something"
-      wrapper.vm.$data.reward = "a"
-      wrapper.vm.$data.labelData = "Something"
-      wrapper.vm.$data.selectedNumber = "a"
-      wrapper.vm.onSubmitClicked()
+      wrapper.vm.$data.title = "Something";
+      wrapper.vm.$data.description = "Something";
+      wrapper.vm.$data.reward = "a";
+      wrapper.vm.$data.labelData = "Something";
+      wrapper.vm.$data.selectedNumber = "a";
+      wrapper.vm.onSubmitClicked();
       expect(wrapper.vm.$data.labellerRules).toBeTruthy();
       expect(wrapper.vm.$data.rewardRules).toBeTruthy();
       /*expect(wrapper.vm.$data.labellerRules).toEqual("The number of labellers must be a numeric value");
@@ -236,20 +232,20 @@ describe("CreateJob", () => {
 
   describe("Onclose dialogue", () => {
     test("Checking dialogue closes on sumbit", () => {
-      const wrapper:any = shallowMount(CreateJob, {
-        vuetify
+      const wrapper: any = shallowMount(CreateJob, {
+        vuetify,
       });
-      wrapper.vm.$data.title = "Something"
-      wrapper.vm.$data.description = "Something"
-      wrapper.vm.$data.reward = "2"
-      wrapper.vm.$data.labelData = "a, b, c"
-      wrapper.vm.$data.selectedNumber = "2"
-      wrapper.vm.onSubmitClicked()
+      wrapper.vm.$data.title = "Something";
+      wrapper.vm.$data.description = "Something";
+      wrapper.vm.$data.reward = "2";
+      wrapper.vm.$data.labelData = "a, b, c";
+      wrapper.vm.$data.selectedNumber = "2";
+      wrapper.vm.onSubmitClicked();
       const closeDialog = jest.fn();
       const onSubmitClicked = jest.fn();
       wrapper.setMethods({
         closeDialog: closeDialog,
-        onSubmitClicked: onSubmitClicked
+        onSubmitClicked: onSubmitClicked,
       });
       wrapper.find("#submit-input").trigger("click");
       wrapper.find("#discard-input").trigger("click");
@@ -258,20 +254,20 @@ describe("CreateJob", () => {
     });
 
     it("the onCloseDiagogue function is called", () => {
-      const wrapper = shallowMount(CreateJob, {vuetify});
+      const wrapper = shallowMount(CreateJob, { vuetify });
       const closeDialog = jest.fn();
       wrapper.setMethods({
-        closeDialog: closeDialog
+        closeDialog: closeDialog,
       });
       wrapper.find("#discard-input").trigger("click");
       expect(closeDialog).toHaveBeenCalled();
     });
 
     it("things are reset", () => {
-      const wrapper = shallowMount(CreateJob, {vuetify});
+      const wrapper = shallowMount(CreateJob, { vuetify });
       const closeDialog = jest.fn();
       wrapper.setMethods({
-        closeDialog: closeDialog
+        closeDialog: closeDialog,
       });
       wrapper.find("#submit-input").trigger("click");
       expect(wrapper.vm.$data.title).toBe("");
@@ -281,7 +277,7 @@ describe("CreateJob", () => {
       expect(wrapper.vm.$data.labelArray.length).toBe(0);
       //expect(closeDialog).toHaveBeenCalled();
     });
-  });  
+  });
 
   /*removeItem(index: any) {
       this.filesUploaded.splice(index, 1);
@@ -321,37 +317,39 @@ describe("CreateJob", () => {
 
       expect(modules.JobModule.actions.createJob).toHaveBeenCalled();
     });
-  }); */ 
+  }); */
 
   describe("Store", () => {
-
     it("Job module", async () => {
       const modules = {
         Job: {
           state: {},
           actions: {
-            createJob: jest.fn()
+            createJob: jest.fn(),
           },
-          namespaced: true
-        } 
+          namespaced: true,
+        },
       };
       const localVue = createLocalVue();
       localVue.use(Vuex);
 
-      const store = new Vuex.Store({modules});
-      const wrapper:any = shallowMount(CreateJob,{localVue,store,vuetify});
-      const jobSpy = jest.spyOn(Job, "createJob")
+      const store = new Vuex.Store({ modules });
+      const wrapper: any = shallowMount(CreateJob, {
+        localVue,
+        store,
+        vuetify,
+      });
+      const jobSpy = jest.spyOn(Job, "createJob");
       //enter data
-      wrapper.vm.$data.title = "Something"
-      wrapper.vm.$data.description = "Something"
-      wrapper.vm.$data.reward = "2"
-      wrapper.vm.$data.labelData = "a, b, c"
-      wrapper.vm.$data.selectedNumber = "2"
-      wrapper.vm.$data.filesUploaded= ["1", "2"]
+      wrapper.vm.$data.title = "Something";
+      wrapper.vm.$data.description = "Something";
+      wrapper.vm.$data.reward = "2";
+      wrapper.vm.$data.labelData = "a, b, c";
+      wrapper.vm.$data.selectedNumber = "2";
+      wrapper.vm.$data.filesUploaded = ["1", "2"];
       await wrapper.find("#submit-input").trigger("click");
 
       expect(jobSpy).toHaveBeenCalled();
-      
     });
 
     it("Job module", async () => {
@@ -359,39 +357,76 @@ describe("CreateJob", () => {
         Job: {
           state: {},
           actions: {
-            createJob: jest.fn()
+            createJob: jest.fn(),
           },
-          namespaced: true
-        } 
+          namespaced: true,
+        },
       };
       const localVue = createLocalVue();
       localVue.use(Vuex);
 
-      const store = new Vuex.Store({modules});
-      const wrapper:any = shallowMount(CreateJob,{localVue,store,vuetify});
-      
+      const store = new Vuex.Store({ modules });
+      const wrapper: any = shallowMount(CreateJob, {
+        localVue,
+        store,
+        vuetify,
+      });
+
       //enter data
-      wrapper.vm.$data.title = "Something"
-      wrapper.vm.$data.description = "Something"
-      wrapper.vm.$data.reward = "2"
-      wrapper.vm.$data.labelData = "a, b, c"
-      wrapper.vm.$data.selectedNumber = "2"
-      wrapper.vm.$data.filesUploaded= ["1", "2"]
-      
-      
+      wrapper.vm.$data.title = "Something";
+      wrapper.vm.$data.description = "Something";
+      wrapper.vm.$data.reward = "2";
+      wrapper.vm.$data.labelData = "a, b, c";
+      wrapper.vm.$data.selectedNumber = "2";
+      wrapper.vm.$data.filesUploaded = ["1", "2"];
+
       let expectedJson = {
-        title: wrapper.vm.$data.title, 
+        title: wrapper.vm.$data.title,
         description: wrapper.vm.$data.description,
         labels: wrapper.vm.$data.labelArray,
         rewards: wrapper.vm.$data.reward,
         numLabellersRequired: wrapper.vm.$data.selectedNumber,
-      }
+      };
 
-      const jobMod = getModule(JobModule, store);
-      
-      wrapper.vm.$store = store
-      wrapper.vm.onSubmitClicked()
-      expect(1).toEqual(1)
+      // const jobMod = getModule(JobModule, store);
+
+      wrapper.vm.$store = store;
+      wrapper.vm.onSubmitClicked();
+      expect(1).toEqual(1);
+    });
+  });
+
+  describe("Store", () => {
+    it("Job module", async () => {
+      const modules = {
+        Job: {
+          state: {},
+          actions: {
+            createJob: jest.fn(),
+          },
+          namespaced: true,
+        },
+      };
+      const localVue = createLocalVue();
+      localVue.use(Vuex);
+
+      const store = new Vuex.Store({ modules });
+      const wrapper: any = shallowMount(CreateJob, {
+        localVue,
+        store,
+        vuetify,
+      });
+      const jobSpy = jest.spyOn(Job, "createJob");
+      //enter data
+      wrapper.vm.$data.title = "Something";
+      wrapper.vm.$data.description = "Something";
+      wrapper.vm.$data.reward = "2";
+      wrapper.vm.$data.labelData = "a, b, c";
+      wrapper.vm.$data.selectedNumber = "2";
+      wrapper.vm.$data.filesUploaded = ["1", "2"];
+      await wrapper.find("#submit-input").trigger("click");
+
+      expect(jobSpy).toHaveBeenCalled();
     });
   });
 });

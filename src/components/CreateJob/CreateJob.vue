@@ -93,10 +93,9 @@
               label="Number of labellers"
               id="numLabellers"
               type="number"
-              :rules = "labellerRules"
-              min = 1
-              step = 1
-              
+              :rules="labellerRules"
+              min="1"
+              step="1"
             >
             </v-text-field>
 

@@ -51,7 +51,7 @@ class User extends VuexModule implements UserState {
   @Mutation
   LOGIN_USER(payload: any): void {
     this.firstName = payload.firstName;
-    this.lastName = payload.surname;
+    this.lastName = payload.lastName;
     this.email = payload.email;
     this.token = payload.token;
   }

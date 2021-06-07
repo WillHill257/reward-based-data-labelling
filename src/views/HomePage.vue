@@ -1,7 +1,7 @@
 <template>
   <section id="home">
     <h3>Welcome to jinx</h3>
-    <router-link to="/login">Go to Login</router-link>
+    <!-- <router-link to="/login">Go to Login</router-link> -->
 
     <section class="dashboard-row basic-grid">
       <DashboardList
@@ -29,7 +29,11 @@
 <script lang="ts">
 import DashboardList from "@/components/DashboardList.vue";
 import Vue from "vue";
-import axios from "axios";
+import {
+  getAvailableJobs,
+  getAuthoredJobs,
+  getAcceptedJobs,
+} from "@/api/Job.api";
 
 export default Vue.extend({
   components: { DashboardList },
@@ -92,39 +96,30 @@ export default Vue.extend({
       );
     },
 
-    getAllJobs(userId: string, endpoint: string) {
-      // get all the available jobs from the server
-      const config: any = {
-        method: "get",
-        url: "http://localhost:4000/api/job/" + endpoint + "/" + userId,
-        headers: {},
-      };
+    handleResponseList(list: Array<any>) {
+      // assign the job data type
+      for (let i = 0; i < list.length; i++) {
+        list[i].type = "Image";
+      }
 
-      axios(config)
-        .then((response) => {
-          let temp: Array<any>;
-
-          temp = response.data;
-          for (let i = 0; i < temp.length; i++) {
-            temp[i].type = "Image";
-          }
-
-          if (endpoint === "available") this.available = temp;
-          else if (endpoint === "authored") this.authored = temp;
-          else this.accepted = temp;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      return list;
     },
   },
 
   mounted() {
     this.determinListHeight();
-    const id = "60b0aa2233cd03a5509dcc36";
-    this.getAllJobs(id, "available");
-    this.getAllJobs(id, "authored");
-    this.getAllJobs(id, "accepted");
+
+    getAvailableJobs().then((response: any) => {
+      this.available = this.handleResponseList(response.data);
+    });
+
+    getAcceptedJobs().then((response: any) => {
+      this.accepted = this.handleResponseList(response.data);
+    });
+
+    getAuthoredJobs().then((response: any) => {
+      this.authored = this.handleResponseList(response.data);
+    });
   },
 });
 </script>

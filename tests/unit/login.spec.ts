@@ -1,11 +1,13 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, createLocalVue, mount } from "@vue/test-utils";
 import Login from "@/views/Login.vue";
 import axios from "axios";
 import Vue from "vue";
 import Vuetify from "vuetify";
-const vuetify = new Vuetify();
+import Vuex from "vuex";
+import { UserModule } from "@/store/modules/user";
 
 Vue.use(Vuetify);
+
 describe("Testing basic visual aspects of login screen", () => {
   test("An email field is displayed", () => {
     const wrapper = shallowMount(Login, {
@@ -21,43 +23,71 @@ describe("Testing basic visual aspects of login screen", () => {
     expect(wrapper.find("#login-password-input").exists()).toBe(true);
   });
 
-  // it("The password input is not visible", () => {
-  //     const wrapper = shallowMount(Login, {
-  //         mocks: { $http: axios },
-  //     });
-  //     expect(wrapper.find('.field__slot').exists()).is.equal(true)
-  // });
-});
+  describe("testing buttons", () => {
+    test("checking login", () => {
+      const wrapper = shallowMount(Login);
 
-describe("Login functions", function(){
-  test("Submit function called when submit button is clicked", () => {
-    const wrapper = shallowMount(Login, {
-      vuetify,
-      mocks: { $http: axios },
+      const loginOnClick = jest.fn();
+      wrapper.setMethods({
+        loginOnClick: loginOnClick,
+      });
+
+      wrapper.vm.$data.email = "";
+      wrapper.vm.$data.password = "";
+      wrapper.find("#login-confirm-button").trigger("click");
+      expect(loginOnClick).toHaveBeenCalled();
     });
-    const loginOnClick = jest.fn();
-    wrapper.setMethods({
-      loginOnClick: loginOnClick
-    });
-    wrapper.find("#login-click").trigger("click");
-    expect(loginOnClick).toHaveBeenCalled();
+
+    // test("checking register", () =>
+    // {
+    //   const mockRouter = {
+    //     push: jest.fn()
+    //   }
+    // const wrapper  = shallowMount(Login,{
+    //   mocks: {
+    //     $router: mockRouter
+    //   }});
+
+    // wrapper.vm.$data.email = "";
+    // wrapper.vm.$data.password = "";
+    // wrapper.find("#register-button").trigger("click");
+    // expect(mockRouter.push()).toHaveBeenCalled();
+    // })
   });
 
+  describe("testing errors", () => {
+    const wrapper: any = shallowMount(Login);
+    wrapper.vm.$data.error = "";
+    wrapper.vm.$data.alert = false;
 
-})
+    test("testing seErrorMesssage", () => {
+      wrapper.vm.setErrorMessage("hello");
+      expect(wrapper.vm.$data.Error).toEqual("hello");
+      expect(wrapper.vm.$data.alert).toEqual(true);
+    });
+  });
 
-
-
-//login-password-input
-
-// describe("Login function", function(){
-//   it("Should return and error if user not found", function(){
-//     const wrapper = shallowMount(Login, {
-//       mocks: { $http: axios },
-//     });
-//     expect(
-//       wrapper.find("#globalError").exists(),
-//       'Element with ID "globalError" is not found in the DOM, but is required.'
-//     ).to.equal(true);
-//   })
-// })
+  describe("testing usermodule", () => {
+    const localVue = createLocalVue();
+    localVue.use(Vuex);
+    const modules = {
+      UserModule: {
+        state: {},
+        actions: {
+          loginUser: jest.fn(),
+        },
+        namespaced: true,
+      },
+    };
+    test("testing module functions", async () => {
+      const store = new Vuex.Store({ modules });
+      const wrapper: any = shallowMount(Login, { localVue, store });
+      const loginSpy = jest.spyOn(UserModule, "loginUser");
+      wrapper.vm.validate = jest.fn().mockReturnValue(true);
+      wrapper.vm.$data.email = "fname@gmail.com";
+      wrapper.vm.$data.password = "fnamefname1";
+      await wrapper.find("#login-confirm-button").trigger("click");
+      expect(loginSpy).toHaveBeenCalled();
+    });
+  });
+});
