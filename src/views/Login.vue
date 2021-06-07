@@ -45,7 +45,7 @@
             color="info"
             @click.native="loginOnClick"
             class="login-click"
-            id="login-click"
+            id="login-confirm-button"
             >Login</v-btn
           >
           <v-btn color="info" @click="$router.push({ name: 'Signup' })"
