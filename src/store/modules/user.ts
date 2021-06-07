@@ -57,7 +57,7 @@ class User extends VuexModule implements UserState {
   }
 
   @Mutation
-  LOGOUT_USER(payload: any): void {
+  LOGOUT_USER(): void {
     this.firstName = "";
     this.lastName = "";
     this.email = "";
