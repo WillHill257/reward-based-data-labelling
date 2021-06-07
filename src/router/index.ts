@@ -7,7 +7,12 @@ import ViewJob from "../views/ViewJob.vue";
 import Landing from "../views/Landing.vue";
 import CreateJob from "../components/CreateJob/CreateJob.vue";
 import ListJobs from "../views/ListJobs.vue";
+import About from "../views/About.vue";
 
+import store from "@/store";
+import { UserModule } from "@/store/modules/user";
+
+//const userMod = getModule(UserModule);
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -19,11 +24,12 @@ const routes: Array<RouteConfig> = [
   {
     path: "/about",
     name: "About",
+    component: About,
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    // component: () =>
+    //   import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
   {
     path: "/login",
@@ -39,17 +45,26 @@ const routes: Array<RouteConfig> = [
     path: "/home",
     name: "HomePage",
     component: HomePage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/viewjob",
     name: "ViewJob",
     component: ViewJob,
     props: true,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/createjob",
     name: "CreateJob",
     component: CreateJob,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: "/listjobs",
@@ -57,12 +72,26 @@ const routes: Array<RouteConfig> = [
     component: ListJobs,
     props: true,
   },
+  // otherwise redirect to home
+  { path: "*", redirect: "/" },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (UserModule.isLoggedIn) {
+      next();
+      return;
+    }
+    next("/login");
+  } else {
+    next();
+  }
 });
 
 export default router;

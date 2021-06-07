@@ -35,14 +35,20 @@
               prepend-icon="mdi-lock"
               :type="showPassword ? 'text' : 'Password'"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              @click:append="showPassword = !showPassword"
+              @click:append.native="showPassword = !showPassword"
             ></v-text-field>
           </v-form>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="info" @click="loginOnClick">Login</v-btn>
-          <v-btn color="info" @click="$router.push({ name: 'Signup' })"
+          <v-btn
+            color="info"
+            @click.native="loginOnClick"
+            class="login-click"
+            id="login-confirm-button"
+            >Login</v-btn
+          >
+          <v-btn id= "login-cancel-button" color="info" @click="$router.push({ name: 'Signup' })"
             >Register</v-btn
           >
         </v-card-actions>
@@ -54,7 +60,7 @@
 <script lang="ts">
 import { VueForm } from "../componentTypes";
 import { getModule } from "vuex-module-decorators";
-import UserModule from "@/store/modules/user";
+import { UserModule } from "@/store/modules/user";
 import Vue from "vue";
 
 export default Vue.extend({
@@ -75,6 +81,7 @@ export default Vue.extend({
   computed: {
     form(): VueForm {
       // set form type
+
       return this.$refs.form as VueForm;
     },
   },
@@ -91,9 +98,8 @@ export default Vue.extend({
       this.hideError();
       if (this.validate()) {
         // if form is valid, continue with login
-        const userMod = getModule(UserModule, this.$store);
-        userMod
-          .loginUser(user)
+        //const userMod = getModule(UserModule, this.$store);
+        UserModule.loginUser(user)
           .then(() => {
             // successful login - navigate to homepage, user object is in store
             this.$router.push({ name: "HomePage" });
@@ -121,12 +127,12 @@ export default Vue.extend({
       // check form rules are adhered to
       return this.form.validate();
     },
-    reset(): void {
-      this.form.reset();
-    },
-    resetValidation(): void {
-      this.form.resetValidation();
-    },
+    // reset(): void {
+    //   this.form.reset();
+    // },
+    // resetValidation(): void {
+    //   this.form.resetValidation();
+    // },
   },
 });
 </script>

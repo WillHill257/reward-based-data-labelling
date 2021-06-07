@@ -61,13 +61,13 @@
           <v-btn
             id="signup-confirm-button"
             color="success"
-            v-on:click="onSignUp"
+            v-on:click.native="onSignUp"
             >Sign Me UP</v-btn
           >
           <v-btn
             id="signup-cancel-button"
             color="info"
-            @click="$router.push({ name: 'Login' })"
+            v-on:click.native="$router.push({ name: 'Login' })"
             >Already Registered</v-btn
           >
         </v-card-actions>
@@ -78,9 +78,10 @@
 
 <script lang="ts">
 import { AxiosResponse } from "axios";
-import UserModule from "@/store/modules/user";
+import { UserModule } from "@/store/modules/user";
 import { getModule } from "vuex-module-decorators";
 import Vue from "vue";
+
 
 export default Vue.extend({
   data() {
@@ -113,9 +114,7 @@ export default Vue.extend({
           email: this.email,
           password: this.password,
         };
-        const userMod = getModule(UserModule, this.$store);
-        userMod
-          .signupUser(newUser)
+        UserModule.signupUser(newUser)
           .then((res) => {
             this.$router.push({ name: "HomePage" });
           })
