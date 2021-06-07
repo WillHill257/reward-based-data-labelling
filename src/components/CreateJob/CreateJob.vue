@@ -128,6 +128,7 @@ import Vue from "vue";
 import ImageUploader from "./components/ImageUploader.vue";
 import JobModule from "@/store/modules/job";
 import { getModule } from "vuex-module-decorators";
+import axios from "axios";
 
 //TODO: keep track of userID with author
 export default Vue.extend({
@@ -147,33 +148,33 @@ export default Vue.extend({
       author: "60a62a9fab8896534b7a8d23",
       jobJson: {},
       reward: 1,
-      selectedNumber: null,
+      selectedNumber: 0,
       //validation rules
-      descriptionRules: [(v: string) => !!v || "Description is required"],
-      titleRules: [(v: string) => !!v || "Title is required"],
-      labellerRules: [
-        [(v: string) => !!v || "The number of labellers is required"],
-        [
-          (v: string) =>
-            !isNaN(parseFloat(v)) ||
-            "The number of labellers must be a numeric value",
-        ],
-        [
-          (v: string) =>
-            parseFloat(v) >= 1 || "There must be at least one labeller",
-        ],
-      ],
-      rewardRules: [
-        [(v: string) => !!v || "Reward is required"],
-        [
-          (v: string) =>
-            !isNaN(parseFloat(v)) || "The reward must be a numeric value",
-        ],
-        [
-          (v: string) =>
-            parseFloat(v) >= 1 || "The reward must be at least one",
-        ],
-      ],
+      // descriptionRules: [(v: string) => !!v || "Description is required"],
+      // titleRules: [(v: string) => !!v || "Title is required"],
+      // labellerRules: [
+      //   [(v: string) => !!v || "The number of labellers is required"],
+      //   [
+      //     (v: string) =>
+      //       !isNaN(parseFloat(v)) ||
+      //       "The number of labellers must be a numeric value",
+      //   ],
+      //   [
+      //     (v: string) =>
+      //       parseFloat(v) >= 1 || "There must be at least one labeller",
+      //   ],
+      // ],
+      // rewardRules: [
+      //   [(v: string) => !!v || "Reward is required"],
+      //   [
+      //     (v: string) =>
+      //       !isNaN(parseFloat(v)) || "The reward must be a numeric value",
+      //   ],
+      //   [
+      //     (v: string) =>
+      //       parseFloat(v) >= 1 || "The reward must be at least one",
+      //   ],
+      // ],
       //labelRules: [(v: string) => (!!v || this.labelArray.length == 0) || "Enter labels as comma separated values and press enter"],
     };
   },
@@ -199,6 +200,7 @@ export default Vue.extend({
       //enters labels
       this.makePill();
       // checks if all fields are filled - return in the ifs stops the submission if fields are empty
+
       if (this.title == "") {
         this.errorMessage = "Title required";
         this.errorVisibility = "visible";
@@ -219,7 +221,8 @@ export default Vue.extend({
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      } else if (this.selectedNumber == "") {
+      } else if (this.selectedNumber === 0) {
+        console.log("selectedNumber", this.selectedNumber);
         this.errorMessage = "Please select number of labellers required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
@@ -233,15 +236,14 @@ export default Vue.extend({
           numLabellersRequired: this.selectedNumber,
         };
 
-        console.log(this.jobJson);
+        //console.log(this.jobJson);
         // makes api all to upload job
         const jobMod = getModule(JobModule, this.$store);
         jobMod
           .createJob(this.jobJson)
-          .then((response) => {
+          .then(async (response) => {
             // when job is successfully created, upload the images
             console.log(response);
-
             // create the form data to contain the images
             let formData = new FormData();
             // append the job ID to the form data
@@ -260,23 +262,8 @@ export default Vue.extend({
             }
             //alternaticve
             //formData.append("labels", this.labelArray)
-
+            await this.uploadImages(formData);
             // uploads all the images through the image api
-            const url = "http://localhost:4000/api/images/";
-            console.log(formData);
-            this.axios
-              .post(url, formData, {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              })
-              .then((response) => {
-                console.log(response);
-                this.closeDialog();
-              })
-              .catch((error) => {
-                console.log(error);
-              });
           })
           .catch((error) => {
             console.log(error);
@@ -285,7 +272,7 @@ export default Vue.extend({
 
       // close the dialog after submit
     },
-    onFilesUploaded(file: File): void {
+    onFilesUploaded(file: any): void {
       this.filesUploaded.push(file);
     },
     onFileTypeError() {
@@ -307,6 +294,16 @@ export default Vue.extend({
     },
     removeItem(index: any) {
       this.filesUploaded.splice(index, 1);
+    },
+    async uploadImages(formData) {
+      const url = "http://localhost:4000/api/images/";
+      const response = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response);
+      this.closeDialog();
     },
   },
 });
