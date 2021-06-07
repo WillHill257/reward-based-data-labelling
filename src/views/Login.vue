@@ -48,7 +48,7 @@
             id="login-confirm-button"
             >Login</v-btn
           >
-          <v-btn color="info" @click="$router.push({ name: 'Signup' })"
+          <v-btn id= "login-cancel-button" color="info" @click="$router.push({ name: 'Signup' })"
             >Register</v-btn
           >
         </v-card-actions>
@@ -127,12 +127,12 @@ export default Vue.extend({
       // check form rules are adhered to
       return this.form.validate();
     },
-    reset(): void {
-      this.form.reset();
-    },
-    resetValidation(): void {
-      this.form.resetValidation();
-    },
+    // reset(): void {
+    //   this.form.reset();
+    // },
+    // resetValidation(): void {
+    //   this.form.resetValidation();
+    // },
   },
 });
 </script>
