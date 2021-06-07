@@ -31,5 +31,5 @@ mock.onPost(END_POINT).reply((config: AxiosRequestConfig) => {
   return [201, job];
 });
 
-// make mock api available
+// make api api available
 export default httpClient;
