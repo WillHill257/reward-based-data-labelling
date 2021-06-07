@@ -295,7 +295,7 @@ export default Vue.extend({
     removeItem(index: any) {
       this.filesUploaded.splice(index, 1);
     },
-    async uploadImages(formData) {
+    async uploadImages(formData: any) {
       const url = "http://localhost:4000/api/images/";
       const response = await axios.post(url, formData, {
         headers: {
