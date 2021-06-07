@@ -102,6 +102,28 @@ describe("Enter functionality of component", () => {
         //
     });
     
+    // what happens when you close the pill
+    describe("closePill", () => {
+        test("Checking function called", () => {
+            const wrapper:any = shallowMount(CreateJob, {vuetify});
+            const value = "a"
+
+            wrapper.vm.$data.labelData = value
+            wrapper.vm.makePill()
+            const expectedLength = 1
+            expect(wrapper.vm.$data.labelArray.length).toBe(expectedLength)
+            wrapper.vm.closePill()
+            expect(wrapper.vm.$data.labelArray.length).toBe(expectedLength-1)
+            // const onClosePill = jest.fn();
+            // wrapper.setMethods({
+            //     onClosePill: onClosePill,
+            // });
+            // wrapper.find("#pill").trigger("click");
+            // expect(onClosePill).toHaveBeenCalled();
+        });
+        
+      });
+
     /*//if you press submit does it behave appropriately
     describe("submit buttn sends array to DB", () => {
         

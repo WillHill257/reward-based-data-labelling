@@ -98,7 +98,7 @@ export default class JobModule extends VuexModule implements JobState {
     }
   }
 
-  @Action
+  @Action({ rawError: true })
   async getImages(payload: any) {
     try {
       const response: any = await getImages(payload);

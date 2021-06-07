@@ -35,13 +35,19 @@
               prepend-icon="mdi-lock"
               :type="showPassword ? 'text' : 'Password'"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              @click:append="showPassword = !showPassword"
+              @click:append.native="showPassword = !showPassword"
             ></v-text-field>
           </v-form>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="info" @click="loginOnClick">Login</v-btn>
+          <v-btn
+            color="info"
+            @click.native="loginOnClick"
+            class="login-click"
+            id="login-confirm-button"
+            >Login</v-btn
+          >
           <v-btn color="info" @click="$router.push({ name: 'Signup' })"
             >Register</v-btn
           >
@@ -75,6 +81,7 @@ export default Vue.extend({
   computed: {
     form(): VueForm {
       // set form type
+
       return this.$refs.form as VueForm;
     },
   },

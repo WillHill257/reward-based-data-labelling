@@ -88,13 +88,16 @@
               </v-col>
             </v-chip-group>
 
-            <v-select
+            <v-text-field
               v-model="selectedNumber"
-              id="numLabellers"
-              :items="this.items"
               label="Number of labellers"
+              id="numLabellers"
+              type="number"
               :rules="labellerRules"
-            ></v-select>
+              min="1"
+              step="1"
+            >
+            </v-text-field>
 
             <v-card-actions style="padding-top: 25%">
               <v-btn
@@ -144,7 +147,6 @@ export default Vue.extend({
       author: "60a62a9fab8896534b7a8d23",
       jobJson: {},
       reward: 1,
-      items: [1, 2, 3, 4, 5, 7, 8, 9, 10],
       selectedNumber: null,
       //validation rules
       descriptionRules: [(v: string) => !!v || "Description is required"],
@@ -217,7 +219,7 @@ export default Vue.extend({
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      } else if (this.selectedNumber == null) {
+      } else if (this.selectedNumber == "") {
         this.errorMessage = "Please select number of labellers required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
@@ -299,7 +301,6 @@ export default Vue.extend({
         }
       }
       this.labelData = "";
-      console.log("pill");
     },
     closePill(label: string) {
       this.labelArray.splice(this.labelArray.indexOf(label), 1);

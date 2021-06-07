@@ -58,6 +58,11 @@ export default Vue.extend({
           labels: ["Labels"],
         },
       ],
+      //labellers: [],
+      //numLabellers: 0,
+      url: "",
+      dataReady: false,
+      // store: new Vuex.Store({}),
     };
   },
 
@@ -65,7 +70,7 @@ export default Vue.extend({
     userId: {
       type: String,
       required: false,
-      default: "60a62a9fab8896534b7a8d23",
+      default: "60ae15438517d247b80aebef",
     },
     endpoint: { type: String, required: false, default: "" },
   },

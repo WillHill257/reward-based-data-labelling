@@ -9,7 +9,7 @@
       <v-spacer></v-spacer>
       <div v-if="!isLoggedIn">
         <v-btn
-          id="AppBarButton"
+          id="appbar-login"
           text
           rounded
           @click="$router.push({ name: 'Login' })"
@@ -17,7 +17,7 @@
           Login
         </v-btn>
         <v-btn
-          id="AppBarButton"
+          id="appbar-register"
           text
           rounded
           @click="$router.push({ name: 'Signup' })"
