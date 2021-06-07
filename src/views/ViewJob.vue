@@ -102,18 +102,41 @@ export default Vue.extend({
     await jobMod
       .getJob(this.url)
       .then((response) => {
+        console.log(response.data);
         this.jobTitle = response.data.title;
         this.jobDescription = response.data.description;
         this.labels = response.data.labels;
         this.reward = response.data.rewards;
         this.author = response.data.author;
         this.labellers = response.data.labellers;
+        this.aggItems = response.data.aggregate_items;
         console.warn(response);
       })
       .catch((error) => {
         console.error(error);
       });
     // get request for the images with a specific ID
+    jobMod
+      .getImages("http://localhost:4000/api/images?jobID=" + jobID)
+      .then((response) => {
+        console.log(response);
+        const fetchedImages = response.data.map(
+          (image) =>
+            "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
+        );
+        console.log(this.images);
+        const temp = [];
+        for (let i = 0; i < fetchedImages.length; i++) {
+          temp.push(fetchedImages.splice(0, 12));
+        }
+        this.paginatedImages = temp;
+        this.addImages();
+        //console.warn(temp);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    
     jobMod
       .getImages("http://localhost:4000/api/images?jobID=" + jobID)
       .then((response) => {
