@@ -13,7 +13,7 @@ let user: UserState = {
   firstName: "",
   lastName: "",
   email: "",
-  token: ""
+  token: "",
 };
 
 // test login
@@ -30,5 +30,5 @@ mock.onPost(END_POINT).reply((config: AxiosRequestConfig) => {
   return [201, user];
 });
 
-// make mock api available
+// make api api available
 export default httpClient;
