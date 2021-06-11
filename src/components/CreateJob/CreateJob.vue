@@ -1,7 +1,7 @@
 <template>
   <v-dialog width="80%" v-model="isShowDialog" @click:outside="closeDialog">
-    <v-card id="createJobCard">
-      <form @submit.prevent enctype="multipart/form-data">
+    <v-card id="createJobCard" class="pt-0">
+      <form @submit.prevent enctype="multipart/form-data" class="pt-0 pb-0">
         <v-row justify="center" align="center" no-gutters>
           <v-col align="start" class="mx-2">
             <ImageUploader
@@ -32,6 +32,7 @@
               dismissible
               outlined
               type="warning"
+              class="pb-0"
             >
               {{ errorMessage }}
             </v-alert>
@@ -70,6 +71,7 @@
               full-width
               hide-details
               @keydown.enter.native="makePill"
+              class="pt-0"
             ></v-text-field>
 
             <v-chip-group active-class="primary--text" column>
@@ -99,7 +101,7 @@
             >
             </v-text-field>
 
-            <v-card-actions style="padding-top: 25%">
+            <v-card-actions style="padding-top: 3%">
               <v-btn
                 color="green"
                 id="submit-input"
