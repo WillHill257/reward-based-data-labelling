@@ -106,7 +106,7 @@ export default Vue.extend({
           })
           .catch((errorMessage: string) => {
             // login failed - display error and stop here
-            this.setErrorMessage(errorMessage);
+            this.setErrorMessage("Server error: Login Failed");
           });
       } else {
         // form is invalid - complete it correctly
