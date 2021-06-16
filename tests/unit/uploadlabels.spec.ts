@@ -24,6 +24,7 @@ describe("When enter key pressed", () => {
     describe("Call make pills", () => {
       test("Submit function called when submit button is clicked", () => {
         const wrapper = shallowMount(CreateJob, {vuetify});
+        // mocking the pill method
         const makePill = jest.fn();
         wrapper.setMethods({
             makePill: makePill

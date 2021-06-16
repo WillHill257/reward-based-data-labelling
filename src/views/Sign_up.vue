@@ -5,6 +5,7 @@
         <v-card-title class="pr-2" label="Padding"> Sign Up</v-card-title>
 
         <v-card-text>
+          <!-- show error messages to user -->
           <v-alert
             :style="{ visibility: errorVisibility }"
             :height="errorHeight"
@@ -14,6 +15,7 @@
             type="warning"
             >{{ errorAlert }}</v-alert
           >
+          <!-- user info entered -->
           <v-text-field
             id="signup-firstname-input"
             label="First Name"
@@ -39,7 +41,7 @@
             label="Password"
             prepend-icon="mdi-lock"
             :type="showPassword ? 'text' : 'Password'"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" 
             @click:append="showPassword = !showPassword"
           >
           </v-text-field>
@@ -58,12 +60,14 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
+          <!-- Make an account -->
           <v-btn
             id="signup-confirm-button"
             color="success"
             v-on:click.native="onSignUp"
             >Sign Me UP</v-btn
           >
+          <!-- I already have an account, redirect em to login -->
           <v-btn
             id="signup-cancel-button"
             color="info"
@@ -114,14 +118,17 @@ export default Vue.extend({
           email: this.email,
           password: this.password,
         };
+        // access the vuex store to create new user using the above details
         UserModule.signupUser(newUser)
           .then((res) => {
             this.$router.push({ name: "HomePage" });
           })
+          //if email already in db, do not allow second entry with same email
           .catch((errorMessage: string) => {
             this.setErrorAlert("User already exists");
           });
       } else {
+        //signup unsuccessful
         console.log("Unsuccessful");
         this.setErrorAlert(
           this.verifyFields(
@@ -148,6 +155,7 @@ export default Vue.extend({
       pWord: string,
       cpWord: string
     ): string {
+      //no empty fields
       if (
         fName === "" ||
         sName === "" ||
@@ -156,10 +164,13 @@ export default Vue.extend({
         cpWord === ""
       ) {
         return "All fields required";
+      //email must have @
       } else if (email.search("@") === -1) {
         return "Email is invalid";
       } else if (pWord !== cpWord) {
+      //passwords must match
         return "Passwords do not match";
+      //password must be more than 8 characters
       } else if (pWord.length < 8) {
         return "Password too short";
       } else {

@@ -6,6 +6,7 @@ import Vuetify from "vuetify";
 import * as Job from "@/api/Job.api";
 import flushPromises from "flush-promises";
 
+//create dummy jobs
 let testJobs = [
   {
     _id: "0",
@@ -30,6 +31,7 @@ let testJobs = [
   },
 ];
 
+//mock the job api
 jest.mock("../../src/api/Job.api", () => ({
   getAllJobs: jest
     .fn()
@@ -57,7 +59,7 @@ describe("When list jobs is loaded", async () => {
     expect(wrapper.find("#list-jobs").exists()).toBe(true);
   });
 });
-// a test for each possible enpoint is made
+// a test for each possible endpoint is made
 describe("When list jobs is loaded and get accepted jobs is called", () => {
   const getAcceptedJobSpy = jest.spyOn(Job, "getAcceptedJobs");
   getAcceptedJobSpy.mockResolvedValue(mockJobResponse);
@@ -85,6 +87,7 @@ describe("When list jobs is loaded and get available jobs is called", () => {
   const getAvailableJobSpy = jest.spyOn(Job, "getAvailableJobs");
   getAvailableJobSpy.mockResolvedValue(mockJobResponse);
 
+  //mock list jobs
   const wrapper = shallowMount(ListJobs, {
     vuetify,
     propsData: {
@@ -93,6 +96,8 @@ describe("When list jobs is loaded and get available jobs is called", () => {
       endpoint: "available",
     },
   });
+
+  //make sure it is a vue instance
   it("should be vue instance", () => {
     expect(wrapper.vm).toBeTruthy();
   });
@@ -104,9 +109,11 @@ describe("When list jobs is loaded and get available jobs is called", () => {
 });
 
 describe("When list jobs is loaded and get authored jobs is called", () => {
+  //spy the job response
   const getAuthoredJobSpy = jest.spyOn(Job, "getAuthoredJobs");
   getAuthoredJobSpy.mockResolvedValue(mockJobResponse);
 
+  // mock list jobs
   const wrapper = shallowMount(ListJobs, {
     vuetify,
     propsData: {
@@ -115,10 +122,13 @@ describe("When list jobs is loaded and get authored jobs is called", () => {
       endpoint: "authored",
     },
   });
+
+  // make sure it is a vue instance
   it("should be vue instance", () => {
     expect(wrapper.vm).toBeTruthy();
   });
 
+  // ensure jobs authored by a particular author (the logged in one) appear correctly
   it("handles authored jobs", async () => {
     await flushPromises();
     expect(getAuthoredJobSpy).toHaveBeenCalled();
@@ -126,6 +136,7 @@ describe("When list jobs is loaded and get authored jobs is called", () => {
 });
 
 describe("When list jobs is loaded and get all jobs is called", () => {
+  // mock job response 
   const getAllJobSpy = jest.spyOn(Job, "getAllJobs");
   getAllJobSpy.mockResolvedValue(mockJobResponse);
 
@@ -140,6 +151,7 @@ describe("When list jobs is loaded and get all jobs is called", () => {
     expect(wrapper.vm).toBeTruthy();
   });
 
+  // ensure all jobs display appropriately
   it("handles all jobs", async () => {
     await flushPromises();
     expect(getAllJobSpy).toHaveBeenCalled();
@@ -147,6 +159,7 @@ describe("When list jobs is loaded and get all jobs is called", () => {
 });
 
 describe("testing handleResponseList", () => {
+  // output expected
   let expectedOutput = [
     {
       _id: "0",
@@ -170,6 +183,7 @@ describe("testing handleResponseList", () => {
       description: "Description",
     },
   ];
+  // mock list jobs
   const wrapper = shallowMount(ListJobs, {
     vuetify,
     propsData: {

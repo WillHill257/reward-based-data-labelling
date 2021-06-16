@@ -38,7 +38,7 @@
               {{ errorMessage }}
             </v-alert>
 
-            <!-- TItle input field-->
+            <!-- Title input field-->
             <v-text-field
               v-model="title"
               label="Title"
@@ -156,6 +156,7 @@ export default Vue.extend({
       //indicates if a chip should close
       open: true,
       filesUploaded: [] as File[],
+      //error messages set here and displayed in alert component above
       errorMessage: "",
       errorHeight: 0,
       errorVisibility: "Hidden",
@@ -214,34 +215,41 @@ export default Vue.extend({
       //enters labels
       this.makePill();
       // checks if all fields are filled - return in the ifs stops the submission if fields are empty
-
+      //title empty
       if (this.title == "") {
         this.errorMessage = "Title required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
+      //description empty
       } else if (this.description == "") {
         this.errorMessage = "Description required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
+      //no files uploaded
       } else if (this.filesUploaded.length == 0) {
         this.errorMessage = "No files to upload";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
+      //no labels uploaded
       } else if (this.labelArray.length == 0) {
         this.errorMessage = "Label(s) required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
+      // no labellers entered
       } else if (this.selectedNumber === 0) {
         console.log("selectedNumber", this.selectedNumber);
         this.errorMessage = "Please select number of labellers required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
+      //reward cannot be 0 or non numeric so not included here
       } else {
+      //in the case that everything is correct
+        //create a job object
         this.jobJson = {
           title: this.title,
           description: this.description,
@@ -250,7 +258,6 @@ export default Vue.extend({
           numLabellersRequired: this.selectedNumber,
         };
 
-        //console.log(this.jobJson);
         // makes api all to upload job
         const jobMod = getModule(JobModule, this.$store);
         jobMod
@@ -274,7 +281,6 @@ export default Vue.extend({
               let label = this.labelArray[j];
               formData.append("labels", label);
             }
-            //alternaticve
             //formData.append("labels", this.labelArray)
             await this.uploadImages(formData);
             // uploads all the images through the image api
@@ -283,13 +289,14 @@ export default Vue.extend({
             console.log(error);
           });
       }
-
       // close the dialog after submit
     },
     onFilesUploaded(file: any): void {
+      //when theh files have been uploaded push them to the file object
       this.filesUploaded.push(file);
     },
     onFileTypeError() {
+      //checks if the file type of the uploaded resource is accepted (.jpg or .png)
       this.errorVisibility = "visible";
       this.errorMessage =
         "Warning: the files uploaded contain forbidden file type/s. (Accepted file types: .jpg and .png)";
@@ -308,6 +315,7 @@ export default Vue.extend({
     closePill(label: string) {
       this.labelArray.splice(this.labelArray.indexOf(label), 1);
     },
+    //if you added a picture in error, or just want to remove a particular one, this does that
     removeItem(index: any) {
       this.filesUploaded.splice(index, 1);
     },

@@ -17,6 +17,7 @@
         >
         <v-card-text>
           <v-form ref="form" v-model="valid" lazy-validation class="mx-4">
+            <!-- nter email address -->
             <v-text-field
               id="login-email-input"
               v-model="email"
@@ -26,6 +27,7 @@
               prepend-icon="mdi-account-circle"
             ></v-text-field>
 
+            <!-- enter password -->
             <v-text-field
               id="login-password-input"
               v-model="password"
@@ -41,6 +43,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
+          <!-- I belong here log me in -->
           <v-btn
             color="info"
             @click.native="loginOnClick"
@@ -48,6 +51,7 @@
             id="login-confirm-button"
             >Login</v-btn
           >
+          <!-- I don't have an account I meant to register -->
           <v-btn
             id="login-cancel-button"
             color="info"
@@ -132,12 +136,6 @@ export default Vue.extend({
       // check form rules are adhered to
       return this.form.validate();
     },
-    // reset(): void {
-    //   this.form.reset();
-    // },
-    // resetValidation(): void {
-    //   this.form.resetValidation();
-    // },
   },
 });
 </script>

@@ -46,24 +46,30 @@ describe("CreateJob", () => {
 
   describe("Checking buttons", () => {
     test("Close function called when discard button is clicked", () => {
+      //mock the screen
       const wrapper = shallowMount(CreateJob, {
         vuetify,
       });
+      //mock the method to close the dialog
       const closeDialog = jest.fn();
       wrapper.setMethods({
         closeDialog: closeDialog,
       });
+      //if the discard button is pressed
       wrapper.find("#discard-input").trigger("click");
       expect(closeDialog).toHaveBeenCalled();
     });
     test("Submit function called when submit button is clicked", () => {
+      //mock the screen
       const wrapper = shallowMount(CreateJob, {
         vuetify,
       });
+      //mocking the submit method
       const onSubmitClicked = jest.fn();
       wrapper.setMethods({
         onSubmitClicked: onSubmitClicked,
       });
+      //press the submit button
       wrapper.find("#submit-input").trigger("click");
       expect(onSubmitClicked).toHaveBeenCalled();
     });
@@ -104,16 +110,6 @@ describe("CreateJob", () => {
       expect(wrapper.vm.$data.errorMessage).toEqual(
         "Please select number of labellers required"
       );
-
-      // wrapper.vm.$data.description = "Something";
-      // wrapper.vm.$data.filesUploaded = [""];
-      // wrapper.vm.$data.labelArray = ["a"];
-      // wrapper.vm.$data.selectedNumber = 2;
-      // wrapper.vm.$data.reward = 1.23;
-      // wrapper.vm.onSubmitClicked();
-      // expect(wrapper.vm.$data.errorMessage).toEqual(
-      //   "Please enter only integer values for reward"
-      // );
       //successful request - no error message
       wrapper.vm.$data.description = "Something";
       wrapper.vm.$data.filesUploaded = [""];
@@ -456,11 +452,13 @@ describe("CreateJob", () => {
 
   describe("on submit clicked", () => {
     test("should handle the correct response", async () => {
+      //practice response
       const mockResponse = {
         data: {
           _id: "123",
         },
       };
+      //mock view
       const wrapper: any = shallowMount(CreateJob, {
         vuetify,
       });
@@ -471,9 +469,11 @@ describe("CreateJob", () => {
       wrapper.vm.$data.selectedNumber = "2";
       wrapper.vm.$data.filesUploaded = ["1", "2"];
 
+      //spy on api to see if we get the correct response
       const createJobSpy = jest.spyOn(JobApi, "createJob");
       createJobSpy.mockResolvedValue(mockResponse);
 
+      //spy on upload images to see if it behaves correctly
       const uploadImagesSpy = jest.spyOn(wrapper.vm, "uploadImages");
 
       wrapper.vm.onSubmitClicked();
@@ -486,20 +486,25 @@ describe("CreateJob", () => {
 
   describe("on files uploaded", () => {
     test("should add files to data", () => {
+      // create a dummy file
       const mockFile = {
         name: "filename",
       };
+      //mock the view
       const wrapper: any = shallowMount(CreateJob, {
         vuetify,
       });
+      //check that files upload correctly
       wrapper.vm.onFilesUploaded(mockFile);
       expect(wrapper.vm.$data.filesUploaded.length).toEqual(1);
     });
 
     test("should throw error when file type is incorrect", () => {
+      // if a user uploads a file that is not one of the two accepted types (.jpg or .png) does the system display the appropriate error
       const wrapper: any = shallowMount(CreateJob, {
         vuetify,
       });
+      //mock file type error method
       wrapper.vm.onFileTypeError();
       expect(wrapper.vm.$data.errorVisibility).toEqual("visible");
       expect(wrapper.vm.$data.errorMessage).toEqual(
@@ -508,29 +513,38 @@ describe("CreateJob", () => {
     });
 
     test("should be able to remove image", () => {
+      // create a mock file
       const mockFile = {
         name: "filename",
       };
+      // create a mock view
       const wrapper: any = shallowMount(CreateJob, {
         vuetify,
       });
+      //upload two mock files
       wrapper.vm.onFilesUploaded(mockFile);
       wrapper.vm.onFilesUploaded(mockFile);
+      //check that the expected number of files is 2 
       expect(wrapper.vm.$data.filesUploaded.length).toEqual(2);
+      //remove one
       wrapper.vm.removeItem(1);
+      //check that it has been removed
       expect(wrapper.vm.$data.filesUploaded.length).toEqual(1);
     });
   });
 
   describe("uploadImage", async () => {
+    // mock view 
     const wrapper: any = shallowMount(CreateJob, {
       vuetify,
     });
+    //spy on the close dailogue function 
     const closeDialogSpy = jest.spyOn(wrapper.vm, "closeDialog");
     const postSpy = jest.spyOn(axios, "post");
     postSpy.mockResolvedValue({ status: 200 });
     await wrapper.vm.uploadImages();
     await flushPromises();
+    //expect it to have been called if the dialogu was closed
     expect(closeDialogSpy).toHaveBeenCalledTimes(1);
   });
 });

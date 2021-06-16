@@ -10,6 +10,7 @@ const vuetify = new Vuetify();
 const title = "Test";
 const endpoint = "accepted";
 
+//dummy jobs to be used in testing
 let testJobs = [
   {
     _id: "0",
@@ -35,18 +36,22 @@ let testJobs = [
 ];
 
 describe("When loaded", () => {
+  // create a mock of the screen
   const wrapper = shallowMount(DashboardList, {
     vuetify,
     propsData: {
+      //bring necessary props in
       title: title,
       jobs: testJobs,
       endpoint: endpoint,
     },
   });
+  //make sure it is a vue instance
   it("should be vue instance", () => {
     expect(wrapper.vm).toBeTruthy();
   });
 
+  //all the ui elements should appear on the page as expected
   it("should have all the necessary UI elements", () => {
     expect(wrapper.find(".title").exists()).toBe(true);
     expect(wrapper.find(".title").html()).toContain(title);
