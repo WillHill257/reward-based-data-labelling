@@ -35,7 +35,7 @@
               prepend-icon="mdi-lock"
               :type="showPassword ? 'text' : 'Password'"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              @click:append.native="showPassword = !showPassword"
+              @click:append="showPassword = !showPassword"
             ></v-text-field>
           </v-form>
         </v-card-text>
@@ -48,7 +48,10 @@
             id="login-confirm-button"
             >Login</v-btn
           >
-          <v-btn id= "login-cancel-button" color="info" @click="$router.push({ name: 'Signup' })"
+          <v-btn
+            id="login-cancel-button"
+            color="info"
+            @click="$router.push({ name: 'Signup' })"
             >Register</v-btn
           >
         </v-card-actions>
@@ -106,7 +109,9 @@ export default Vue.extend({
           })
           .catch((errorMessage: string) => {
             // login failed - display error and stop here
-            this.setErrorMessage("Server error: Login Failed");
+            this.setErrorMessage(
+              "The email and password combination does not exist"
+            );
           });
       } else {
         // form is invalid - complete it correctly
