@@ -2,12 +2,13 @@
   <section id="list-jobs">
     <goBack />
 
-    <h1 v-if="!jobs.length">There are no jobs available</h1>
-    <h1 v-else>Jobs</h1>
+    <h1 v-if="!jobs.length">There are no jobs available</h1> <!--if there are no jobs availiable this heading will be displayed-->
+    <h1 v-else>Jobs</h1> <!--when jobs are avaliable this heading will be displayed along with a list of jobs to accept-->
 
     <section class="basic-grid">
-      <div v-for="job in jobs" :key="job._id">
-        <JobSummaryCard
+      <div v-for="job in jobs" :key="job._id"> <!--for every job that is avaliable the JobSummary compnent will be called and process the job-->
+        <!-- when this component  is called it takes in the job info, processes it and returns the job in a summary card format-->
+        <JobSummaryCard 
           class="card"
           :id="job._id"
           :title="job.title"
@@ -19,7 +20,7 @@
     </section>
   </section>
 </template>
-
+<!--.card-actions positions the view more button at the bottom left of the summary cards -->
 <style>
 .card-actions {
   position: absolute;
@@ -37,7 +38,7 @@ import {
   getAuthoredJobs,
   getAcceptedJobs,
   getAllJobs,
-} from "@/api/Job.api";
+} from "@/api/Job.api";// import the relavant api calls
 
 export default Vue.extend({
   components: {
@@ -77,7 +78,7 @@ export default Vue.extend({
 
   methods: {
     // todo - currently force jobs to be of images, eventually becomes general type
-
+    //handelResponseList processs the job and changes the job type to image since its the only type we have at the moment
     handleResponseList(list: Array<any>) {
       // assign the job data type
       for (let i = 0; i < list.length; i++) {
@@ -90,22 +91,22 @@ export default Vue.extend({
   mounted() {
     // trigger the request to get the jobs from the server
     switch (this.endpoint) {
-      case "authored":
+      case "authored": // if the endpoint is authored, the api returns the relavent list of jobs is processed and displayed
         getAuthoredJobs().then((response: any) => {
           this.jobs = this.handleResponseList(response.data);
         });
         break;
-      case "accepted":
+      case "accepted": // if the endpoint is accepted, the api returns the relavent list of jobs is processed and displayed
         getAcceptedJobs().then((response: any) => {
           this.jobs = this.handleResponseList(response.data);
         });
         break;
-      case "available":
+      case "available": // if the endpoint is avaliable, the api returns the relavent list of  avaliable jobs is processed and displayed
         getAvailableJobs().then((response: any) => {
           this.jobs = this.handleResponseList(response.data);
         });
         break;
-      default:
+      default: // if there is no endpoint, the api returns a list of all the jobs is processed and displayed
         getAllJobs().then((response: any) => {
           this.jobs = this.handleResponseList(response.data);
         });
@@ -118,7 +119,7 @@ export default Vue.extend({
 .card {
   width: 300px;
 }
-
+/* this puts alll the job summary cards into a grid system */
 .basic-grid {
   /* define a grid layout */
   display: grid;

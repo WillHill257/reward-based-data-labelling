@@ -57,7 +57,7 @@ describe("When list jobs is loaded", async () => {
     expect(wrapper.find("#list-jobs").exists()).toBe(true);
   });
 });
-
+// a test for each possible enpoint is made
 describe("When list jobs is loaded and get accepted jobs is called", () => {
   const getAcceptedJobSpy = jest.spyOn(Job, "getAcceptedJobs");
   getAcceptedJobSpy.mockResolvedValue(mockJobResponse);
