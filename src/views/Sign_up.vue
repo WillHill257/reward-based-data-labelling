@@ -119,7 +119,7 @@ export default Vue.extend({
             this.$router.push({ name: "HomePage" });
           })
           .catch((errorMessage: string) => {
-            this.setErrorAlert(errorMessage);
+            this.setErrorAlert("User already exists");
           });
       } else {
         console.log("Unsuccessful");

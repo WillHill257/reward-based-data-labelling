@@ -3,6 +3,8 @@ import { UserModule } from "@/store/modules/user";
 import store from "@/store/index";
 
 //https://haxzie.com/architecting-http-clients-vue-js-network-layer
+
+// create a base axios instance
 const httpClient = axios.create({
   baseURL: `http://${process.env.VUE_APP_BASE_URL}:${process.env.VUE_APP_API_PORT}/api`,
   timeout: 1000, // indicates, 1000ms ie. 1 second
@@ -11,21 +13,27 @@ const httpClient = axios.create({
   },
 });
 
+// fetch the JWT from browser storage
 const getAuthToken = () => localStorage.getItem("token");
 
+// apply this to every request that is made
 const requestInterceptor = (config: AxiosRequestConfig) => {
   const token = getAuthToken();
+
+  // add the authentication header, if a token exists
   if (token) {
     config.headers["Authorization"] = "Bearer " + token;
   }
-  // config.headers['Content-Type'] = 'application/json';
+
   return config;
 };
 
+// manage all network request errors
 const requestErrorInterceptor = (error: AxiosError) => {
   Promise.reject(error);
 };
 
+// tell the axios client to use the interceptors
 httpClient.interceptors.request.use(
   requestInterceptor,
   requestErrorInterceptor
