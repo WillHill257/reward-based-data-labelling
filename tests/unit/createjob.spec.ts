@@ -376,48 +376,48 @@ describe("CreateJob", () => {
       expect(jobSpy).toHaveBeenCalled();
     });
 
-    it("Job module", async () => {
-      const modules = {
-        Job: {
-          state: {},
-          actions: {
-            createJob: jest.fn(),
-          },
-          namespaced: true,
-        },
-      };
-      const localVue = createLocalVue();
-      localVue.use(Vuex);
+    // it("Job module", async () => {
+    //   const modules = {
+    //     Job: {
+    //       state: {},
+    //       actions: {
+    //         createJob: jest.fn(),
+    //       },
+    //       namespaced: true,
+    //     },
+    //   };
+    //   const localVue = createLocalVue();
+    //   localVue.use(Vuex);
 
-      const store = new Vuex.Store({ modules });
-      const wrapper: any = shallowMount(CreateJob, {
-        localVue,
-        store,
-        vuetify,
-      });
+    //   const store = new Vuex.Store({ modules });
+    //   const wrapper: any = shallowMount(CreateJob, {
+    //     localVue,
+    //     store,
+    //     vuetify,
+    //   });
 
-      //enter data
-      wrapper.vm.$data.title = "Something";
-      wrapper.vm.$data.description = "Something";
-      wrapper.vm.$data.reward = "2";
-      wrapper.vm.$data.labelData = "a, b, c";
-      wrapper.vm.$data.selectedNumber = "2";
-      wrapper.vm.$data.filesUploaded = ["1", "2"];
+    //   //enter data
+    //   wrapper.vm.$data.title = "Something";
+    //   wrapper.vm.$data.description = "Something";
+    //   wrapper.vm.$data.reward = "2";
+    //   wrapper.vm.$data.labelData = "a, b, c";
+    //   wrapper.vm.$data.selectedNumber = "2";
+    //   wrapper.vm.$data.filesUploaded = ["1", "2"];
 
-      const expectedJson = {
-        title: wrapper.vm.$data.title,
-        description: wrapper.vm.$data.description,
-        labels: wrapper.vm.$data.labelArray,
-        rewards: wrapper.vm.$data.reward,
-        numLabellersRequired: wrapper.vm.$data.selectedNumber,
-      };
+    //   const expectedJson = {
+    //     title: wrapper.vm.$data.title,
+    //     description: wrapper.vm.$data.description,
+    //     labels: wrapper.vm.$data.labelArray,
+    //     rewards: wrapper.vm.$data.reward,
+    //     numLabellersRequired: wrapper.vm.$data.selectedNumber,
+    //   };
 
-      // const jobMod = getModule(JobModule, store);
+    //   // const jobMod = getModule(JobModule, store);
 
-      wrapper.vm.$store = store;
-      wrapper.vm.onSubmitClicked();
-      expect(1).toEqual(1);
-    });
+    //   wrapper.vm.$store = store;
+    //   wrapper.vm.onSubmitClicked();
+    //   expect(1).toEqual(1);
+    // });
   });
 
   describe("Store", () => {
