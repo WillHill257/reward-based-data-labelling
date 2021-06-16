@@ -121,58 +121,58 @@ describe("User Module Mutations", () => {
 });
 
 describe("User Module Actions", () => {
-  it("should log a user in", () => {
-    // const commit = jest.fn();
-    const service = factory();
-    const user: any = {
-      email: "john.doe@example.com",
-      password: "12345678",
-    };
-    const expected = {
-      profilePicturePath: "generic.jpeg",
-      jobs: [],
-      firstName: "Some",
-      surname: "One",
-      email: "somebody@gmail.com",
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYTRmMTEwM2MyZmEzNDBiNGMyNGQ1YSIsImlhdCI6MTYyMTQyMjg2MSwiZXhwIjoxNjIxNDI0NjYxfQ.-SwaADjkwyAz8S68ap7doYODBtviAuafGorGLdWPTSg",
-    };
-    mocked(loginUser).mockResolvedValue(expected);
+  // it("should log a user in", () => {
+  //   // const commit = jest.fn();
+  //   const service = factory();
+  //   const user: any = {
+  //     email: "john.doe@example.com",
+  //     password: "12345678",
+  //   };
+  //   const expected = {
+  //     profilePicturePath: "generic.jpeg",
+  //     jobs: [],
+  //     firstName: "Some",
+  //     surname: "One",
+  //     email: "somebody@gmail.com",
+  //     token:
+  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYTRmMTEwM2MyZmEzNDBiNGMyNGQ1YSIsImlhdCI6MTYyMTQyMjg2MSwiZXhwIjoxNjIxNDI0NjYxfQ.-SwaADjkwyAz8S68ap7doYODBtviAuafGorGLdWPTSg",
+  //   };
+  //   mocked(loginUser).mockResolvedValue(expected);
 
-    service.loginUser(user);
+  //   service.loginUser(user);
 
-    //I'm sorry. I was forced
-    expect(1).toEqual(1);
-  });
+  //   //I'm sorry. I was forced
+  //   expect(1).toEqual(1);
+  // });
 
-  it("should register a user", () => {
-    // const commit = jest.fn();
-    const service = factory();
-    const context = {
-      commit: jest.fn(),
-    };
-    const user: any = {
-      firstName: "John",
-      lastName: "Doe",
-      email: "john.doe@example.com",
-      password: "12345678",
-    };
-    const expected = {
-      profilePicturePath: "generic.jpeg",
-      jobs: [],
-      firstName: user.firstName,
-      surname: user.lastName,
-      email: user.email,
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYTRmMTEwM2MyZmEzNDBiNGMyNGQ1YSIsImlhdCI6MTYyMTQyMjg2MSwiZXhwIjoxNjIxNDI0NjYxfQ.-SwaADjkwyAz8S68ap7doYODBtviAuafGorGLdWPTSg",
-    };
-    mocked(signupUser).mockResolvedValue(expected);
+  // it("should register a user", () => {
+  //   // const commit = jest.fn();
+  //   const service = factory();
+  //   const context = {
+  //     commit: jest.fn(),
+  //   };
+  //   const user: any = {
+  //     firstName: "John",
+  //     lastName: "Doe",
+  //     email: "john.doe@example.com",
+  //     password: "12345678",
+  //   };
+  //   const expected = {
+  //     profilePicturePath: "generic.jpeg",
+  //     jobs: [],
+  //     firstName: user.firstName,
+  //     surname: user.lastName,
+  //     email: user.email,
+  //     token:
+  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwYTRmMTEwM2MyZmEzNDBiNGMyNGQ1YSIsImlhdCI6MTYyMTQyMjg2MSwiZXhwIjoxNjIxNDI0NjYxfQ.-SwaADjkwyAz8S68ap7doYODBtviAuafGorGLdWPTSg",
+  //   };
+  //   mocked(signupUser).mockResolvedValue(expected);
 
-    service.signupUser(user);
+  //   service.signupUser(user);
 
-    //I'm sorry. I was forced
-    expect(1).toEqual(1);
-  });
+  //   //I'm sorry. I was forced
+  //   expect(1).toEqual(1);
+  // });
 
   it("should log a user out", () => {
     // const commit = jest.fn();
@@ -180,7 +180,7 @@ describe("User Module Actions", () => {
 
     service.logoutUser();
 
-    //I'm sorry. I was forced
-    expect(1).toEqual(1);
+    // Check no token is in the browser storage
+    expect(localStorage.getItem("token")).toEqual(null);
   });
 });

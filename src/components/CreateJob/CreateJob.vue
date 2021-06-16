@@ -1,7 +1,7 @@
 <template>
   <v-dialog width="80%" v-model="isShowDialog" @click:outside="closeDialog">
-    <v-card id="createJobCard">
-      <form @submit.prevent enctype="multipart/form-data">
+    <v-card id="createJobCard" class="pt-0">
+      <form @submit.prevent enctype="multipart/form-data" class="pt-0 pb-0">
         <v-row justify="center" align="center" no-gutters>
           <v-col align="start" class="mx-2">
             <ImageUploader
@@ -26,15 +26,19 @@
           </v-col>
 
           <v-col>
+            <!--Error messages displayed in this component-->
             <v-alert
               :style="{ visibility: errorVisibility }"
               dense
               dismissible
               outlined
               type="warning"
+              class="pb-0"
             >
               {{ errorMessage }}
             </v-alert>
+
+            <!-- TItle input field-->
             <v-text-field
               v-model="title"
               label="Title"
@@ -43,6 +47,7 @@
             >
             </v-text-field>
 
+            <!--Description input field-->
             <v-textarea
               v-model="description"
               label="Description"
@@ -51,6 +56,7 @@
             >
             </v-textarea>
 
+            <!-- Reward input field - as number -->
             <v-text-field
               v-model="reward"
               label="Reward"
@@ -62,6 +68,7 @@
             >
             </v-text-field>
 
+            <!--Possible labels input field, can be comma separated -->
             <v-text-field
               id="label-input"
               v-model="labelData"
@@ -70,8 +77,10 @@
               full-width
               hide-details
               @keydown.enter.native="makePill"
+              class="pt-0"
             ></v-text-field>
 
+            <!--Display of comma separated values from input field above as pills -->
             <v-chip-group active-class="primary--text" column>
               <v-col style="padding: 0 0">
                 <v-chip
@@ -88,6 +97,7 @@
               </v-col>
             </v-chip-group>
 
+            <!-- Number of labellers required for the job entered as a number -->
             <v-text-field
               v-model="selectedNumber"
               label="Number of labellers"
@@ -99,7 +109,8 @@
             >
             </v-text-field>
 
-            <v-card-actions style="padding-top: 25%">
+            <v-card-actions style="padding-top: 3%">
+              <!--Submit button-->
               <v-btn
                 color="green"
                 id="submit-input"
@@ -108,6 +119,7 @@
               >
                 Submit
               </v-btn>
+              <!--Discard button-->
               <v-btn
                 color="grey"
                 id="discard-input"
@@ -138,8 +150,10 @@ export default Vue.extend({
     return {
       title: "",
       description: "",
+      //used to process the comma separated label values
       labelData: "",
       labelArray: new Array<string>(),
+      //indicates if a chip should close
       open: true,
       filesUploaded: [] as File[],
       errorMessage: "",
@@ -280,6 +294,7 @@ export default Vue.extend({
       this.errorMessage =
         "Warning: the files uploaded contain forbidden file type/s. (Accepted file types: .jpg and .png)";
     },
+    //separates comma separated values from string form into separate entries in an array - displayed as pills
     makePill() {
       let arr: Array<string> = this.labelData.split(",");
       for (var i = 0; i < arr.length; i++) {
@@ -289,6 +304,7 @@ export default Vue.extend({
       }
       this.labelData = "";
     },
+    //when the x is clicked on a pill this method is called and the pill is closed and removed from the array of pills
     closePill(label: string) {
       this.labelArray.splice(this.labelArray.indexOf(label), 1);
     },
