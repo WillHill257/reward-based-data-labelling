@@ -25,6 +25,7 @@
           ></JobSummaryCard>
           <v-row
             v-else
+            class="view-more-container"
             :style="{ height: cardHeight + 'px' }"
             align="center"
             justify="center"
@@ -106,5 +107,9 @@ export default Vue.extend({
 .job-card {
   width: 98%;
   margin: auto;
+}
+
+.view-more-container {
+  margin: 0;
 }
 </style>
