@@ -38,7 +38,7 @@ describe("When enter key pressed", () => {
 describe("Enter functionality of component", () => {
     describe("When loaded", () => {
 
-        //if the contents of the textbox one value does it make 1 pill
+        //if the contents of the textbox is one value does it make 1 pill
         it('One value entered, enter key pressed, it creates a pill', async () => {
             const wrapper:any = shallowMount(CreateJob, {vuetify})
             const value = "a"

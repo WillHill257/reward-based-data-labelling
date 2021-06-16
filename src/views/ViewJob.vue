@@ -17,7 +17,7 @@
       <v-card width="95%" height="75%" class="jobs" id="job-summary">
         <v-card-title class=""> {{ jobTitle }}</v-card-title>
         <v-card-subtitle class="pb-1 pt-1">
-          Reward: {{ reward }}
+          Reward: {{ reward/numLabellersRequired }}
         </v-card-subtitle>
         <v-chip-group class="mx-4" active-class="primary--text" column>
           <v-col style="padding: 0 0">
