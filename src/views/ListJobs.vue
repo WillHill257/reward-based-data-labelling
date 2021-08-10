@@ -30,9 +30,14 @@
 <script lang="ts">
 import goBack from "@/components/BackButton.vue";
 
-import axios from "axios";
 import Vue from "vue";
 import JobSummaryCard from "@/components/JobSummaryCard.vue";
+import {
+  getAvailableJobs,
+  getAuthoredJobs,
+  getAcceptedJobs,
+  getAllJobs,
+} from "@/api/Job.api";
 
 export default Vue.extend({
   components: {
@@ -53,6 +58,11 @@ export default Vue.extend({
           labels: ["Labels"],
         },
       ],
+      //labellers: [],
+      //numLabellers: 0,
+      url: "",
+      dataReady: false,
+      // store: new Vuex.Store({}),
     };
   },
 
@@ -60,7 +70,7 @@ export default Vue.extend({
     userId: {
       type: String,
       required: false,
-      default: "60a62a9fab8896534b7a8d23",
+      default: "60ae15438517d247b80aebef",
     },
     endpoint: { type: String, required: false, default: "" },
   },
@@ -68,40 +78,38 @@ export default Vue.extend({
   methods: {
     // todo - currently force jobs to be of images, eventually becomes general type
 
-    getJobsList(getAll: boolean) {
-      // get all the available jobs from the server
-      const config: any = {
-        method: "get",
-        url: getAll
-          ? "http://localhost:4000/api/job/"
-          : "http://localhost:4000/api/job/" +
-            this.endpoint +
-            "/" +
-            this.userId,
-        headers: {},
-      };
+    handleResponseList(list: Array<any>) {
+      // assign the job data type
+      for (let i = 0; i < list.length; i++) {
+        list[i].type = "Image";
+      }
 
-      axios(config)
-        .then((response) => {
-          // let temp: Array<any>;
-
-          this.jobs = response.data;
-          for (let i = 0; i < this.jobs.length; i++) {
-            this.jobs[i].type = "Image";
-          }
-
-          // if (endpoint === "available") this.available = temp;
-          // else if (endpoint === "authored") this.authored = temp;
-          // else this.accepted = temp;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      return list;
     },
   },
   mounted() {
-    // trigger the request to get the jibs from the server
-    this.getJobsList(this.endpoint === "");
+    // trigger the request to get the jobs from the server
+    switch (this.endpoint) {
+      case "authored":
+        getAuthoredJobs().then((response: any) => {
+          this.jobs = this.handleResponseList(response.data);
+        });
+        break;
+      case "accepted":
+        getAcceptedJobs().then((response: any) => {
+          this.jobs = this.handleResponseList(response.data);
+        });
+        break;
+      case "available":
+        getAvailableJobs().then((response: any) => {
+          this.jobs = this.handleResponseList(response.data);
+        });
+        break;
+      default:
+        getAllJobs().then((response: any) => {
+          this.jobs = this.handleResponseList(response.data);
+        });
+    }
   },
 });
 </script>

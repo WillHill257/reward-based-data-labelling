@@ -32,6 +32,7 @@
 <script lang="ts">
 import Vue from "vue";
 
+
 export default Vue.extend({
   props: {
     id: { type: String, required: true },
@@ -44,7 +45,7 @@ export default Vue.extend({
   methods: {
     goToJob(jobId: string) {
       // view in-depth details for the job
-      this.$router.push({ name: "ViewJob", params: { jobID: jobId } });
+      this.$router.push({ name: "ViewJob", params: { jobID: jobId}});
     },
   },
 });

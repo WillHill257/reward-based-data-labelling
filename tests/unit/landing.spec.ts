@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils";
+import { createWrapper, shallowMount } from "@vue/test-utils";
 import Landing from "@/views/Landing.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
@@ -44,4 +44,43 @@ describe("LandingPage", () => {
       expect(wrapper.find("#availableJobs").exists()).toBe(true);
     });
   });
+  describe("testing router ", ()=>{
+    test("ListJobs" , ()=>{
+      const mockRouter = {
+        push: jest.fn()
+      }
+      const wrapper: any = shallowMount(Landing,{vuetify,
+        mocks:{
+          $route: mockRouter
+        }
+    
+      });
+      wrapper.vm.$router = mockRouter
+      const pushSpy = jest.spyOn(mockRouter, "push");
+
+      wrapper.vm.listJobsClick()
+      expect(pushSpy).toHaveBeenCalled
+    })
+
+    test("Available Jobs" , ()=>{
+      const mockRouter = {
+        push: jest.fn()
+      }
+      const wrapper: any = shallowMount(Landing,{vuetify,
+        mocks:{
+          $route: mockRouter
+        }
+    
+      });
+      wrapper.vm.$router = mockRouter
+      const pushSpy = jest.spyOn(mockRouter, "push");
+
+      wrapper.vm.labelImagesClick()
+      expect(pushSpy).toHaveBeenCalled
+    })
+    
+
+    
+  })
+  
 });

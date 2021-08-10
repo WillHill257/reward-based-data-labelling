@@ -35,14 +35,19 @@
             >
               {{ errorMessage }}
             </v-alert>
-            <v-text-field v-model="title" label="Title" id="title-input" :rules = "titleRules">
+            <v-text-field
+              v-model="title"
+              label="Title"
+              id="title-input"
+              :rules="titleRules"
+            >
             </v-text-field>
 
             <v-textarea
               v-model="description"
               label="Description"
               id="description-input"
-              :rules = "descriptionRules"
+              :rules="descriptionRules"
             >
             </v-textarea>
 
@@ -51,9 +56,9 @@
               label="Reward"
               id="reward-input"
               type="number"
-              :rules = "rewardRules"
-              min = 1
-              step = 1
+              :rules="rewardRules"
+              min="1"
+              step="1"
             >
             </v-text-field>
 
@@ -65,7 +70,6 @@
               full-width
               hide-details
               @keydown.enter.native="makePill"
-              :rules = "labelRules"
             ></v-text-field>
 
             <v-chip-group active-class="primary--text" column>
@@ -84,13 +88,16 @@
               </v-col>
             </v-chip-group>
 
-            <v-select
+            <v-text-field
               v-model="selectedNumber"
-              id="numLabellers"
-              :items="this.items"
               label="Number of labellers"
-              :rules = "labellerRules"
-            ></v-select>
+              id="numLabellers"
+              type="number"
+              :rules="labellerRules"
+              min="1"
+              step="1"
+            >
+            </v-text-field>
 
             <v-card-actions style="padding-top: 25%">
               <v-btn
@@ -140,23 +147,32 @@ export default Vue.extend({
       author: "60a62a9fab8896534b7a8d23",
       jobJson: {},
       reward: 1,
-      items: [1, 2, 3, 4, 5, 7, 8, 9, 10],
       selectedNumber: null,
       //validation rules
       descriptionRules: [(v: string) => !!v || "Description is required"],
       titleRules: [(v: string) => !!v || "Title is required"],
-      labellerRules:[
+      labellerRules: [
         [(v: string) => !!v || "The number of labellers is required"],
-        [(v: string) => (!isNaN(parseFloat(v))) || 'The number of labellers must be a numeric value'],
+        [
+          (v: string) =>
+            !isNaN(parseFloat(v)) ||
+            "The number of labellers must be a numeric value",
+        ],
         [
           (v: string) =>
             parseFloat(v) >= 1 || "There must be at least one labeller",
         ],
       ],
-      rewardRules:[
+      rewardRules: [
         [(v: string) => !!v || "Reward is required"],
-        [(v: string) => (!isNaN(parseFloat(v))) || 'The reward must be a numeric value'],
-        [(v: string) => (parseFloat(v) >= 1) || 'The reward must be at least one'],
+        [
+          (v: string) =>
+            !isNaN(parseFloat(v)) || "The reward must be a numeric value",
+        ],
+        [
+          (v: string) =>
+            parseFloat(v) >= 1 || "The reward must be at least one",
+        ],
       ],
       //labelRules: [(v: string) => (!!v || this.labelArray.length == 0) || "Enter labels as comma separated values and press enter"],
     };
@@ -181,7 +197,7 @@ export default Vue.extend({
     },
     onSubmitClicked: function () {
       //enters labels
-      this.makePill()
+      this.makePill();
       // checks if all fields are filled - return in the ifs stops the submission if fields are empty
       if (this.title == "") {
         this.errorMessage = "Title required";
@@ -203,7 +219,7 @@ export default Vue.extend({
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      } else if (this.selectedNumber == null) {
+      } else if (this.selectedNumber == "") {
         this.errorMessage = "Please select number of labellers required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
@@ -212,7 +228,6 @@ export default Vue.extend({
         this.jobJson = {
           title: this.title,
           description: this.description,
-          author: this.author,
           labels: this.labelArray,
           rewards: this.reward,
           numLabellersRequired: this.selectedNumber,
@@ -286,7 +301,6 @@ export default Vue.extend({
         }
       }
       this.labelData = "";
-      console.log("pill")
     },
     closePill(label: string) {
       this.labelArray.splice(this.labelArray.indexOf(label), 1);

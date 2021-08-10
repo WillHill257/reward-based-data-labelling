@@ -10,7 +10,7 @@ Vue.use(Vuetify);
 describe("ViewJobs", () => {
     test("should display all the UI elements", () => {
         const wrapper = shallowMount(ListJobs);
-        expect(wrapper.find("#list-jobs").exists()).toBe(true);
+        expect(wrapper.find("#list-jobs").exists()).toBeTruthy();
     });
 
 })
