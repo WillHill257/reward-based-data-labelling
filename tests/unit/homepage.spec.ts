@@ -28,6 +28,7 @@ describe("When loaded", () => {
     expect(wrapper.vm).toBeTruthy();
   });
 
+  // all the ui elements we expect on the page should appear
   it("should have all the necessary UI elements", () => {
     expect(wrapper.find(".authored").exists()).toBe(true);
     expect(wrapper.find(".accepted").exists()).toBe(true);
@@ -39,4 +40,14 @@ describe("When loaded", () => {
     expect(wrapper.find(".accepted").props().endpoint).toBe("accepted");
     expect(wrapper.find(".available").props().endpoint).toBe("available");
   });
-});
+  
+  // test("testing handleresponselist", async ()=>{
+  //   const wrapper: any= shallowMount(HomePage)
+  //   const a =new  Image(1,1);
+  //   const temp = [a, a, a ]
+  //   const tempnew =  wrapper.vm.handleResponseList(temp)
+  //   let x = tempnew[1]
+  //   expect(1).toBe(1);
+  // })
+
+})

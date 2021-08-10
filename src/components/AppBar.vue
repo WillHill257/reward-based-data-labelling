@@ -1,12 +1,16 @@
 <template>
   <div>
     <v-app-bar id="AppBarIntro">
+      <!-- Clickable logo that return to the home page -->
       <img
         id="AppBarlogo"
         src="../assets/images/JinxLogo.png"
         @click="$router.push({ name: 'HomePage' })"
       />
+
       <v-spacer></v-spacer>
+
+      <!-- if the user is not logged in we show them the logout button only -->
       <div v-if="!isLoggedIn">
         <v-btn
           id="appbar-login"
@@ -43,7 +47,7 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <!-- these are the items in the nav bar. -->
+          <!-- these are the items in the nav bar -->
           <v-list-item v-for="item in items" :key="item.text" :to="item.link">
             <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>

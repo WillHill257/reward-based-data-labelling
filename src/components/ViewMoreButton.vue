@@ -1,4 +1,5 @@
 <template>
+  <!-- blue button at the bottom of each column allowing you to view more -->
   <v-btn fab dark color="primary">
     <v-icon>mdi-arrow-right</v-icon>
   </v-btn>

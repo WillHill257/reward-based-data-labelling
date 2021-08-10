@@ -1,6 +1,6 @@
 <template>
-  <!-- width="300px" -->
   <v-card elevation="4" outlined tile height="200px">
+    <!-- Title display -->
     <v-card-title class="job-title">
       {{ title }}
     </v-card-title>
@@ -9,6 +9,7 @@
       {{ type }}
     </v-card-subtitle>
 
+    <!-- labels available to label these images with -->
     <v-chip-group class="mx-4" active-class="primary--text" column>
       <v-col style="padding: 0 0">
         <v-chip class="pill" v-for="label in labels" :key="label" x-small>
@@ -17,10 +18,12 @@
       </v-col>
     </v-chip-group>
 
+    <!-- description summary for the job -->
     <v-card-text class="pt-0">
       <p class="job-description clamp-lines">{{ description }}</p>
     </v-card-text>
 
+    <!-- button to view more details -->
     <v-card-actions class="card-actions" flat>
       <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
         View job

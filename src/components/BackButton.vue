@@ -11,7 +11,7 @@ export default Vue.extend({
     
     methods:{
         goBack(){
-            return this.$router.go(-1);
+            return this.$router.go(-1);//when the button is clicked the the user will go to the last route on the route history stack
         },
     }
 });

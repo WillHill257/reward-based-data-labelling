@@ -3,26 +3,46 @@ import backButton from "@/components/BackButton.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
 
-Vue.use(Vuetify);
-describe("backButton", () => {
-    test("should display all the UI elements", () => {
-        const wrapper = shallowMount(backButton);
-        expect(wrapper.find("#backbutton").exists()).toBe(true);
-    });
-});
+const vuetify = new Vuetify();
 
-describe("Testing all my buttons",  () => {
-    test("go back button is called", async() => {
-        const wrapper = shallowMount(backButton);
-        const goBack = jest.fn();
-        wrapper.setMethods({
-            goBack: goBack,
-        });
-        await wrapper.find("#backbutton").trigger("click");
-        wrapper.vm.$nextTick(()=> {
-            expect(goBack).toHaveBeenCalled();
-          });
-        
+const title = "Test";
+
+describe("When loaded", () => {
+  //create a mock view
+    const wrapper = shallowMount(backButton, {
+      vuetify,
+      
     });
-    
-})
+    //expect it to be related to vue
+    it("should be vue instance", () => {
+      expect(wrapper.vm).toBeTruthy();
+    });
+  
+    //make sure the button displays on the screen
+    it("should have all the necessary UI elements", () => {
+      expect(wrapper.find("#backbutton").exists()).toBe(true);
+    });
+  });
+
+
+describe("Checking back Button", () => {
+    const $router = {
+      go: jest.fn()
+    };
+  
+    it("Should go back to the previous page", async() => {
+        //make a mock of the screen 
+        const wrapper = shallowMount(backButton, {
+            vuetify,
+            
+            //make a mock of the router
+            mocks: {
+                $router,
+            },
+            });
+            //when we click on the back button does it go back
+            (wrapper.vm as any).goBack();
+            await wrapper.vm.$nextTick();
+            expect(wrapper.vm.$router.go).toBe($router.go);
+    });
+  });

@@ -11,6 +11,7 @@
         no-gutters
         style="margin-top: 20px; height: 320px"
       >
+        <!-- Explinatation of the purpose of the site -->
         <v-spacer></v-spacer>
         <v-card id="step1" :height="150" :width="300" elevation="0">
           <img
@@ -54,6 +55,7 @@
 
       <v-row v-show="$vuetify.breakpoint.xs ? false : true">
         <v-spacer></v-spacer>
+        <!-- Redirects to a login screen, allows user to register and get their images labelled -->
         <v-btn
           @click="labelImagesClick"
           id="dataLblBtn"
@@ -64,6 +66,7 @@
           I Want My Images Labelled
         </v-btn>
         <v-spacer></v-spacer>
+        <!--Redirects to the screen that displays all jobs -->
         <v-btn
           @click="listJobsClick"
           id="availableJobs"

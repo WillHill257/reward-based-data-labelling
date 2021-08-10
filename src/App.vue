@@ -5,6 +5,7 @@
       <v-container fluid>
         <v-btn
           v-scroll="onScroll"
+          v-scroll:#app="onScroll"
           v-show="fab"
           fab
           dark
@@ -38,6 +39,8 @@ export default Vue.extend({
 
   methods: {
     onScroll(e: any) {
+      console.log("here");
+
       if (typeof window === "undefined") return;
       const top = window.pageYOffset || e.target.scrollTop || 0;
       this.fab = top > 20;
@@ -48,3 +51,9 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+#app {
+  overflow-x: hidden;
+}
+</style>

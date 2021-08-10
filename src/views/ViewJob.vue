@@ -17,7 +17,7 @@
       <v-card width="95%" height="75%" class="jobs" id="job-summary">
         <v-card-title class=""> {{ jobTitle }}</v-card-title>
         <v-card-subtitle class="pb-1 pt-1">
-          Reward: {{ reward }}
+          Reward: {{ reward/numLabellersRequired }}
         </v-card-subtitle>
         <v-chip-group class="mx-4" active-class="primary--text" column>
           <v-col style="padding: 0 0">
@@ -78,7 +78,7 @@ import { acceptJob } from "@/api/Job.api";
 export default Vue.extend({
   props: { jobID: String },
   data() {
-    // these are the return vars used to the jobs information
+    // these are the return vars used to set the jobs information
     return {
       jobTitle: "",
       jobDescription: "",
@@ -118,18 +118,24 @@ export default Vue.extend({
     //console.warn(temp);
   },
   methods: {
+    //requests the images from the database
     async fetchImages() {
+      //this is the job ID that is passed from the view jobs page
       const jobID = this.$props.jobID;
       const imageResponse = await Job.getImages(
+        //requests the images with the sepcific job ID
         "http://localhost:4000/api/images?jobID=" + jobID
       );
+      // if there are no errors it gets the images
       if (!imageResponse.data.error) {
         const fetchedImages = imageResponse.data.map(
           (image) =>
             "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
         );
+        //make a temp array to display the images
         const temp = [];
         for (let i = 0; i < fetchedImages.length; i++) {
+          //displays 12 images at a time
           temp.push(fetchedImages.splice(0, 12));
         }
         this.paginatedImages = temp;
@@ -164,21 +170,6 @@ export default Vue.extend({
   methods: {
     // Accept Button
     onAccept() {
-      //TODO get the users actaul userID
-      // var acceptJobJson = {
-      //   user: "60a62a9fab8896534b7a8d23",
-      // };
-
-      // if (this.labellers.includes("60a62a9fab8896534b7a8d23")) {
-      //   alert("You have already accepted this job!");
-      //   return;
-      // }
-
-      // if (this.author == "60a62a9fab8896534b7a8d23") {
-      //   alert("You cannot accept a job you have created");
-      //   return;
-      // }
-
       const jobID = this.$props.jobID;
 
       acceptJob(jobID)
@@ -194,6 +185,7 @@ export default Vue.extend({
           alert("Oops something has gone wrong! \n Please try again later");
         });
     },
+    //returns a true or false if you are at the bottom of the page
     bottomVisible() {
       const scrollY = window.scrollY;
       const visible = document.documentElement.clientHeight;
@@ -204,6 +196,7 @@ export default Vue.extend({
     //this implements the infite scrolling by adding another 12 pictures to the screen
     //when the user scrolls to the bottom of the page
     addImages() {
+      //adds 12 images at a time to the array to display the pictures
       let arr = this.paginatedImages;
       if (arr[this.count]) {
         this.images.push(...arr[this.count]);
@@ -222,6 +215,7 @@ export default Vue.extend({
   },
   //this is the observer class for the infinite scrolling
   watch: {
+    //if the user scrolls to the bottom of the page 12 more images are loaded onto the screen
     bottom(bottom) {
       if (bottom && window.scrollY > 0) {
         this.addImages();
