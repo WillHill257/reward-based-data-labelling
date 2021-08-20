@@ -140,34 +140,8 @@ export default Vue.extend({
         }
         this.paginatedImages = temp;
         this.addImages();
-        //console.warn(temp);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    
-    jobMod
-      .getImages("http://localhost:4000/api/images?jobID=" + jobID)
-      .then((response) => {
-        console.log(response);
-        const fetchedImages = response.data.map(
-          (image) =>
-            "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
-        );
-        console.log(this.images);
-        const temp = [];
-        for (let i = 0; i < fetchedImages.length; i++) {
-          temp.push(fetchedImages.splice(0, 12));
-        }
-        this.paginatedImages = temp;
-        this.addImages();
-        //console.warn(temp);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-  methods: {
+      }
+    },
     // Accept Button
     onAccept() {
       const jobID = this.$props.jobID;
