@@ -28,6 +28,9 @@
       <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
         View job
       </v-btn>
+      <v-btn class="btn-label-job" color="blue" text @click="goToLabel">
+        Label
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -49,6 +52,10 @@ export default Vue.extend({
     goToJob(jobId: string) {
       // view in-depth details for the job
       this.$router.push({ name: "ViewJob", params: { jobID: jobId}});
+    },
+    goToLabel() {
+      // view labelling screen
+      this.$router.push({ name: "LabelImages" });
     },
   },
 });

@@ -30,6 +30,10 @@
           <v-divider class="mx-4 pb-2 pt-2"></v-divider>
           Description: {{ jobDescription }}
         </v-card-text>
+
+        <v-btn @click = "labelImagesClick()">
+          
+        </v-btn>
       </v-card>
     </v-row>
 
@@ -201,6 +205,9 @@ export default Vue.extend({
       this.bottom = this.bottomVisible();
     });
     this.addImages();
+  },
+  labelImagesClick() {
+    this.$router.push({ name: "LabelImages" });
   },
 });
 </script>

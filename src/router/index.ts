@@ -6,6 +6,7 @@ import HomePage from "../views/HomePage.vue";
 import ViewJob from "../views/ViewJob.vue";
 import Landing from "../views/Landing.vue";
 import CreateJob from "../components/CreateJob/CreateJob.vue";
+import LabelImages from "../views/Label.vue";
 import ListJobs from "../views/ListJobs.vue";
 import About from "../views/About.vue";
 
@@ -62,6 +63,14 @@ const routes: Array<RouteConfig> = [
     path: "/createjob",
     name: "CreateJob",
     component: CreateJob,
+    meta: {
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/labelimages",
+    name: "LabelImages",
+    component: LabelImages,
     meta: {
       requiresAuth: true,
     },
