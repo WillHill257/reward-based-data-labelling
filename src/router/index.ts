@@ -71,6 +71,7 @@ const routes: Array<RouteConfig> = [
     path: "/labelimages",
     name: "LabelImages",
     component: LabelImages,
+    props: true,
     meta: {
       requiresAuth: true,
     },
