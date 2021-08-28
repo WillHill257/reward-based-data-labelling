@@ -38,6 +38,8 @@ import {
   getAcceptedJobs,
 } from "@/api/Job.api";
 
+import { getAcceptedBatches } from "@/api/Batch.api";
+
 export default Vue.extend({
   components: { DashboardList },
   name: "Home",
@@ -126,6 +128,10 @@ export default Vue.extend({
     //filters and returns jobs that were created by currently logged in user
     getAuthoredJobs().then((response: any) => {
       this.authored = this.handleResponseList(response.data);
+    });
+
+    getAcceptedBatches().then((response: any) => {
+      console.log(response);
     });
   },
 });
