@@ -13,8 +13,10 @@ Vue.use(Vuetify);
 describe("ImageUploader", () => {
   describe("on loaded", () => {
     test("should have all the necessary UI elements", () => {
+      //mock view
       const wrapper = shallowMount(ImageUploader);
 
+      //checking the image upload container is there
       expect(wrapper.find("#dragAndDropContainer").exists()).toBe(true);
       expect(wrapper.html()).toContain(
         "Drop your file(s) here, or click to select them."
@@ -24,22 +26,27 @@ describe("ImageUploader", () => {
 
   describe("on files dropped", () => {
     test("should call the onDrop function", async () => {
+      //mock view
       const wrapper: any = shallowMount(ImageUploader, {
         propsData: { onFilesUploaded: jest.fn() },
       });
 
+      //spy on the drop of images to make sure they are there
       const onDropSpy = jest.spyOn(wrapper.vm, "onDrop");
       const container = wrapper.find("#dragAndDropContainer");
       await container.trigger("drop");
 
+      //expect to have checked for the images
       expect(onDropSpy).toHaveBeenCalled();
     });
 
     test("should call the onclick function", async () => {
+      //mock screen
       const wrapper: any = shallowMount(ImageUploader, {
         propsData: { onFilesUploaded: jest.fn() },
       });
 
+      //makes sure that when the upload image block is clicked we can enter images
       const onClickSpy = jest.spyOn(wrapper.vm, "onClick");
       const container = wrapper.find("#dragAndDropContainer");
       await container.trigger("click");
@@ -48,10 +55,12 @@ describe("ImageUploader", () => {
     });
 
     test("should process the files dropped", () => {
+      // mock view
       const wrapper: any = shallowMount(ImageUploader, {
         propsData: { onFilesUploaded: jest.fn() },
       });
 
+      //mock item
       const item = {
         webkitGetAsEntry: function () {
           return file;
@@ -59,6 +68,7 @@ describe("ImageUploader", () => {
       };
       const file = new File([new ArrayBuffer(1)], "file.jpg");
 
+      //make sure file tree traversal is working correctly
       const testEvent = {
         preventDefault: function () {
           return;
@@ -74,10 +84,12 @@ describe("ImageUploader", () => {
     });
 
     test("should add to files uploaded variable in CreateJob, when files dropped", () => {
+      //mock view
       const createJob: any = shallowMount(CreateJob, {
         propsData: { isShowDialog: true },
         vuetify,
       });
+      //mock image uploader component
       const imageUploader: any = shallowMount(ImageUploader, {
         propsData: {
           onFilesUploaded: createJob.vm.onFilesUploaded,
@@ -108,6 +120,7 @@ describe("ImageUploader", () => {
     });
 
     test("should compress files when dropped onto drag and drop area", () => {
+      // mock image uploader
       const imageUploader: any = shallowMount(ImageUploader, {
         propsData: {
           onFilesUploaded: jest.fn(),
@@ -120,6 +133,7 @@ describe("ImageUploader", () => {
       //   callback(<File>blob);
       // }
 
+      //mock item
       const item = {
         isFile: true,
         name: "test.png",
@@ -128,6 +142,7 @@ describe("ImageUploader", () => {
           callback(file);
         },
       };
+      //expect tree to have been traversed correctly
       imageUploader.vm.traverseFileTree(item);
       expect(Compressor).toHaveBeenCalled();
     });
@@ -165,6 +180,7 @@ describe("ImageUploader", () => {
         "traverseFileTree"
       );
 
+      //check entering directory
       const directory = {
         isDirectory: true,
         createReader: mockCreateReader,
@@ -175,12 +191,14 @@ describe("ImageUploader", () => {
     });
 
     test("should reject uploaded files if it is not an image", () => {
+      //mock image uploader
       const imageUploader: any = shallowMount(ImageUploader, {
         propsData: {
           onFilesUploaded: jest.fn(),
         },
       });
 
+      //mock item (image)
       const item = {
         isFile: true,
         name: "test.txt",
@@ -190,6 +208,7 @@ describe("ImageUploader", () => {
         },
       };
 
+      //check that file type error is emmitted
       imageUploader.vm.traverseFileTree(item);
       expect(imageUploader.emitted("filetypeerror")).toBeTruthy();
     });
@@ -205,6 +224,7 @@ describe("ImageUploader", () => {
         },
       });
 
+      //mock the file creation
       function createFile(name: string, type: string) {
         const blob: any = new Blob([""], { type: type });
         blob["lastModifiedDate"] = null;
@@ -216,6 +236,7 @@ describe("ImageUploader", () => {
         path: [{ files: [createFile("test.png", "image/png")] }],
       };
 
+      //expected compressory
       imageUploader.vm.onFileDialogChange(testEvent);
       expect(Compressor).toHaveBeenCalled();
     });

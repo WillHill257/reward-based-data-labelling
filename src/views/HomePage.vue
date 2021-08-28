@@ -4,18 +4,21 @@
     <!-- <router-link to="/login">Go to Login</router-link> -->
 
     <section class="dashboard-row basic-grid">
+      <!-- displays all jobs that have been authored by logged in user -->
       <DashboardList
         class="authored"
         title="Mine"
         :jobs="authored"
         endpoint="authored"
       ></DashboardList>
+      <!-- displays all jobs that have been accepted by logged in user -->
       <DashboardList
         class="accepted"
         title="Currently Doing"
         :jobs="accepted"
         endpoint="accepted"
       ></DashboardList>
+      <!-- displays all available jobs (those that have not reached capacity yet) -->
       <DashboardList
         class="available"
         title="Available"
@@ -42,6 +45,7 @@ export default Vue.extend({
   data() {
     return {
       isShowDialog: false,
+      //dummy data for initial screen when database is empty
       accepted: [
         {
           _id: "0",
@@ -109,14 +113,17 @@ export default Vue.extend({
   mounted() {
     this.determinListHeight();
 
+    //filters and returns available jobs (those that are not full)
     getAvailableJobs().then((response: any) => {
       this.available = this.handleResponseList(response.data);
     });
 
+    //filters and returns jobs accepted by currently logged in user
     getAcceptedJobs().then((response: any) => {
       this.accepted = this.handleResponseList(response.data);
     });
 
+    //filters and returns jobs that were created by currently logged in user
     getAuthoredJobs().then((response: any) => {
       this.authored = this.handleResponseList(response.data);
     });

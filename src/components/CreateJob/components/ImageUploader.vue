@@ -66,6 +66,7 @@ export default Vue.extend({
     },
 
     onDrop(e) {
+      //when the file is dropped elements appear on the screen to show the images that have been uploaded
       e.preventDefault();
       this.dragover = false;
 
