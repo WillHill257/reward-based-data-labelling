@@ -13,4 +13,9 @@ const acceptBatch = (jobId: string): Promise<any> => {
   });
 };
 
-export { acceptBatch };
+const getAcceptedBatches = (): Promise<any> => {
+  // get all the jobs the current user has accepted
+  return httpClient.get("/batch/accepted");
+};
+
+export { acceptBatch, getAcceptedBatches };
