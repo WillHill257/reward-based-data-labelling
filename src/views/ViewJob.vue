@@ -73,7 +73,8 @@
 import Vue from "vue";
 import router from "@/router";
 import { Job } from "@/store/modules/job";
-import { acceptJob } from "@/api/Job.api";
+//import { acceptJob } from "@/api/Job.api";
+import { acceptBatch } from "@/api/Batch.api";
 
 export default Vue.extend({
   props: { jobID: String },
@@ -155,7 +156,7 @@ export default Vue.extend({
 
       const jobID = this.$props.jobID;
 
-      acceptJob(jobID)
+      acceptBatch(jobID)
         .then((response) => {
           console.log(response);
           // alert(
