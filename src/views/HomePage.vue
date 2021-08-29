@@ -38,7 +38,7 @@ import {
   getAcceptedJobs,
 } from "@/api/Job.api";
 
-import { getAcceptedBatches } from "@/api/Batch.api";
+// import { getAcceptedBatches } from "@/api/Batch.api";
 
 export default Vue.extend({
   components: { DashboardList },
@@ -130,9 +130,9 @@ export default Vue.extend({
       this.authored = this.handleResponseList(response.data);
     });
 
-    getAcceptedBatches().then((response: any) => {
-      console.log(response);
-    });
+    // getAcceptedBatches().then((response: any) => {
+    //   console.log(response);
+    // });
   },
 });
 </script>
