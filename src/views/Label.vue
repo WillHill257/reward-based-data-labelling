@@ -1,62 +1,92 @@
 <template>
-    <v-card
-    id = "labelCard"
-    :loading="loading"
-    class="mx-auto my-12 "
-    max-width="374"
-  >
-    <!-- TODO get image from DB -->
-    <v-img
-      :src="images[imagenext]"
-      height="250"
-      id = "labelImage"
-    ></v-img>
+  <!-- Allows entire screen to be filled by card -->
+  <v-content>
+    <v-container>
+      <v-card>
+        <v-row>
+          <!--Appears underneath one another in portrait and side by side in landscape -->
+          <!-- Images that need to be labelled in the batch -->
+          <v-col class="pt-0 pb-0 col-md-6 col-lg-6 col-xl-6">
+            <!-- TODO get image from DB -->
+            <v-img
+              :src="images[imagenext]"
+              height="250"
+              id = "labelImage"
+            ></v-img>
+          </v-col>
+          <!-- Instruction, labels and buttons -->
+          <v-col class="pt-0 pb-0 col-md-6 col-lg-6 col-xl-6">
+            <v-card-text>
+              <!-- Reward -->
+              <v-row>
+                <v-col class="text-right">
+                  {{reward}} reward
+                </v-col>
+              </v-row>
 
-    
-    <v-card-title
-    id = "instruction"
-    >Select a label that best matches the image</v-card-title>
+              <!-- Labels -->
+              <v-row justify="center">
+                <v-card-text class="text-center">
+                  Select the label(s) that best match the image
+                </v-card-text>
+              </v-row>
 
-    <v-divider class="mx-4" id = "divider"></v-divider>
-
-    <v-card-text>
-      <v-chip-group
-        v-model="selection"
-        active-class="indigo accent-4 white--text"
-        column
-        multiple
-        id = "labelChoices"
-      >
-        <!-- TODO get labels from DB -->
-        <v-chip
-        @click="addToSelection(label)" v-for="label in availableLabels" :key="label" class="label">
-          {{label}}
-        </v-chip>
-
-      </v-chip-group>
-    </v-card-text>
-
-    <v-card-actions>
-      <!-- TODO functionality for next button goes to the next unlabelled image in the DB -->
-      <!-- TODO functionality for next saves current labels and resets the array - not mine -->
-      <v-btn
-        color="deep-blue lighten-2"
-        text
-        @click="nextImage()"
-        id = "nextImageBtn"
-      >
-        Next
-      </v-btn>
-      <v-btn
-        color="deep-blue lighten-2"
-        text
-        @click="prevImage()"
-        id = "prevImageBtn"
-      >
-        Prev
-      </v-btn>
-    </v-card-actions>
-    </v-card>
+              <!-- Labels -->
+              <v-row justify="center">
+                <v-chip-group
+                  v-model="selection"
+                  active-class="indigo accent-4 white--text"
+                  column
+                  multiple
+                  id = "labelChoices"
+                >
+                  <v-col class="justify-center">
+                    <v-chip
+                    @click="addToSelection(label)" v-for="label in availableLabels" :key="label" class="label">
+                      {{label}}
+                    </v-chip>
+                  </v-col>
+                </v-chip-group>
+              </v-row>
+            </v-card-text>
+            <v-card-actions>
+              <v-row>
+                <v-col class="text-left col-4">
+                  <v-btn
+                    color="blue lighten-2"
+                    text
+                    @click="prevImage()"
+                    id = "prevImageBtn"
+                  >
+                    Prev
+                  </v-btn>
+                </v-col>
+                <v-col class="text-center col-4">
+                  <v-btn
+                    color="deep-blue lighten-2"
+                    text
+                    id = "FinishBtn"
+                  >
+                    Finish
+                  </v-btn>
+                </v-col>
+                <v-col class="text-right col-4">
+                  <v-btn
+                    color="blue lighten-2"
+                    text
+                    @click="nextImage()"
+                    id = "nextImageBtn"
+                  >
+                    Next
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card-actions>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-container>
+  </v-content> 
 </template>
 
 <script lang = "ts">
@@ -78,6 +108,7 @@ export default Vue.extend({
       images: new Array<string>(),
       count: 0,
       imagenext: 0,
+      title: "",
     }
   },
   async mounted() {
@@ -91,6 +122,7 @@ export default Vue.extend({
       this.availableLabels = response.data.labels;
       this.reward = response.data.rewards;
       this.author = response.data.author;
+      this.title = response.data.title;
 
       await this.fetchImages();
     }
@@ -158,7 +190,17 @@ export default Vue.extend({
       }else{
         this.imagenext += 1;
       }
-      
+    },
+    prevImage(){
+      console.log(this.imagenext)
+      console.log(this.images.length)
+      this.selectedLabels = []
+
+      if (this.imagenext <= 0){
+        this.imagenext = this.images.length-1;
+      }else{
+        this.imagenext -= 1;
+      }
     }
   },
 });
