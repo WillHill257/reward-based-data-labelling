@@ -122,7 +122,7 @@ export default Vue.extend({
       const batchNumber = this.$props.batchNumber
       const imageResponse = await Job.getImages(
         //requests the images with the sepcific job ID
-        "http://localhost:4000/api/images?jobID=" + jobID + "&batchNumber=" + batchNumber 
+        "http://localhost:4000/api/images?jobID=" + jobID /*+ "&batchNumber=" + batchNumber */
       );
       // if there are no errors it gets the images
       if (!imageResponse.data.error) {

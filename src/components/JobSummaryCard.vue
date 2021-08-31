@@ -56,7 +56,7 @@ export default Vue.extend({
     },
     goToLabel(jobId: string, batchnumber: number) {
       // view labelling screen
-      this.$router.push({ name: "LabelImages", params: { jobID: jobId, batchNumber: batchnumber.toString()}});
+      this.$router.push({ name: "LabelImages", params: { jobID: jobId/*, batchNumber: batchnumber.toString()*/}});
     },
   },
 });
