@@ -22,7 +22,7 @@
             :type="item.type"
             :labels="item.labels"
             :description="item.description"
-            :batchNumber="item.batchNumber"
+            :batchID="item.batch_id"
           ></JobSummaryCard>
           <v-row
             v-else

@@ -57,15 +57,6 @@ export default Vue.extend({
           labels: ["a", "b"],
         },
       ],
-      acceptedBatches: [
-        {
-          batch_number: 0,
-          job: "612a405bfb437d048c7c915e",
-          labellers: [""],
-          __v: 0,
-          _id: "612a405bfb437d048c7c915f",
-        },
-      ],
       authored: [
         {
           _id: "0",
@@ -137,10 +128,6 @@ export default Vue.extend({
     //filters and returns jobs that were created by currently logged in user
     getAuthoredJobs().then((response: any) => {
       this.authored = this.handleResponseList(response.data);
-    });
-
-    getAcceptedBatches().then((response: any) => {
-      console.log(response);
     });
   },
 });

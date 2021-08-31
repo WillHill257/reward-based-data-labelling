@@ -58,7 +58,6 @@ export default Vue.extend({
         new Compressor(file, {
           quality: 0.7,
           success: (resultFile) => {
-            console.log("here");
             this.onFilesUploaded(resultFile);
           },
         });
