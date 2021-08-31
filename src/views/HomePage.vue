@@ -123,6 +123,7 @@ export default Vue.extend({
     //filters and returns jobs accepted by currently logged in user
     getAcceptedJobs().then((response: any) => {
       this.accepted = this.handleResponseList(response.data);
+      console.log(this.accepted);
     });
 
     //filters and returns jobs that were created by currently logged in user
