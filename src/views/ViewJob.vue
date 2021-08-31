@@ -158,10 +158,6 @@ export default Vue.extend({
 
       acceptJob(jobID)
         .then((response) => {
-          console.log(response);
-          // alert(
-          //   "You have successfully accepted the job! \n Check it out in your dashboard"
-          // );
           router.push({ name: "HomePage" });
         })
         .catch((error) => {
@@ -208,6 +204,9 @@ export default Vue.extend({
       this.bottom = this.bottomVisible();
     });
     this.addImages();
+  },
+  labelImagesClick() {
+    this.$router.push({ name: "LabelImages" });
   },
 });
 </script>

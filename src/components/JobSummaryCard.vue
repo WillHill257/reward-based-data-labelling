@@ -23,10 +23,21 @@
       <p class="job-description clamp-lines">{{ description }}</p>
     </v-card-text>
 
-    <!-- button to view more details -->
     <v-card-actions class="card-actions" flat>
+      <!-- button to view more details -->
       <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
         View job
+      </v-btn>
+
+      <!-- button to begin/continue labelling job -->
+      <v-btn
+        v-if="canLabel"
+        class="btn-label-job"
+        color="blue"
+        text
+        @click="goToLabel(id, batchID)"
+      >
+        Label
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -35,7 +46,6 @@
 <script lang="ts">
 import Vue from "vue";
 
-
 export default Vue.extend({
   props: {
     id: { type: String, required: true },
@@ -43,12 +53,28 @@ export default Vue.extend({
     type: { type: String, required: true },
     labels: { type: Array, required: true },
     description: { type: String, required: true },
+    batchID: { type: String, required: true },
+  },
+
+  computed: {
+    canLabel() {
+      // the batchID is only going to be set for the 'Accepted' jobs, otherwise it will be undefined
+      // we only want to be able to label the accepted batches
+      return this.$props.batchID !== undefined;
+    },
   },
 
   methods: {
     goToJob(jobId: string) {
       // view in-depth details for the job
-      this.$router.push({ name: "ViewJob", params: { jobID: jobId}});
+      this.$router.push({ name: "ViewJob", params: { jobID: jobId } });
+    },
+    goToLabel(jobId: string, batchId: string) {
+      // view labelling screen
+      this.$router.push({
+        name: "LabelImages",
+        params: { jobID: jobId, batchID: batchId },
+      });
     },
   },
 });

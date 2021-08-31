@@ -129,10 +129,6 @@ export default Vue.extend({
     getAuthoredJobs().then((response: any) => {
       this.authored = this.handleResponseList(response.data);
     });
-
-    // getAcceptedBatches().then((response: any) => {
-    //   console.log(response);
-    // });
   },
 });
 </script>
