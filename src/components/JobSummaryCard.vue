@@ -69,11 +69,11 @@ export default Vue.extend({
       // view in-depth details for the job
       this.$router.push({ name: "ViewJob", params: { jobID: jobId } });
     },
-    goToLabel(jobId: string, batchID: number) {
+    goToLabel(jobId: string, batchId: string) {
       // view labelling screen
       this.$router.push({
         name: "LabelImages",
-        params: { jobID: jobId /*, batchID: batchID*/ },
+        params: { jobID: jobId, batchID: batchId },
       });
     },
   },
