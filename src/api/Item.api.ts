@@ -13,4 +13,9 @@ const computeFetchEndpoint = (jobID: string, filename: string): string => {
   return STATIC_FILES + "/" + jobID + "/" + filename;
 };
 
-export { getImage, computeFetchEndpoint };
+const sendLabels = (labelId: string, labels: string[]): Promise<any> => {
+  const payload: any = { labels: labels };
+  return httpClient.put(END_POINT + `/${labelId}`, payload);
+};
+
+export { getImage, computeFetchEndpoint, sendLabels };

@@ -19,7 +19,7 @@
             <v-card-text>
               <!-- Reward -->
               <v-row>
-                <v-col class="text-right"> {{ reward }} reward </v-col>
+                <v-col class="text-right"> {{ reward }} reward</v-col>
               </v-row>
 
               <!-- Labels -->
@@ -91,7 +91,7 @@
 import Vue from "vue";
 import { Job } from "@/store/modules/job";
 import { getCompleteBatch } from "@/api/Batch.api";
-import { computeFetchEndpoint } from "@/api/Item.api";
+import { computeFetchEndpoint, sendLabels } from "@/api/Item.api";
 
 export default Vue.extend({
   name: "LabelImages",
@@ -99,7 +99,7 @@ export default Vue.extend({
 
   props: {
     jobID: String,
-    batchID: String,
+    batchID: String
   },
 
   data() {
@@ -115,6 +115,7 @@ export default Vue.extend({
       count: 0,
       imagenext: 0,
       title: "",
+      batchData: null
     };
   },
   async mounted() {
@@ -125,8 +126,9 @@ export default Vue.extend({
     const response = await Job.getJob(this.url);
     // .then((response) => {
 
+
     // get the batch data
-    let batchData = await getCompleteBatch(this.batchID);
+    var batchData = await getCompleteBatch(this.batchID);
 
     if (!batchData) {
       // something went majorly wrong
@@ -147,6 +149,7 @@ export default Vue.extend({
       this.author = response.data.author;
       this.title = response.data.title;
     }
+    this.batchData = batchData;
     // get request for the images with a specific ID
   },
 
@@ -167,7 +170,19 @@ export default Vue.extend({
       // console.log("After:" + this.selectedLabels);
     },
 
+    updateLabels() {
+      if (this.batchData) {
+        const data: any = this.batchData;
+        sendLabels(data.images[this.imagenext]._id, this.selectedLabels).then(
+          (res: any) => {
+            console.log("Updated images:" + res);
+          }
+        );
+      }
+    },
+
     nextImage() {
+      this.updateLabels();
       this.selectedLabels = [];
 
       if (this.imagenext >= this.images.length - 1) {
@@ -184,8 +199,8 @@ export default Vue.extend({
       } else {
         this.imagenext -= 1;
       }
-    },
-  },
+    }
+  }
 });
 </script>
 
