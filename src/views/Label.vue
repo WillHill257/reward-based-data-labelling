@@ -30,20 +30,15 @@
               </v-row>
 
               <!-- Labels -->
+              <!-- active-class="light-green lighten-3" -->
               <v-row justify="center">
-                <v-chip-group
-                  v-model="selection"
-                  active-class="light-green lighten-3"
-                  column
-                  multiple
-                  id="labelChoices"
-                >
+                <v-chip-group column multiple id="labelChoices">
                   <v-col class="justify-center">
                     <v-chip
-                      @click="addToSelection(label)"
+                      @click.native="addToSelection(label)"
                       v-for="label in availableLabels"
                       :key="label"
-                      class="label"
+                      :class="label + ' labelling-label'"
                     >
                       {{ label }}
                     </v-chip>
@@ -99,7 +94,7 @@ export default Vue.extend({
 
   props: {
     jobID: String,
-    batchID: String
+    batchID: String,
   },
 
   data() {
@@ -110,22 +105,20 @@ export default Vue.extend({
       author: "",
       url: "",
       reward: 0,
-      paginatedImages: new Array<string>(),
       images: new Array<string>(), // array of image filenames to display
       count: 0,
       imagenext: 0,
       title: "",
-      batchData: null
+      batchData: null,
     };
   },
   async mounted() {
     // this is the jobs ID that is passed from the ListJobs page
     const jobID = this.$props.jobID;
     this.url = "http://localhost:4000/api/job/" + jobID;
+
     // get request for the title and description
     const response = await Job.getJob(this.url);
-    // .then((response) => {
-
 
     // get the batch data
     var batchData = await getCompleteBatch(this.batchID);
@@ -150,57 +143,108 @@ export default Vue.extend({
       this.title = response.data.title;
     }
     this.batchData = batchData;
-    // get request for the images with a specific ID
+
+    // load the initial data
+    this.$nextTick(() => {
+      this.loadLabels(0);
+    });
   },
 
   methods: {
     //adds the labels selected by the user to an array
     addToSelection(selectedLabel: string) {
-      // console.log("Before:" + this.selectedLabels);
       if (this.selectedLabels.includes(selectedLabel)) {
-        // console.log("In already");
+        // In already
+        this.setLabelInactive(selectedLabel);
         this.selectedLabels.splice(
           this.selectedLabels.indexOf(selectedLabel),
           1
         );
       } else {
-        // console.log("In now");
+        // In now
+        this.setLabelActive(selectedLabel);
         this.selectedLabels.push(selectedLabel);
       }
-      // console.log("After:" + this.selectedLabels);
     },
 
-    updateLabels() {
+    updateLabels(index: number) {
       if (this.batchData) {
         const data: any = this.batchData;
-        sendLabels(data.images[this.imagenext]._id, this.selectedLabels).then(
-          (res: any) => {
-            console.log("Updated images:" + res);
-          }
-        );
+        sendLabels(data.images[index]._id, this.selectedLabels)
+          .then((res: any) => {
+            // update the stored label data
+            (this.batchData as any).images[index].labels.value = res.data;
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
       }
+    },
+
+    setLabelActive(label: string) {
+      document.querySelectorAll("." + label).forEach((element: any) => {
+        if (element) {
+          element.classList.add("light-green");
+          element.classList.add("lighten-3");
+          element.classList.add("v-chip--active");
+        }
+      });
+    },
+
+    setLabelInactive(label: string) {
+      document.querySelectorAll("." + label).forEach((element: any) => {
+        if (element) {
+          element.classList.remove("light-green");
+          element.classList.remove("lighten-3");
+          element.classList.remove("v-chip--active");
+        }
+      });
+    },
+
+    loadLabels(index: number) {
+      // use this index to load the correct labels for the image
+
+      // start with a fresh slate
+      this.setLabelInactive("labelling-label");
+
+      // get the existing labels from the batchData
+      this.selectedLabels = (this.batchData as any).images[index].labels.value;
+      if (this.selectedLabels === undefined) this.selectedLabels = [];
+
+      // make these chips active
+      this.selectedLabels.forEach((label: any) => {
+        // add the correct classes
+        this.setLabelActive(label);
+      });
     },
 
     nextImage() {
-      this.updateLabels();
-      this.selectedLabels = [];
+      // update the labels for the current image
+      this.updateLabels(this.imagenext);
 
       if (this.imagenext >= this.images.length - 1) {
         this.imagenext = 0;
       } else {
         this.imagenext += 1;
       }
+
+      // update the labels
+      this.loadLabels(this.imagenext);
     },
     prevImage() {
-      this.selectedLabels = [];
+      // update the labels for the current image
+      this.updateLabels(this.imagenext);
 
       if (this.imagenext <= 0) {
         this.imagenext = this.images.length - 1;
       } else {
         this.imagenext -= 1;
       }
-    }
-  }
+
+      // update the labels
+      this.loadLabels(this.imagenext);
+    },
+  },
 });
 </script>
 

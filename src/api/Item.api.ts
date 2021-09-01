@@ -15,7 +15,7 @@ const computeFetchEndpoint = (jobID: string, filename: string): string => {
 
 const sendLabels = (labelId: string, labels: string[]): Promise<any> => {
   const payload: any = { labels: labels };
-  return httpClient.put(END_POINT + `/${labelId}`, payload);
+  return httpClient.put(END_POINT + `/${labelId}/`, payload);
 };
 
 export { getImage, computeFetchEndpoint, sendLabels };
