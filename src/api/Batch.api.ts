@@ -11,4 +11,7 @@ const getNextBatch = (jobId: string): Promise<any> => {
   return httpClient.get(END_POINT + "/next/" + jobId);
 };
 
-export { getCompleteBatch, getNextBatch };
+const deleteLabeller = (batchID: string): Promise<any> => {
+  return httpClient.delete(END_POINT + "/labeller/" + batchID);
+}
+export { getCompleteBatch, getNextBatch, deleteLabeller };
