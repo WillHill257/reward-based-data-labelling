@@ -35,6 +35,9 @@ const getImages = (url: string): Promise<any> => {
 
 const acceptJob = (jobId: string): Promise<any> => {
   console.log("Accepting job...");
+  // const body = {
+  //   userId: userId,
+  // };
   return httpClient.put("/job/labeller/" + jobId);
 };
 

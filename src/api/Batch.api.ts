@@ -7,4 +7,8 @@ const getCompleteBatch = (batchID: string): Promise<any> => {
   return httpClient.get(END_POINT + "/" + batchID);
 };
 
-export { getCompleteBatch };
+const getNextBatch = (jobId: string): Promise<any> => {
+  return httpClient.get(END_POINT + "/next/" + jobId);
+};
+
+export { getCompleteBatch, getNextBatch };
