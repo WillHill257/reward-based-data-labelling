@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Allows entire screen to be filled by card -->
-    <v-content>
+    <v-main>
       <v-container>
         <v-card>
           <v-row>
@@ -84,7 +84,7 @@
           </v-row>
         </v-card>
       </v-container>
-    </v-content>
+    </v-main>
     <FinishJob
       :isShowDialog.sync="isShowDialog"
       :canAcceptNew="canAcceptNew"
@@ -265,9 +265,9 @@ export default Vue.extend({
       }
       this.isShowDialog = true;
     },
-    }
-    //get the progress
-    /*
+  },
+  //get the progress
+  /*
     async progress(images: Array<string>, selectedLabels: Array<string>){
       await this.addImages;
       const total_images = images.length;
@@ -277,7 +277,6 @@ export default Vue.extend({
       return progress;
 
     }*/
-  },
 });
 </script>
 
