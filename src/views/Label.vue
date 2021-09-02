@@ -3,6 +3,17 @@
     <!-- Allows entire screen to be filled by card -->
     <v-main>
       <v-container>
+        <v-row align="center" justify="center" class="pb-2">
+          <v-btn
+          color="primary"
+          large
+          rounded
+          id="btnBack"
+          @click.native="backToDashboard"
+          pd-1
+          >Dashboard
+          </v-btn>
+        </v-row>
         <v-card>
           <v-row>
             <!--Appears underneath one another in portrait and side by side in landscape -->
@@ -179,6 +190,14 @@ export default Vue.extend({
         this.setLabelActive(selectedLabel);
         this.selectedLabels.push(selectedLabel);
       }
+    },
+
+    backToDashboard()
+    {
+      this.$router.push({
+        path: "/home",
+        name: "HomePage",        
+      });
     },
 
     updateLabels(index: number) {

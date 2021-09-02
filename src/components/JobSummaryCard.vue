@@ -87,7 +87,6 @@ export default Vue.extend({
     },
     //leave the labelling job
     quitJob(){
-      console.log("BLYAT");
       deleteLabeller(this.batchID);
     },
   },
