@@ -140,7 +140,7 @@ import Vue from "vue";
 import ImageUploader from "./components/ImageUploader.vue";
 import JobModule from "@/store/modules/job";
 import { getModule } from "vuex-module-decorators";
-import axios from "axios";
+import { uploadImages } from "@/api/Item.api";
 
 //TODO: keep track of userID with author
 export default Vue.extend({
@@ -221,34 +221,34 @@ export default Vue.extend({
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      //description empty
+        //description empty
       } else if (this.description == "") {
         this.errorMessage = "Description required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      //no files uploaded
+        //no files uploaded
       } else if (this.filesUploaded.length == 0) {
         this.errorMessage = "No files to upload";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      //no labels uploaded
+        //no labels uploaded
       } else if (this.labelArray.length == 0) {
         this.errorMessage = "Label(s) required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      // no labellers entered
+        // no labellers entered
       } else if (this.selectedNumber === 0) {
         console.log("selectedNumber", this.selectedNumber);
         this.errorMessage = "Please select number of labellers required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      //reward cannot be 0 or non numeric so not included here
+        //reward cannot be 0 or non numeric so not included here
       } else {
-      //in the case that everything is correct
+        //in the case that everything is correct
         //create a job object
         this.jobJson = {
           title: this.title,
@@ -282,7 +282,7 @@ export default Vue.extend({
               formData.append("labels", label);
             }
             //formData.append("labels", this.labelArray)
-            await this.uploadImages(formData);
+            await this.upload(formData);
             // uploads all the images through the image api
           })
           .catch((error) => {
@@ -319,14 +319,16 @@ export default Vue.extend({
     removeItem(index: any) {
       this.filesUploaded.splice(index, 1);
     },
-    async uploadImages(formData: any) {
-      const url = "http://localhost:4000/api/images/";
-      const response = await axios.post(url, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+    async upload(formData: any) {
+      // const url = "http://localhost:4000/api/images/";
+      // const response = await axios.post(url, formData, {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // });
+      const response = await uploadImages(formData);
       console.log(response);
+
       this.closeDialog();
     },
   },

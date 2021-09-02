@@ -18,4 +18,11 @@ const sendLabels = (labelId: string, labels: string[]): Promise<any> => {
   return httpClient.put(END_POINT + `/${labelId}/`, payload);
 };
 
-export { getImage, computeFetchEndpoint, sendLabels };
+const uploadImages = (formData: FormData): Promise<any> => {
+  return httpClient.post(END_POINT, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+export { getImage, computeFetchEndpoint, sendLabels, uploadImages };
