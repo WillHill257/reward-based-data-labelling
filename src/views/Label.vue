@@ -202,6 +202,17 @@ export default Vue.extend({
         this.imagenext -= 1;
       }
     }
+    //get the progress
+    /*
+    async progress(images: Array<string>, selectedLabels: Array<string>){
+      await this.addImages;
+      const total_images = images.length;
+      var total_labels = selectedLabels.length;
+
+      var progress = (total_labels/total_images) *100;
+      return progress;
+
+    }*/
   },
 });
 </script>
