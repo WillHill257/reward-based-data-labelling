@@ -89,6 +89,7 @@
       :isShowDialog.sync="isShowDialog"
       :canAcceptNew="canAcceptNew"
       :jobID="jobID"
+      :batchID="batchID"
     />
   </div>
 </template>
