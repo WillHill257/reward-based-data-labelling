@@ -1,10 +1,21 @@
 <template>
   <div>
     <!-- Allows entire screen to be filled by card -->
-    <v-content justify="center" fill-height>
-      <v-container fluid> 
-        <v-card id="labelCard" d-flex flex-column height="100%">
-          <v-row fill-height>
+    <v-main>
+      <v-container>
+        <v-row align="center" justify="center" class="pb-2">
+          <v-btn
+            color="primary"
+            large
+            rounded
+            id="backBtn"
+            @click.native="backToDashboard"
+            pd-1
+            >Dashboard
+          </v-btn>
+        </v-row>
+        <v-card>
+          <v-row>
             <!--Appears underneath one another in portrait and side by side in landscape -->
             <!-- Images that need to be labelled in the batch -->
             <v-col class="pt-0 pb-0 col-md-6 col-lg-6 col-xl-6">
@@ -12,8 +23,8 @@
                 :src="images[imagenext]"
                 id="labelImage"
                 aspect-ratio="1.25"
-                min-height=300
-                min-width=300
+                min-height="300"
+                min-width="300"
               ></v-img>
             </v-col>
             <!-- Instruction, labels and buttons -->
@@ -89,7 +100,7 @@
           </v-row>
         </v-card>
       </v-container>
-    </v-content>
+    </v-main>
     <FinishJob
       :isShowDialog.sync="isShowDialog"
       :canAcceptNew="canAcceptNew"
@@ -206,6 +217,13 @@ export default Vue.extend({
         this.setLabelActive(selectedLabel);
         this.selectedLabels.push(selectedLabel);
       }
+    },
+
+    backToDashboard() {
+      this.$router.push({
+        path: "/home",
+        name: "HomePage",
+      });
     },
 
     updateLabels(index: number) {

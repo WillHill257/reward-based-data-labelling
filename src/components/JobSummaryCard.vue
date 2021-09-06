@@ -39,13 +39,24 @@
       >
         Label
       </v-btn>
+
+      <!-- button to quit/leave labelling job -->
+      <v-btn
+        v-if="canLabel"
+        class="btn-quit-job"
+        color="blue"
+        text
+        @click="quitJob"
+      >
+        <v-icon left> mdi-minus-circle </v-icon>Quit Job
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script lang="ts">
+import { deleteLabeller } from "@/api/Batch.api";
 import Vue from "vue";
-
 export default Vue.extend({
   props: {
     id: { type: String, required: true },
@@ -75,6 +86,16 @@ export default Vue.extend({
         name: "LabelImages",
         params: { jobID: jobId, batchID: batchId },
       });
+    },
+    //leave the labelling job
+    quitJob() {
+      deleteLabeller(this.batchID)
+        .then(() => {
+          location.reload();
+        })
+        .catch((err: any) => {
+          alert("Something went wrong. Please contact support...");
+        });
     },
   },
 });

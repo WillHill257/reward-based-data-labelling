@@ -11,9 +11,13 @@ const getNextBatch = (jobId: string): Promise<any> => {
   return httpClient.get(END_POINT + "/next/" + jobId);
 };
 
+const deleteLabeller = (batchID: string): Promise<any> => {
+  return httpClient.delete(END_POINT + "/labeller/" + batchID);
+};
+
 const markBatchFinished = (batchID: string): Promise<any> => {
   // set this user's completed flag true for this batch
   return httpClient.put(END_POINT + "/complete/" + batchID);
 };
 
-export { getCompleteBatch, getNextBatch, markBatchFinished };
+export { getCompleteBatch, getNextBatch, deleteLabeller, markBatchFinished };
