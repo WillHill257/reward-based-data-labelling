@@ -4,6 +4,7 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 import flushPromises from "flush-promises";
+import * as BatchApi from "@/api/Batch.api";
 
 Vue.use(Vuetify);
 
@@ -228,6 +229,58 @@ describe("Checking routing functions", () => {
     await wrapper.vm.$nextTick();
     await flushPromises();
     expect(spy).toHaveBeenCalled();
+  });
+});
+
+describe("Check Quit Job", () => {
+  test("successfully deletes labeller", async () => {
+    // mock view
+    const wrapper: any = shallowMount(JobSummaryCard, {
+      vuetify,
+      propsData: {
+        id: jobs[0]["_id"],
+        title: jobs[0]["title"],
+        type: jobs[0]["type"],
+        labels: jobs[0]["labels"],
+        description: jobs[0]["description"],
+        batchID: jobs[0]["batchID"],
+      },
+    });
+
+    //spy on the close dailogue function
+    const postSpy = jest.spyOn(BatchApi, "deleteLabeller");
+    postSpy.mockResolvedValue({ status: 200 });
+
+    await wrapper.vm.quitJob(); // random id
+    await flushPromises();
+
+    //expect it to have been called if the dialogu was closed
+    expect(postSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test("unsuccessfully deletes labeller", async () => {
+    // mock view
+    const wrapper: any = shallowMount(JobSummaryCard, {
+      vuetify,
+      propsData: {
+        id: jobs[0]["_id"],
+        title: jobs[0]["title"],
+        type: jobs[0]["type"],
+        labels: jobs[0]["labels"],
+        description: jobs[0]["description"],
+        batchID: jobs[0]["batchID"],
+      },
+    });
+
+    //spy on the close dailogue function
+    const postSpy = jest.spyOn(BatchApi, "deleteLabeller");
+    postSpy.mockRejectedValue({ status: 400 });
+
+    await wrapper.vm.quitJob(); // random id
+    await flushPromises();
+
+    //expect it to have been called if the dialogu was closed
+    expect(postSpy).toBeCalled();
   });
 });
 
