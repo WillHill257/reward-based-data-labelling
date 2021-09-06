@@ -8,24 +8,28 @@ Vue.use(Vuetify);
 
 describe("Labelling Page", () => {
   describe("Checking method calls", () => {
-
     test("When a chip is clicked, is addToSelection called", () => {
-      // mock landing page
-      const wrapper = shallowMount(LabelImages, { vuetify });
+      // mock label page
+      const wrapper: any = shallowMount(LabelImages, { vuetify });
       const addToSelection = jest.fn();
+
+      // //make a pill to look for
+      // const value = "a"
+      // wrapper.vm.addToSelection(value)
+
       // mock method to list jobs
       wrapper.setMethods({
         addToSelection: addToSelection,
       });
-      //trigger click on available jobs button
-      wrapper.find(".label").trigger("click");
-      //test passes if the method has been clicked
       wrapper.vm.$nextTick(() => {
-        expect(addToSelection).toHaveBeenCalled();
+        //trigger click on available jobs button
+        wrapper.find(".labelling-label").trigger("click");
+        //test passes if the method has been clicked
+        wrapper.vm.$nextTick(() => {
+          expect(addToSelection).toHaveBeenCalled();
+        });
       });
     });
-
-    
 
     /*
     test("Label data function called when I Want My Images Labelled button is clicked", () => {
@@ -47,43 +51,52 @@ describe("Labelling Page", () => {
   });
 
   describe("Checking methods behave as expected", () => {
+    //one pill selected
+    test("One pill clicked", () => {
+      // mock landing page
+      const wrapper: any = shallowMount(LabelImages, { vuetify });
 
-      //one pill selected
-      test("One pill clicked", () => {
-        // mock landing page
-        const wrapper:any = shallowMount(LabelImages, {vuetify})
-        
-        // add value to array when method called
-        const value = "a"
-        wrapper.vm.addToSelection(value)
+      // add value to array when method called
+      const value = "a";
+      wrapper.vm.addToSelection(value);
 
-        expect(wrapper.vm.$data.selectedLabels.length).toBe(1)
-      });
-
-      //pill selected and then unselected
-      test("One pill clicked", () => {
-        // mock landing page
-        const wrapper:any = shallowMount(LabelImages, {vuetify})
-        const value = "a"
-
-        //insert value into array so it's there already
-        wrapper.vm.$data.selectedLabels = [value]
-
-        // add value to array when method called
-        wrapper.vm.addToSelection(value)
-
-        expect(wrapper.vm.$data.selectedLabels.length).toBe(0)
-      });
-
+      expect(wrapper.vm.$data.selectedLabels.length).toBe(1);
     });
 
-    
+    //pill selected and then unselected
+    test("One pill clicked", () => {
+      // mock landing page
+      const wrapper: any = shallowMount(LabelImages, { vuetify });
+      const value = "a";
 
-    //more than one pill selected
+      //insert value into array so it's there already
+      wrapper.vm.$data.selectedLabels = [value];
 
-    //one pill selected and then removed
+      // add value to array when method called
+      wrapper.vm.addToSelection(value);
 
-    //two pills selected and then one removed
+      expect(wrapper.vm.$data.selectedLabels.length).toBe(0);
+    });
+
+    test("backToDashboard is called when the back button is clicked", () => {
+      // mock view job
+      const wrapper = shallowMount(LabelImages, { vuetify });
+      // assign method to mock methodd
+      const backToDashboard = jest.fn();
+      wrapper.setMethods({
+        backToDashboard: backToDashboard,
+      });
+      //trigger click on mock component
+      wrapper.find("#backBtn").trigger("click");
+      expect(backToDashboard).toHaveBeenCalled();
+    });
+  });
+
+  //more than one pill selected
+
+  //one pill selected and then removed
+
+  //two pills selected and then one removed
 
   describe("Loaded UI elements", () => {
     test("should have all the necessary UI elements", () => {
@@ -93,10 +106,12 @@ describe("Labelling Page", () => {
       expect(wrapper.find("#labelCard").exists()).toBe(true);
       expect(wrapper.find("#labelImage").exists()).toBe(true);
       expect(wrapper.find("#instruction").exists()).toBe(true);
-      expect(wrapper.find("#divider").exists()).toBe(true);
       expect(wrapper.find("#labelChoices").exists()).toBe(true);
       //maybe the individual labels too?
       expect(wrapper.find("#nextImageBtn").exists()).toBe(true);
+      expect(wrapper.find("#prevImageBtn").exists()).toBe(true);
+      expect(wrapper.find("#finishBtn").exists()).toBe(true);
+      expect(wrapper.find("#backBtn").exists()).toBe(true);
     });
   });
 
