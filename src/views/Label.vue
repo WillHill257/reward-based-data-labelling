@@ -1,29 +1,30 @@
 <template>
   <div>
     <!-- Allows entire screen to be filled by card -->
-    <v-main>
-      <v-container>
-        <v-card>
-          <v-row>
+    <v-content justify="center" fill-height>
+      <v-container fluid> 
+        <v-card id="labelCard" d-flex flex-column height="100%">
+          <v-row fill-height>
             <!--Appears underneath one another in portrait and side by side in landscape -->
             <!-- Images that need to be labelled in the batch -->
             <v-col class="pt-0 pb-0 col-md-6 col-lg-6 col-xl-6">
-              <!-- TODO get image from DB -->
               <v-img
                 :src="images[imagenext]"
-                height="250"
                 id="labelImage"
+                aspect-ratio="1.25"
+                min-height=300
+                min-width=300
               ></v-img>
             </v-col>
             <!-- Instruction, labels and buttons -->
             <v-col class="pt-0 pb-0 col-md-6 col-lg-6 col-xl-6">
-              <v-card-text>
+              <v-card-text id="instruction">
                 <!-- Reward -->
                 <v-row>
                   <v-col class="text-right"> {{ reward }} reward </v-col>
                 </v-row>
 
-                <!-- Labels -->
+                <!-- Instruction -->
                 <v-row justify="center">
                   <v-card-text class="text-center">
                     Select the label(s) that best match the image
@@ -46,8 +47,11 @@
                   </v-chip-group>
                 </v-row>
               </v-card-text>
+
+              <v-spacer></v-spacer>
+
               <v-card-actions>
-                <v-row>
+                <v-row class="" justify="end">
                   <v-col class="text-left col-4">
                     <v-btn
                       color="blue lighten-2"
@@ -62,7 +66,7 @@
                     <v-btn
                       color="deep-blue lighten-2"
                       text
-                      id="FinishBtn"
+                      id="finishBtn"
                       @click="finishBatchDialog"
                     >
                       Finish
@@ -84,7 +88,7 @@
           </v-row>
         </v-card>
       </v-container>
-    </v-main>
+    </v-content>
     <FinishJob
       :isShowDialog.sync="isShowDialog"
       :canAcceptNew="canAcceptNew"
