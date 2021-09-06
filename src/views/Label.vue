@@ -60,6 +60,7 @@
                   </v-col>
                   <v-col class="text-center col-4">
                     <v-btn
+                      v-if="canFinish"
                       color="deep-blue lighten-2"
                       text
                       id="FinishBtn"
@@ -127,6 +128,28 @@ export default Vue.extend({
       canAcceptNew: false,
     };
   },
+
+  computed: {
+    canFinish(): boolean {
+      // when the labels are successfully updated on the backend, the batchData will reflect
+      // (this.batchData as any).images[index].labels.value
+
+      if (!this.batchData) return false;
+
+      // loop through each image
+      const batchImages: any = (this.batchData as any).images;
+      for (let image of batchImages) {
+        // check that the labels.value is not empty
+        // console.log(image.labels);
+        if (image.labels.value.length === 0) {
+          return false;
+        }
+      }
+
+      return true;
+    },
+  },
+
   async mounted() {
     // this is the jobs ID that is passed from the ListJobs page
     const jobID = this.$props.jobID;
@@ -223,7 +246,9 @@ export default Vue.extend({
       this.setLabelInactive("labelling-label");
 
       // get the existing labels from the batchData
-      this.selectedLabels = (this.batchData as any).images[index].labels.value;
+      this.selectedLabels = JSON.parse(
+        JSON.stringify((this.batchData as any).images[index].labels.value)
+      );
       if (this.selectedLabels === undefined) this.selectedLabels = [];
 
       // make these chips active
