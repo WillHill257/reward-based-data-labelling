@@ -1,4 +1,4 @@
-import { createWrapper, shallowMount } from "@vue/test-utils";
+import { createWrapper, mount, shallowMount } from "@vue/test-utils";
 import LabelImages from "@/views/Label.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
@@ -77,19 +77,6 @@ describe("Labelling Page", () => {
 
       expect(wrapper.vm.$data.selectedLabels.length).toBe(0);
     });
-
-    test("backToDashboard is called when the back button is clicked", () => {
-      // mock view job
-      const wrapper = shallowMount(LabelImages, { vuetify });
-      // assign method to mock methodd
-      const backToDashboard = jest.fn();
-      wrapper.setMethods({
-        backToDashboard: backToDashboard,
-      });
-      //trigger click on mock component
-      wrapper.find("#backBtn").trigger("click");
-      expect(backToDashboard).toHaveBeenCalled();
-    });
   });
 
   //more than one pill selected
@@ -99,19 +86,33 @@ describe("Labelling Page", () => {
   //two pills selected and then one removed
 
   describe("Loaded UI elements", () => {
-    test("should have all the necessary UI elements", () => {
+    test("should have all the necessary UI elements", async () => {
       //mock labelling page
-      const wrapper = shallowMount(LabelImages, { vuetify });
+      const wrapper = mount(LabelImages, { vuetify });
+
+      // await wrapper.vm.$nextTick();
+
       //expect labelling components to have appeared (this is their order top to bottom)
-      expect(wrapper.find("#labelCard").exists()).toBe(true);
+      expect(wrapper.find(".label-card").exists()).toBe(true);
       expect(wrapper.find("#labelImage").exists()).toBe(true);
       expect(wrapper.find("#instruction").exists()).toBe(true);
       expect(wrapper.find("#labelChoices").exists()).toBe(true);
       //maybe the individual labels too?
       expect(wrapper.find("#nextImageBtn").exists()).toBe(true);
       expect(wrapper.find("#prevImageBtn").exists()).toBe(true);
+      expect(wrapper.find("#finishBtn").exists()).toBe(false); // don't want to see if can't finish a batch
+      expect(wrapper.find("#backbutton").exists()).toBe(true);
+    });
+
+    test("should show the Finish button when batch is complete", async () => {
+      const wrapper = shallowMount(LabelImages, { vuetify });
+
+      // mock the values
+      wrapper.vm.$data.canFinish = true;
+
+      await wrapper.vm.$nextTick();
+
       expect(wrapper.find("#finishBtn").exists()).toBe(true);
-      expect(wrapper.find("#backBtn").exists()).toBe(true);
     });
   });
 
