@@ -264,7 +264,7 @@ export default Vue.extend({
           .createJob(this.jobJson)
           .then(async (response) => {
             // when job is successfully created, upload the images
-            console.log(response);
+            // console.log(response);
             // create the form data to contain the images
             let formData = new FormData();
             // append the job ID to the form data
@@ -327,7 +327,6 @@ export default Vue.extend({
       //   },
       // });
       const response = await uploadImages(formData);
-      console.log(response);
 
       this.closeDialog();
     },

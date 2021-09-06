@@ -7,12 +7,14 @@ import { Job } from "@/store/modules/job";
 import * as JobApi from "@/api/Job.api";
 import axios from "axios";
 import flushPromises from "flush-promises";
-jest.mock("../../src/api/Job.api", () => ({
-  createJob: jest.fn(),
-}));
-jest.mock("axios", () => ({
-  post: jest.fn(),
-}));
+import * as ItemApi from "@/api/Item.api";
+
+// jest.mock("../../src/api/Job.api", () => ({
+//   createJob: jest.fn(),
+// }));
+// jest.mock("axios", () => ({
+//   post: jest.fn(),
+// }));
 
 const vuetify = new Vuetify();
 
@@ -474,7 +476,7 @@ describe("CreateJob", () => {
       createJobSpy.mockResolvedValue(mockResponse);
 
       //spy on upload images to see if it behaves correctly
-      const uploadImagesSpy = jest.spyOn(wrapper.vm, "uploadImages");
+      const uploadImagesSpy = jest.spyOn(ItemApi, "uploadImages");
 
       wrapper.vm.onSubmitClicked();
 
@@ -524,7 +526,7 @@ describe("CreateJob", () => {
       //upload two mock files
       wrapper.vm.onFilesUploaded(mockFile);
       wrapper.vm.onFilesUploaded(mockFile);
-      //check that the expected number of files is 2 
+      //check that the expected number of files is 2
       expect(wrapper.vm.$data.filesUploaded.length).toEqual(2);
       //remove one
       wrapper.vm.removeItem(1);
@@ -533,18 +535,25 @@ describe("CreateJob", () => {
     });
   });
 
-  describe("uploadImage", async () => {
-    // mock view 
-    const wrapper: any = shallowMount(CreateJob, {
-      vuetify,
+  describe("uploadImage", () => {
+    test("uploads an image", async () => {
+      // mock view
+      const wrapper: any = shallowMount(CreateJob, {
+        vuetify,
+      });
+
+      //spy on the close dailogue function
+      const closeDialogSpy = jest.spyOn(wrapper.vm, "closeDialog");
+      const postSpy = jest.spyOn(ItemApi, "uploadImages");
+      postSpy.mockResolvedValue({ status: 200 });
+
+      let formData = new FormData();
+
+      await wrapper.vm.upload(formData);
+      await flushPromises();
+
+      //expect it to have been called if the dialogu was closed
+      expect(closeDialogSpy).toHaveBeenCalledTimes(1);
     });
-    //spy on the close dailogue function 
-    const closeDialogSpy = jest.spyOn(wrapper.vm, "closeDialog");
-    const postSpy = jest.spyOn(axios, "post");
-    postSpy.mockResolvedValue({ status: 200 });
-    await wrapper.vm.uploadImages();
-    await flushPromises();
-    //expect it to have been called if the dialogu was closed
-    expect(closeDialogSpy).toHaveBeenCalledTimes(1);
   });
 });
