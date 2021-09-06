@@ -44,7 +44,7 @@
         lg="3"
         md="4"
         sm="6"
-        xa="6"
+        xs="6"
       >
         <!-- this is where the images are set to load -->
         <v-img

@@ -24,7 +24,7 @@ describe("Labelling Page", () => {
         expect(addToSelection).toHaveBeenCalled();
       });
     });
-
+  
     
 
     /*
@@ -75,7 +75,24 @@ describe("Labelling Page", () => {
         expect(wrapper.vm.$data.selectedLabels.length).toBe(0)
       });
 
+      
+      test("backToDashboard is called when the back button is clicked", () => {
+        // mock view job
+        const wrapper = shallowMount(LabelImages, { vuetify });
+        // assign method to mock methodd
+        const backToDashboard = jest.fn();
+        wrapper.setMethods({
+          backToDashboard: backToDashboard,
+        });
+        //trigger click on mock component
+        wrapper.find("#backBtn").trigger("click");
+        expect(backToDashboard).toHaveBeenCalled();
+      });
+      
+
+
     });
+  
 
     
 
@@ -97,6 +114,9 @@ describe("Labelling Page", () => {
       expect(wrapper.find("#labelChoices").exists()).toBe(true);
       //maybe the individual labels too?
       expect(wrapper.find("#nextImageBtn").exists()).toBe(true);
+      expect(wrapper.find("#prevImageBtn").exists()).toBe(true);
+      expect(wrapper.find("#finishBtn").exists()).toBe(true);
+      expect(wrapper.find("#backBtn").exists()).toBe(true);
     });
   });
 
