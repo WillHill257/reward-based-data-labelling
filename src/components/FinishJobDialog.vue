@@ -8,17 +8,28 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="deep-blue lighten-2" text @click="closeDialog">
+        <v-btn
+          id="cancel-button"
+          color="deep-blue lighten-2"
+          text
+          @click="closeDialog()"
+        >
           Cancel
         </v-btn>
-        <v-btn color="deep-blue lighten-2" text @click="finishJob">
+        <v-btn
+          id="finish-button"
+          color="deep-blue lighten-2"
+          text
+          @click="finishJob()"
+        >
           Finish
         </v-btn>
         <v-btn
+          id="accept-new-button"
           v-if="canAcceptNew"
           color="deep-blue lighten-2"
           text
-          @click="acceptNew"
+          @click="acceptNew()"
         >
           Accept New
         </v-btn>
