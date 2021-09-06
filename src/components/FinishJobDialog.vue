@@ -31,6 +31,8 @@
 import { acceptJob } from "@/api/Job.api";
 import router from "@/router";
 import Vue from "vue";
+import { markBatchFinished } from "@/api/Batch.api";
+
 export default Vue.extend({
   name: "FinishJob",
   props: {
@@ -47,26 +49,56 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    batchID: {
+      type: String,
+      required: true,
+    },
   },
   methods: {
     closeDialog(): void {
       this.$emit("update:isShowDialog", false);
     },
-    finishJob(): void {
-      router.push({ name: "HomePage" });
-      this.closeDialog();
+
+    markBatchCompleted(success: any, failure: any) {
+      // make the api call
+      markBatchFinished(this.$props.batchID)
+        .then(() => {
+          success();
+        })
+        .catch((err: any) => {
+          failure(err);
+        });
     },
-    acceptNew(): void {
-      acceptJob(this.$props.jobID)
-        .then((response) => {
+
+    finishJob(): void {
+      this.markBatchCompleted(
+        () => {
           router.push({ name: "HomePage" });
           this.closeDialog();
-        })
-        .catch((error) => {
-          console.log(error);
+        },
+        (err: any) => {
           alert("Oops something has gone wrong! \n Please try again later");
-          this.closeDialog();
-        });
+        }
+      );
+    },
+    acceptNew(): void {
+      this.markBatchCompleted(
+        () => {
+          acceptJob(this.$props.jobID)
+            .then((response) => {
+              router.push({ name: "HomePage" });
+              this.closeDialog();
+            })
+            .catch((error) => {
+              console.log(error);
+              alert("Oops something has gone wrong! \n Please try again later");
+              this.closeDialog();
+            });
+        },
+        (err: any) => {
+          alert("Oops something has gone wrong! \n Please try again later");
+        }
+      );
     },
   },
 });
