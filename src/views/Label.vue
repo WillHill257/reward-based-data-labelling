@@ -126,28 +126,8 @@ export default Vue.extend({
       batchData: null,
       isShowDialog: false,
       canAcceptNew: false,
+      canFinish: false,
     };
-  },
-
-  computed: {
-    canFinish(): boolean {
-      // when the labels are successfully updated on the backend, the batchData will reflect
-      // (this.batchData as any).images[index].labels.value
-
-      if (!this.batchData) return false;
-
-      // loop through each image
-      const batchImages: any = (this.batchData as any).images;
-      for (let image of batchImages) {
-        // check that the labels.value is not empty
-        // console.log(image.labels);
-        if (image.labels.value.length === 0) {
-          return false;
-        }
-      }
-
-      return true;
-    },
   },
 
   async mounted() {
@@ -189,6 +169,25 @@ export default Vue.extend({
   },
 
   methods: {
+    canFinishMethod(): boolean {
+      // when the labels are successfully updated on the backend, the batchData will reflect
+      // (this.batchData as any).images[index].labels.value
+
+      if (!this.batchData) return false;
+
+      // loop through each image
+      const batchImages: any = (this.batchData as any).images;
+      for (let image of batchImages) {
+        // check that the labels.value is not empty
+        if (image.labels.value) {
+          if (image.labels.value.length === 0) return false;
+        } else {
+          return false;
+        }
+      }
+
+      return true;
+    },
     //adds the labels selected by the user to an array
     addToSelection(selectedLabel: string) {
       if (this.selectedLabels.includes(selectedLabel)) {
@@ -212,6 +211,7 @@ export default Vue.extend({
           .then((res: any) => {
             // update the stored label data
             (this.batchData as any).images[index].labels.value = res.data;
+            this.canFinish = this.canFinishMethod();
           })
           .catch((error: any) => {
             console.log(error);
@@ -246,9 +246,15 @@ export default Vue.extend({
       this.setLabelInactive("labelling-label");
 
       // get the existing labels from the batchData
-      this.selectedLabels = JSON.parse(
-        JSON.stringify((this.batchData as any).images[index].labels.value)
-      );
+      try {
+        const temp = JSON.stringify(
+          (this.batchData as any).images[index].labels.value
+        );
+        this.selectedLabels = JSON.parse(temp);
+      } catch (e) {
+        this.selectedLabels = [];
+      }
+
       if (this.selectedLabels === undefined) this.selectedLabels = [];
 
       // make these chips active
@@ -284,6 +290,7 @@ export default Vue.extend({
       // update the labels
       this.loadLabels(this.imagenext);
     },
+
     async finishBatchDialog() {
       var nextBatch = await getNextBatch(this.jobID);
       if (nextBatch.data != "No Batch") {
