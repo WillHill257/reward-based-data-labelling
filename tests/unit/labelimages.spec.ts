@@ -10,19 +10,29 @@ describe("Labelling Page", () => {
   describe("Checking method calls", () => {
 
     test("When a chip is clicked, is addToSelection called", () => {
-      // mock landing page
-      const wrapper = shallowMount(LabelImages, { vuetify });
+      // mock label page
+      const wrapper:any = shallowMount(LabelImages, { vuetify });
       const addToSelection = jest.fn();
+
+      // //make a pill to look for 
+      // const value = "a"
+      // wrapper.vm.addToSelection(value)
+      
       // mock method to list jobs
       wrapper.setMethods({
         addToSelection: addToSelection,
       });
-      //trigger click on available jobs button
-      wrapper.find(".label").trigger("click");
-      //test passes if the method has been clicked
       wrapper.vm.$nextTick(() => {
-        expect(addToSelection).toHaveBeenCalled();
-      });
+        //trigger click on available jobs button
+        wrapper.find(".labelling-label").trigger("click");
+        //test passes if the method has been clicked
+        wrapper.vm.$nextTick(() => {
+          expect(addToSelection).toHaveBeenCalled();
+        });
+      
+      })
+        
+      
     });
 
     
@@ -93,10 +103,11 @@ describe("Labelling Page", () => {
       expect(wrapper.find("#labelCard").exists()).toBe(true);
       expect(wrapper.find("#labelImage").exists()).toBe(true);
       expect(wrapper.find("#instruction").exists()).toBe(true);
-      expect(wrapper.find("#divider").exists()).toBe(true);
       expect(wrapper.find("#labelChoices").exists()).toBe(true);
       //maybe the individual labels too?
       expect(wrapper.find("#nextImageBtn").exists()).toBe(true);
+      expect(wrapper.find("#prevImageBtn").exists()).toBe(true);
+      expect(wrapper.find("#finishBtn").exists()).toBe(true);    
     });
   });
 
