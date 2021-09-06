@@ -1,7 +1,9 @@
-import { shallowMount } from "@vue/test-utils";
+import { createLocalVue, mount, shallowMount } from "@vue/test-utils";
 import JobSummaryCard from "@/components/JobSummaryCard.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import VueRouter from "vue-router";
+import flushPromises from "flush-promises";
 
 Vue.use(Vuetify);
 
@@ -15,6 +17,7 @@ let jobs = [
     type: "Type",
     labels: ["a", "b"],
     description: "Description",
+    batchID: "6135cfe89c361f61fee112ef",
   },
 ];
 
@@ -28,6 +31,7 @@ describe("When loaded", () => {
       type: jobs[0]["type"],
       labels: jobs[0]["labels"],
       description: jobs[0]["description"],
+      batchID: jobs[0]["batchID"],
     },
   });
   //check that is is an instance of view
@@ -47,13 +51,30 @@ describe("When loaded", () => {
 });
 
 describe("Checking 'View More' Button", () => {
-  //mocking route
-  const $route = {
-    name: "ViewJob",
-  };
+  const name = "ViewJob";
+
+  const localVue = createLocalVue();
+  localVue.use(VueRouter);
+
+  // mock router and routes
+  const routes = [
+    {
+      path: "/",
+      name: "Landing",
+    },
+    {
+      path: "/whatever",
+      name: name,
+    },
+  ];
+  const mockRouter = new VueRouter({
+    routes,
+  });
 
   // mocking job summary card
-  const wrapper = shallowMount(JobSummaryCard, {
+  const wrapper = mount(JobSummaryCard, {
+    localVue,
+    router: mockRouter,
     vuetify,
     propsData: {
       id: jobs[0]["_id"],
@@ -61,9 +82,7 @@ describe("Checking 'View More' Button", () => {
       type: jobs[0]["type"],
       labels: jobs[0]["labels"],
       description: jobs[0]["description"],
-    },
-    mocks: {
-      $route,
+      batchID: jobs[0]["batchID"],
     },
   });
 
@@ -71,20 +90,35 @@ describe("Checking 'View More' Button", () => {
   it("Should go to the 'View Job' page", async () => {
     wrapper.find(".btn-view-job").trigger("click");
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.$route.name).toBe($route.name);
+    expect(wrapper.vm.$route.name).toBe(name);
   });
 });
 
-//TODO Label Button testing working
-
 describe("Checking 'Label' Button", () => {
-  //mocking route
-  const $route = {
-    name: "LabelImages",
-  };
+  const name = "LabelImages";
+
+  const localVue = createLocalVue();
+  localVue.use(VueRouter);
+
+  // mock router and routes
+  const routes = [
+    {
+      path: "/",
+      name: "Landing",
+    },
+    {
+      path: "/whatever",
+      name: name,
+    },
+  ];
+  const mockRouter = new VueRouter({
+    routes,
+  });
 
   // mocking job summary card
-  const wrapper = shallowMount(JobSummaryCard, {
+  const wrapper = mount(JobSummaryCard, {
+    localVue,
+    router: mockRouter,
     vuetify,
     propsData: {
       id: jobs[0]["_id"],
@@ -92,9 +126,7 @@ describe("Checking 'Label' Button", () => {
       type: jobs[0]["type"],
       labels: jobs[0]["labels"],
       description: jobs[0]["description"],
-    },
-    mocks: {
-      $route,
+      batchID: jobs[0]["batchID"],
     },
   });
 
@@ -102,80 +134,139 @@ describe("Checking 'Label' Button", () => {
   it("Should go to the 'Label' page", async () => {
     wrapper.find(".btn-label-job").trigger("click");
     await wrapper.vm.$nextTick();
-    expect(wrapper.vm.$route.name).toBe($route.name);
+    expect(wrapper.vm.$route.name).toBe(name);
   });
 });
 
 describe("Checking routing functions", () => {
-  test("Checking 'View More' Button triggers the method to view the job", () => {
-    // mock job summary card
-    const wrapper = shallowMount(JobSummaryCard, { vuetify });
-    const goToJob = jest.fn();
-    // mock method to go to the view job page
-    wrapper.setMethods({
-      goToJob: goToJob,
+  test("Checking 'View More' Button triggers the method to view the job", async () => {
+    const name = "ViewJob";
+
+    const localVue = createLocalVue();
+    localVue.use(VueRouter);
+
+    // mock router and routes
+    const routes = [
+      {
+        path: "/",
+        name: "Landing",
+      },
+      {
+        path: "/whatever1",
+        name: name,
+      },
+    ];
+    const mockRouter = new VueRouter({
+      routes,
     });
+    // mock job summary card
+    const wrapper: any = mount(JobSummaryCard, {
+      localVue,
+      vuetify,
+      router: mockRouter,
+      propsData: {
+        id: jobs[0]["_id"],
+        title: jobs[0]["title"],
+        type: jobs[0]["type"],
+        labels: jobs[0]["labels"],
+        description: jobs[0]["description"],
+        batchID: jobs[0]["batchID"],
+      },
+    });
+
+    const spy = jest.spyOn(wrapper.vm, "goToJob");
+
     //trigger click on available jobs button
     wrapper.find(".btn-view-job").trigger("click");
     //test passes if the method has been clicked
-    wrapper.vm.$nextTick(() => {
-      expect(goToJob).toHaveBeenCalled();
-    });
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+    expect(spy).toHaveBeenCalled();
   });
 
-  test("Checking 'Label' Button triggers the method to view the job", () => {
-    // mock job summary card
-    const wrapper = shallowMount(JobSummaryCard, { vuetify });
-    const goToLabel = jest.fn();
-    // mock method to go to the label page
-    wrapper.setMethods({
-      goToLabel: goToLabel,
+  test("Checking 'Label' Button triggers the method to view the job", async () => {
+    const name = "LabelImages";
+
+    const localVue = createLocalVue();
+    localVue.use(VueRouter);
+
+    // mock router and routes
+    const routes = [
+      {
+        path: "/",
+        name: "Landing",
+      },
+      {
+        path: "/whatever2",
+        name: name,
+      },
+    ];
+    const mockRouter = new VueRouter({
+      routes,
     });
+
+    // mock job summary card
+    const wrapper: any = mount(JobSummaryCard, {
+      localVue,
+      vuetify,
+      router: mockRouter,
+      propsData: {
+        id: jobs[0]["_id"],
+        title: jobs[0]["title"],
+        type: jobs[0]["type"],
+        labels: jobs[0]["labels"],
+        description: jobs[0]["description"],
+        batchID: jobs[0]["batchID"],
+      },
+    });
+
+    const spy = jest.spyOn(wrapper.vm, "goToLabel");
+
     //trigger click on available jobs button
     wrapper.find(".btn-label-job").trigger("click");
     //test passes if the method has been clicked
-    wrapper.vm.$nextTick(() => {
-      expect(goToLabel).toHaveBeenCalled();
-    });
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+    expect(spy).toHaveBeenCalled();
   });
 });
 
-describe("Checking buttons route correctly", () => {
-  test("going to a particular job" , ()=>{
-    // mock the router
-    const mockRouter = {
-      push: jest.fn()
-    }
-    const wrapper: any = shallowMount(JobSummaryCard,{vuetify,
-      mocks:{
-        $route: mockRouter
-      }
-  
-    });
-    //check that the router redirects user to the aprropriate place
-    wrapper.vm.$router = mockRouter
-    const pushSpy = jest.spyOn(mockRouter, "push");
+// describe("Checking buttons route correctly", () => {
+//   test("going to a particular job" , ()=>{
+//     // mock the router
+//     const mockRouter = {
+//       push: jest.fn()
+//     }
+//     const wrapper: any = shallowMount(JobSummaryCard,{vuetify,
+//       mocks:{
+//         $route: mockRouter
+//       }
 
-    wrapper.vm.goToJob(jobs[0]._id)
-    expect(pushSpy).toHaveBeenCalled
-  })
+//     });
+//     //check that the router redirects user to the aprropriate place
+//     wrapper.vm.$router = mockRouter
+//     const pushSpy = jest.spyOn(mockRouter, "push");
 
-  test("going to the label page" , ()=>{
-    // mock the router
-    const mockRouter = {
-      push: jest.fn()
-    }
-    const wrapper: any = shallowMount(JobSummaryCard,{vuetify,
-      mocks:{
-        $route: mockRouter
-      }
-  
-    });
-    //check that the router redirects user to the aprropriate place
-    wrapper.vm.$router = mockRouter
-    const pushSpy = jest.spyOn(mockRouter, "push");
+//     wrapper.vm.goToJob(jobs[0]._id)
+//     expect(pushSpy).toHaveBeenCalled
+//   })
 
-    wrapper.vm.goToLabel()
-    expect(pushSpy).toHaveBeenCalled
-  })
-});
+//   test("going to the label page" , ()=>{
+//     // mock the router
+//     const mockRouter = {
+//       push: jest.fn()
+//     }
+//     const wrapper: any = shallowMount(JobSummaryCard,{vuetify,
+//       mocks:{
+//         $route: mockRouter
+//       }
+
+//     });
+//     //check that the router redirects user to the aprropriate place
+//     wrapper.vm.$router = mockRouter
+//     const pushSpy = jest.spyOn(mockRouter, "push");
+
+//     wrapper.vm.goToLabel()
+//     expect(pushSpy).toHaveBeenCalled
+//   })
+// });
