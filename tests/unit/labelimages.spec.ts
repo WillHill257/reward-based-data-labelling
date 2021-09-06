@@ -624,6 +624,270 @@ describe("Labelling Page - Checking methods", () => {
     // ensure the selectedLabels are the same
     expect(wrapper.vm.$data.selectedLabels).toEqual([]);
   });
+
+  test("nextImage - normal index range", async () => {
+    const wrapper: any = shallowMount(LabelImages, {
+      vuetify,
+      propsData: {
+        jobID: "6135cfe89c361f61fee112f0", // random
+        batchID: "6135cfe89c361f61fee112f1", //random
+      },
+    });
+
+    // update the batchData
+    wrapper.vm.$data.images = [
+      "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+      "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+      "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+    ];
+    wrapper.vm.$data.batchData = {
+      _id: "6135fe34b96a23707ba24e2d",
+      batch_number: 0,
+      job: "6135fe34b96a23707ba24e2c",
+      labellers: [
+        {
+          completed: true,
+          _id: "6135fe3eb96a23707ba24e49",
+          labeller: "612e5fffbd71d580e76062ee",
+          expiry: " 2021-09-07T11:40:46.539Z",
+        },
+      ],
+      __v: 0,
+      images: [
+        {
+          batchNumber: 0,
+          _id: "6135fe34b96a23707ba24e30",
+          value: "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+          job: "6135fe34b96a23707ba24e2c",
+          labels: {
+            labeller: "6135fe34b96a23707ba24fff",
+            value: ["something"],
+          },
+          __v: 1,
+        },
+        {
+          batchNumber: 0,
+          _id: "6135fe34b96a23707ba24e31",
+          value: "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+          job: "6135fe34b96a23707ba24e2c",
+          labels: {
+            labeller: "6135fe34b96a23707ba24fff",
+            value: ["something"],
+          },
+          __v: 1,
+        },
+        {
+          batchNumber: 0,
+          _id: "6135fe34b96a23707ba24e32",
+          value: "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+          job: "6135fe34b96a23707ba24e2c",
+          labels: {
+            labeller: "6135fe34b96a23707ba24fff",
+            value: ["something"],
+          },
+          __v: 1,
+        },
+      ],
+    };
+    wrapper.vm.$data.imagenext = 0;
+
+    const updateLabelsSpy = jest.spyOn(wrapper.vm, "updateLabels");
+    const loadLabelsSpy = jest.spyOn(wrapper.vm, "loadLabels");
+
+    // make sure the changes are in effect
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+
+    const result = wrapper.vm.nextImage();
+    expect(updateLabelsSpy).toBeCalledTimes(1);
+    expect(loadLabelsSpy).toBeCalledTimes(1);
+    expect(wrapper.vm.$data.imagenext).toEqual(1);
+  });
+
+  test("nextImage - overlap index range", async () => {
+    const wrapper: any = shallowMount(LabelImages, {
+      vuetify,
+      propsData: {
+        jobID: "6135cfe89c361f61fee112f0", // random
+        batchID: "6135cfe89c361f61fee112f1", //random
+      },
+    });
+
+    // update the batchData
+    wrapper.vm.$data.images = ["2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg"];
+    wrapper.vm.$data.batchData = {
+      _id: "6135fe34b96a23707ba24e2d",
+      batch_number: 0,
+      job: "6135fe34b96a23707ba24e2c",
+      labellers: [
+        {
+          completed: true,
+          _id: "6135fe3eb96a23707ba24e49",
+          labeller: "612e5fffbd71d580e76062ee",
+          expiry: " 2021-09-07T11:40:46.539Z",
+        },
+      ],
+      __v: 0,
+      images: [
+        {
+          batchNumber: 0,
+          _id: "6135fe34b96a23707ba24e30",
+          value: "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+          job: "6135fe34b96a23707ba24e2c",
+          labels: {
+            labeller: "6135fe34b96a23707ba24fff",
+            value: ["something"],
+          },
+          __v: 1,
+        },
+      ],
+    };
+    wrapper.vm.$data.imagenext = 0;
+
+    const updateLabelsSpy = jest.spyOn(wrapper.vm, "updateLabels");
+    const loadLabelsSpy = jest.spyOn(wrapper.vm, "loadLabels");
+
+    // make sure the changes are in effect
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+
+    const result = wrapper.vm.nextImage();
+    expect(updateLabelsSpy).toBeCalledTimes(1);
+    expect(loadLabelsSpy).toBeCalledTimes(1);
+    expect(wrapper.vm.$data.imagenext).toEqual(0);
+  });
+
+  test("prevImage - normal index range", async () => {
+    const wrapper: any = shallowMount(LabelImages, {
+      vuetify,
+      propsData: {
+        jobID: "6135cfe89c361f61fee112f0", // random
+        batchID: "6135cfe89c361f61fee112f1", //random
+      },
+    });
+
+    // update the batchData
+    wrapper.vm.$data.images = [
+      "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+      "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+      "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+    ];
+    wrapper.vm.$data.batchData = {
+      _id: "6135fe34b96a23707ba24e2d",
+      batch_number: 0,
+      job: "6135fe34b96a23707ba24e2c",
+      labellers: [
+        {
+          completed: true,
+          _id: "6135fe3eb96a23707ba24e49",
+          labeller: "612e5fffbd71d580e76062ee",
+          expiry: " 2021-09-07T11:40:46.539Z",
+        },
+      ],
+      __v: 0,
+      images: [
+        {
+          batchNumber: 0,
+          _id: "6135fe34b96a23707ba24e30",
+          value: "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+          job: "6135fe34b96a23707ba24e2c",
+          labels: {
+            labeller: "6135fe34b96a23707ba24fff",
+            value: ["something"],
+          },
+          __v: 1,
+        },
+        {
+          batchNumber: 0,
+          _id: "6135fe34b96a23707ba24e31",
+          value: "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+          job: "6135fe34b96a23707ba24e2c",
+          labels: {
+            labeller: "6135fe34b96a23707ba24fff",
+            value: ["something"],
+          },
+          __v: 1,
+        },
+        {
+          batchNumber: 0,
+          _id: "6135fe34b96a23707ba24e32",
+          value: "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+          job: "6135fe34b96a23707ba24e2c",
+          labels: {
+            labeller: "6135fe34b96a23707ba24fff",
+            value: ["something"],
+          },
+          __v: 1,
+        },
+      ],
+    };
+    wrapper.vm.$data.imagenext = 2;
+
+    const updateLabelsSpy = jest.spyOn(wrapper.vm, "updateLabels");
+    const loadLabelsSpy = jest.spyOn(wrapper.vm, "loadLabels");
+
+    // make sure the changes are in effect
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+
+    const result = wrapper.vm.prevImage();
+    expect(updateLabelsSpy).toBeCalledTimes(1);
+    expect(loadLabelsSpy).toBeCalledTimes(1);
+    expect(wrapper.vm.$data.imagenext).toEqual(1);
+  });
+
+  test("prevImage - overlap index range", async () => {
+    const wrapper: any = shallowMount(LabelImages, {
+      vuetify,
+      propsData: {
+        jobID: "6135cfe89c361f61fee112f0", // random
+        batchID: "6135cfe89c361f61fee112f1", //random
+      },
+    });
+
+    // update the batchData
+    wrapper.vm.$data.images = ["2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg"];
+    wrapper.vm.$data.batchData = {
+      _id: "6135fe34b96a23707ba24e2d",
+      batch_number: 0,
+      job: "6135fe34b96a23707ba24e2c",
+      labellers: [
+        {
+          completed: true,
+          _id: "6135fe3eb96a23707ba24e49",
+          labeller: "612e5fffbd71d580e76062ee",
+          expiry: " 2021-09-07T11:40:46.539Z",
+        },
+      ],
+      __v: 0,
+      images: [
+        {
+          batchNumber: 0,
+          _id: "6135fe34b96a23707ba24e30",
+          value: "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+          job: "6135fe34b96a23707ba24e2c",
+          labels: {
+            labeller: "6135fe34b96a23707ba24fff",
+            value: ["something"],
+          },
+          __v: 1,
+        },
+      ],
+    };
+    wrapper.vm.$data.imagenext = 0;
+
+    const updateLabelsSpy = jest.spyOn(wrapper.vm, "updateLabels");
+    const loadLabelsSpy = jest.spyOn(wrapper.vm, "loadLabels");
+
+    // make sure the changes are in effect
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+
+    const result = wrapper.vm.prevImage();
+    expect(updateLabelsSpy).toBeCalledTimes(1);
+    expect(loadLabelsSpy).toBeCalledTimes(1);
+    expect(wrapper.vm.$data.imagenext).toEqual(0);
+  });
 });
 
 //Router testing templates
