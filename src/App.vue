@@ -39,8 +39,6 @@ export default Vue.extend({
 
   methods: {
     onScroll(e: any) {
-      console.log("here");
-
       if (typeof window === "undefined") return;
       const top = window.pageYOffset || e.target.scrollTop || 0;
       this.fab = top > 20;
