@@ -17,7 +17,7 @@
         </v-btn>
 		<v-spacer></v-spacer>
 		<v-btn
-		id="quit -button"
+		id="quit-button"
         class="ma-2"
         color="red"
 		text
