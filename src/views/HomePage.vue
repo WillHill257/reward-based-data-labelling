@@ -3,34 +3,56 @@
     <h3>Welcome to jinx</h3>
     <!-- <router-link to="/login">Go to Login</router-link> -->
 
-    <section class="dashboard-row basic-grid">
-      <!-- displays all jobs that have been authored by logged in user -->
-      <DashboardList
-        class="authored"
-        title="Mine"
-        :jobs="authored"
-        endpoint="authored"
-      ></DashboardList>
-      <!-- displays all jobs that have been accepted by logged in user -->
-      <DashboardList
-        class="accepted"
-        title="Currently Doing"
-        :jobs="accepted"
-        endpoint="accepted"
-      ></DashboardList>
-      <!-- displays all available jobs (those that have not reached capacity yet) -->
-      <DashboardList
-        class="available"
-        title="Available"
-        :jobs="available"
-        endpoint="available"
-      ></DashboardList>
-    </section>
+    <v-row>
+      <v-col class="col-9">
+        <section class="dashboard-row basic-grid">
+          <!-- displays all jobs that have been authored by logged in user -->
+          <DashboardList
+            class="authored"
+            title="Mine"
+            :jobs="authored"
+            endpoint="authored"
+          ></DashboardList>
+          <!-- displays all jobs that have been accepted by logged in user -->
+          <DashboardList
+            class="accepted"
+            title="Currently Doing"
+            :jobs="accepted"
+            endpoint="accepted"
+          ></DashboardList>
+          <!-- displays all available jobs (those that have not reached capacity yet) -->
+          <DashboardList
+            class="available"
+            title="Available"
+            :jobs="available"
+            endpoint="available"
+          ></DashboardList>
+        </section>
+      </v-col>
+      <v-col class="col-3">
+        <v-card
+
+        >
+          <v-card-text>
+            <!-- Hello username -->
+            Hello, {{firstName}}!
+          </v-card-text>
+          <v-card-title class="font-weight-black headline" size=6rem>
+            <!-- Your available rewards -->
+            5360
+          </v-card-title>
+          
+        </v-card>
+      </v-col>
+    </v-row>
+
+    
   </section>
 </template>
 
 <script lang="ts">
 import DashboardList from "@/components/DashboardList.vue";
+import { UserModule } from "@/store/modules/user";
 import Vue from "vue";
 import {
   getAvailableJobs,
@@ -45,6 +67,7 @@ export default Vue.extend({
   data() {
     return {
       isShowDialog: false,
+      firstName: UserModule.firstName,
       //dummy data for initial screen when database is empty
       accepted: [
         {
