@@ -2,29 +2,54 @@
   <section id="home">
     <h3>Welcome to jinx</h3>
     <!-- <router-link to="/login">Go to Login</router-link> -->
+    <v-spacer></v-spacer>
+    <section>
+      <v-card :max-width="width">
+        <v-toolbar color="white" dark flat>
+          <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
 
-    <section class="dashboard-row basic-grid">
-      <!-- displays all jobs that have been authored by logged in user -->
-      <DashboardList
-        class="authored"
-        title="Mine"
-        :jobs="authored"
-        endpoint="authored"
-      ></DashboardList>
-      <!-- displays all jobs that have been accepted by logged in user -->
-      <DashboardList
-        class="accepted"
-        title="Currently Doing"
-        :jobs="accepted"
-        endpoint="accepted"
-      ></DashboardList>
-      <!-- displays all available jobs (those that have not reached capacity yet) -->
-      <DashboardList
-        class="available"
-        title="Available"
-        :jobs="available"
-        endpoint="available"
-      ></DashboardList>
+          <v-toolbar-title>Your Dashboard</v-toolbar-title>
+
+          <v-spacer></v-spacer>
+
+          <v-btn icon>
+            <v-icon color="cyan">mdi-magnify</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-tabs v-model="tab" align-with-title>
+          <v-tabs-slider color="cyan"></v-tabs-slider>
+
+          <v-tab style="color: black">Mine</v-tab>
+          <v-tab-item>
+            <DashboardList
+              class="authored"
+              title="Mine"
+              :jobs="authored"
+              endpoint="authored"
+            ></DashboardList>
+          </v-tab-item>
+
+          <v-tab style="color: black">Currently Doing</v-tab>
+          <v-tab-item>
+            <DashboardList
+              class="accepted"
+              title="Currently Doing"
+              :jobs="accepted"
+              endpoint="accepted"
+            ></DashboardList>
+          </v-tab-item>
+
+          <v-tab style="color: black">Available</v-tab>
+          <v-tab-item>
+            <DashboardList
+              class="available"
+              title="Available"
+              :jobs="available"
+              endpoint="available"
+            ></DashboardList>
+          </v-tab-item>
+        </v-tabs>
+      </v-card>
     </section>
   </section>
 </template>
@@ -41,9 +66,26 @@ import {
 export default Vue.extend({
   components: { DashboardList },
   name: "Home",
-
+  computed: {
+    width() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "100%";
+        case "sm":
+          return "100%";
+        case "md":
+          return "50%";
+        case "lg":
+          return "50%";
+        case "xl":
+          return "50%";
+      }
+      return "50%";
+    },
+  },
   data() {
     return {
+      tab: null,
       isShowDialog: false,
       //dummy data for initial screen when database is empty
       accepted: [
@@ -84,7 +126,7 @@ export default Vue.extend({
       );
     },
 
-    determinListHeight(): void {
+    determineListHeight(): void {
       // determine top of dashboard row
       const row: Element = document.getElementsByClassName("dashboard-row")[0];
       const rowTop: number = row.getBoundingClientRect().top;
@@ -111,11 +153,13 @@ export default Vue.extend({
   },
 
   mounted() {
-    this.determinListHeight();
+    //this.determineListHeight();
+    console.log("authored");
 
     //filters and returns available jobs (those that are not full)
     getAvailableJobs().then((response: any) => {
       this.available = this.handleResponseList(response.data);
+      console.log(this.available);
     });
 
     //filters and returns jobs accepted by currently logged in user
@@ -127,6 +171,7 @@ export default Vue.extend({
     //filters and returns jobs that were created by currently logged in user
     getAuthoredJobs().then((response: any) => {
       this.authored = this.handleResponseList(response.data);
+      console.log(this.authored);
     });
   },
 });
