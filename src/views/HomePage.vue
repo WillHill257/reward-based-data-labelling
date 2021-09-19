@@ -2,55 +2,79 @@
   <section id="home">
     <h3>Welcome to jinx</h3>
     <!-- <router-link to="/login">Go to Login</router-link> -->
+    <v-spacer></v-spacer>
+    <section>
+      <v-row>
+        <v-col class="col-9">
+          <v-card :max-width="width">
+          <v-toolbar color="white" dark flat>
+            <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
 
-    <v-row>
-      <v-col class="col-9">
-        <section class="dashboard-row basic-grid">
-          <!-- displays all jobs that have been authored by logged in user -->
-          <DashboardList
-            class="authored"
-            title="Mine"
-            :jobs="authored"
-            endpoint="authored"
-          ></DashboardList>
-          <!-- displays all jobs that have been accepted by logged in user -->
-          <DashboardList
-            class="accepted"
-            title="Currently Doing"
-            :jobs="accepted"
-            endpoint="accepted"
-          ></DashboardList>
-          <!-- displays all available jobs (those that have not reached capacity yet) -->
-          <DashboardList
-            class="available"
-            title="Available"
-            :jobs="available"
-            endpoint="available"
-          ></DashboardList>
-        </section>
-      </v-col>
-      <v-col class="col-3">
-        <v-card
+            <v-toolbar-title>Your Dashboard</v-toolbar-title>
 
-        >
-          <v-card-text>
-            <!-- Hello username -->
-            Hello, {{firstName}}!
-          </v-card-text>
-          <v-card-text class="pt-0 pb-0">
-            <!-- Hello username -->
-            Your available rewards
-          </v-card-text>
-          <v-card-title class="font-weight-black headline pt-0" style="font-size:10em">
-            <!-- Your available rewards -->
-            {{rewardCount}}
-          </v-card-title>
-          
-        </v-card>
-      </v-col>
-    </v-row>
+            <v-spacer></v-spacer>
 
-    
+            <v-btn icon>
+              <v-icon color="cyan">mdi-magnify</v-icon>
+            </v-btn>
+          </v-toolbar>
+          <v-tabs v-model="tab" align-with-title>
+            <v-tabs-slider color="cyan"></v-tabs-slider>
+
+            <v-tab style="color: black">Mine</v-tab>
+            <v-tab-item>
+              <DashboardList
+                class="authored"
+                title="Mine"
+                :jobs="authored"
+                endpoint="authored"
+              ></DashboardList>
+            </v-tab-item>
+
+            <v-tab style="color: black">Currently Doing</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="accepted"
+                  title="Currently Doing"
+                  :jobs="accepted"
+                  endpoint="accepted"
+                ></DashboardList>
+              </v-tab-item>
+
+            <v-tab style="color: black">Available</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="available"
+                  title="Available"
+                  :jobs="available"
+                  endpoint="available"
+                ></DashboardList>
+              </v-tab-item>
+            </v-tabs>
+          </v-card>
+        </v-col>
+        <v-col class="col-3">
+          <v-card
+
+          >
+            <v-card-text>
+              <!-- Hello username -->
+              Hello, {{firstName}}!
+            </v-card-text>
+            <v-card-text class="pt-0 pb-0">
+              <!-- Hello username -->
+              Your available rewards
+            </v-card-text>
+            <v-card-title class="font-weight-black headline pt-0" style="font-size:10em">
+              <!-- Your available rewards -->
+              {{rewardCount}}
+            </v-card-title>
+            
+          </v-card>
+        </v-col>
+      </v-row>
+      
+    </section>
   </section>
 </template>
 
@@ -67,9 +91,26 @@ import {
 export default Vue.extend({
   components: { DashboardList },
   name: "Home",
-
+  computed: {
+    width() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "100%";
+        case "sm":
+          return "100%";
+        case "md":
+          return "50%";
+        case "lg":
+          return "50%";
+        case "xl":
+          return "50%";
+      }
+      return "50%";
+    },
+  },
   data() {
     return {
+      tab: null,
       isShowDialog: false,
       firstName: UserModule.firstName,
       rewardCount: UserModule.rewardCount,
@@ -112,7 +153,7 @@ export default Vue.extend({
       );
     },
 
-    determinListHeight(): void {
+    determineListHeight(): void {
       // determine top of dashboard row
       const row: Element = document.getElementsByClassName("dashboard-row")[0];
       const rowTop: number = row.getBoundingClientRect().top;
@@ -139,11 +180,13 @@ export default Vue.extend({
   },
 
   mounted() {
-    this.determinListHeight();
+    //this.determineListHeight();
+    console.log("authored");
 
     //filters and returns available jobs (those that are not full)
     getAvailableJobs().then((response: any) => {
       this.available = this.handleResponseList(response.data);
+      console.log(this.available);
     });
 
     //filters and returns jobs accepted by currently logged in user
@@ -155,6 +198,7 @@ export default Vue.extend({
     //filters and returns jobs that were created by currently logged in user
     getAuthoredJobs().then((response: any) => {
       this.authored = this.handleResponseList(response.data);
+      console.log(this.authored);
     });
   },
 });
