@@ -37,9 +37,13 @@
             <!-- Hello username -->
             Hello, {{firstName}}!
           </v-card-text>
-          <v-card-title class="font-weight-black headline" size=6rem>
+          <v-card-text class="pt-0 pb-0">
+            <!-- Hello username -->
+            Your available rewards
+          </v-card-text>
+          <v-card-title class="font-weight-black headline pt-0" style="font-size:10em">
             <!-- Your available rewards -->
-            5360
+            {{rewardCount}}
           </v-card-title>
           
         </v-card>
@@ -68,6 +72,7 @@ export default Vue.extend({
     return {
       isShowDialog: false,
       firstName: UserModule.firstName,
+      rewardCount: UserModule.rewardCount,
       //dummy data for initial screen when database is empty
       accepted: [
         {

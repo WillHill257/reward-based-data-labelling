@@ -14,6 +14,7 @@ export interface UserState {
   lastName: string;
   email: string;
   token: string;
+  rewardCount: number;
 }
 
 @Module({
@@ -27,6 +28,7 @@ class User extends VuexModule implements UserState {
   lastName = "";
   email = "";
   token = localStorage.getItem("token") || "";
+  rewardCount = 0;
 
   // Getters
   get getFirstName(): string {
@@ -46,6 +48,7 @@ class User extends VuexModule implements UserState {
     this.lastName = payload.lastName;
     this.email = payload.email;
     this.token = payload.token;
+    this.rewardCount = payload.rewardCount;
   }
 
   @Mutation
@@ -54,6 +57,7 @@ class User extends VuexModule implements UserState {
     this.lastName = payload.lastName;
     this.email = payload.email;
     this.token = payload.token;
+    this.rewardCount = payload.rewardCount;
   }
 
   @Mutation
