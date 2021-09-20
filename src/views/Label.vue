@@ -35,6 +35,17 @@
                     </v-card-text>
                   </v-row>
 
+                  <!-- Progress bar-->
+                  <v-row justify="center">
+                    <v-progress-linear
+                      id = "progressBar"
+                      height="25"
+                      :value="calcProgress()"
+                      >
+                      <strong>{{progressCount}}%</strong>
+                    </v-progress-linear>
+                  </v-row>
+
                   <!-- Labels -->
                   <v-row justify="center">
                     <v-chip-group column multiple id="labelChoices">
@@ -137,6 +148,7 @@ export default Vue.extend({
       isShowDialog: false,
       canAcceptNew: false,
       canFinish: false,
+      progressCount:0,
     };
   },
 
@@ -308,6 +320,32 @@ export default Vue.extend({
       }
       this.isShowDialog = true;
     },
+
+    calcProgress(){
+      //set local variables
+      const data:any =  this.batchData; //get the batch data
+      var count =0;
+      let labelarr = new Array<any>();
+
+      //go through all the images labels and add them to an array
+      for (let index = 0; index < this.images.length; index++) {
+        labelarr[index] = JSON.stringify(data.images[index].labels.value); 
+      }
+
+      //go through the array made and count the number of images that have labels in them
+      for (let index = 0; index < labelarr.length; index++) {
+        if(labelarr[index] != "[]"){ //check in there are any labels
+          count++;
+        }
+      }
+
+      //calculate the progress as a percentage
+      var prog = (count/this.images.length)*100;
+      this.progressCount = prog;
+      //return the progress as a percentage
+      return prog;
+    },
+
   },
 });
 </script>

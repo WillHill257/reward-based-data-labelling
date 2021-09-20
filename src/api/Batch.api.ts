@@ -20,4 +20,8 @@ const markBatchFinished = (batchID: string): Promise<any> => {
   return httpClient.put(END_POINT + "/complete/" + batchID);
 };
 
-export { getCompleteBatch, getNextBatch, deleteLabeller, markBatchFinished };
+const getprogress = (jobID: string): Promise<any>=>{
+  return httpClient.get(END_POINT+ "/progress/"+ jobID);
+};
+
+export { getCompleteBatch, getNextBatch, deleteLabeller, markBatchFinished, getprogress };
