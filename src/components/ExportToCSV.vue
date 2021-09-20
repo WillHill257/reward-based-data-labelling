@@ -1,26 +1,35 @@
 <template>
-  <v-btn
-    :loading="loading"
-    :disabled="loading"
-    color="blue-grey"
-    class="ma-2 white--text"
-    @click.native="loader = 'loading'"
-  >
-    Export to CSV
-    <v-icon right dark> mdi-cloud-download </v-icon>
-    <template v-slot:loader>
-      <span class="loading-symbol">
-        <v-icon light>mdi-cached</v-icon>
-      </span>
-    </template>
-  </v-btn>
+  <div>
+    <v-btn
+      :loading="loading"
+      :disabled="loading"
+      color="blue-grey"
+      class="ma-2 white--text"
+      @click.native="loader = 'loading'"
+    >
+      Export to CSV
+      <v-icon right dark> mdi-cloud-download </v-icon>
+      <template v-slot:loader>
+        <span class="loading-symbol">
+          <v-icon light>mdi-cached</v-icon>
+        </span>
+      </template>
+    </v-btn>
+    <ErrorDialog
+      :isShowDialog.sync="isShowDialog"
+      :title="'An error occurred'"
+      :message="'Please try again. If the problem persists, please contact support.'"
+    />
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { exportJobToCSV } from "@/api/Job.api";
+import ErrorDialog from "./ErrorDialog.vue";
 
 export default Vue.extend({
+  components: { ErrorDialog },
   props: {
     jobID: { type: String, required: true },
   },
@@ -29,6 +38,7 @@ export default Vue.extend({
     return {
       loader: null,
       loading: false,
+      isShowDialog: false,
     };
   },
 
@@ -45,7 +55,7 @@ export default Vue.extend({
           this.loading = false;
         },
         () => {
-          alert("something went wrong");
+          this.isShowDialog = true;
         }
       );
     },
