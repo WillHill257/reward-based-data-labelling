@@ -61,6 +61,10 @@ const getAllJobs = (): Promise<any> => {
   return httpClient.get("/job");
 };
 
+const exportJobToCSV = (jobID: string): Promise<any> => {
+  return httpClient.get(END_POINT + "/export/" + jobID);
+};
+
 export {
   createJob,
   getJob,
@@ -70,4 +74,5 @@ export {
   getAuthoredJobs,
   getAcceptedJobs,
   getAllJobs,
+  exportJobToCSV,
 };
