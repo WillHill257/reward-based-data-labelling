@@ -55,7 +55,14 @@ export default Vue.extend({
     downloadCSV(success: any, failure: any) {
       exportJobToCSV(this.$props.jobID)
         .then((res: any) => {
-          console.log(res);
+          // Then, create a hidden element and automatically download the file.
+          const hiddenElement = document.createElement("a");
+          hiddenElement.href =
+            "data:text/csv;charset=utf-8," + encodeURI(res.data);
+          hiddenElement.target = "_blank";
+          hiddenElement.download = this.$props.jobID + ".csv";
+          hiddenElement.click();
+
           success();
         })
         .catch((err: any) => {
