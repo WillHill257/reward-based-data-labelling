@@ -1,8 +1,5 @@
 <template>
   <section id="home">
-    <h3>Welcome to jinx</h3>
-    <!-- <router-link to="/login">Go to Login</router-link> -->
-
     <section class="dashboard-row basic-grid">
       <!-- displays all jobs that have been authored by logged in user -->
       <DashboardList

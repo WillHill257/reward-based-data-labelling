@@ -15,7 +15,14 @@
         <v-card-text>{{ message }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="closeDialog"> Okay </v-btn>
+          <v-btn
+            class="okay-button"
+            color="primary"
+            text
+            @click="closeDialog()"
+          >
+            Okay
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
