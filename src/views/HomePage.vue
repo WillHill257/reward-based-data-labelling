@@ -4,34 +4,54 @@
     <!-- <router-link to="/login">Go to Login</router-link> -->
     <v-spacer></v-spacer>
     <section>
-      <v-row>
-        <v-col class="col-9">
+      <v-row class="flex-row-reverse">
+        <v-col class="col-xl-3 col-lg-3 col-md-3">
+          <v-card>
+            <v-card-text id="user-greeting">
+              <!-- Hello username -->
+              Hello, {{ firstName }}!
+            </v-card-text>
+            <v-card-text class="pt-0 pb-0">
+              <!-- Hello username -->
+              Your available rewards
+            </v-card-text>
+            <v-card-title
+              id="available-rewards"
+              class="font-weight-black headline pt-0"
+              style="font-size: 10em"
+            >
+              <!-- Your available rewards -->
+              {{ rewardCount }}
+            </v-card-title>
+          </v-card>
+        </v-col>
+        <v-col class="col-xl-9 col-lg-9 col-md-9">
           <v-card :max-width="width">
-          <v-toolbar color="white" dark flat>
-            <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
+            <v-toolbar color="white" dark flat>
+              <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
 
-            <v-toolbar-title>Your Dashboard</v-toolbar-title>
+              <v-toolbar-title>Your Dashboard</v-toolbar-title>
 
-            <v-spacer></v-spacer>
+              <v-spacer></v-spacer>
 
-            <v-btn icon>
-              <v-icon color="cyan">mdi-magnify</v-icon>
-            </v-btn>
-          </v-toolbar>
-          <v-tabs v-model="tab" align-with-title>
-            <v-tabs-slider color="cyan"></v-tabs-slider>
+              <v-btn icon>
+                <v-icon color="cyan">mdi-magnify</v-icon>
+              </v-btn>
+            </v-toolbar>
+            <v-tabs v-model="tab" align-with-title>
+              <v-tabs-slider color="cyan"></v-tabs-slider>
 
-            <v-tab style="color: black">Mine</v-tab>
-            <v-tab-item>
-              <DashboardList
-                class="authored"
-                title="Mine"
-                :jobs="authored"
-                endpoint="authored"
-              ></DashboardList>
-            </v-tab-item>
+              <v-tab style="color: black">Mine</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="authored"
+                  title="Mine"
+                  :jobs="authored"
+                  endpoint="authored"
+                ></DashboardList>
+              </v-tab-item>
 
-            <v-tab style="color: black">Currently Doing</v-tab>
+              <v-tab style="color: black">Currently Doing</v-tab>
               <v-tab-item>
                 <DashboardList
                   class="accepted"
@@ -41,7 +61,7 @@
                 ></DashboardList>
               </v-tab-item>
 
-            <v-tab style="color: black">Available</v-tab>
+              <v-tab style="color: black">Available</v-tab>
               <v-tab-item>
                 <DashboardList
                   class="available"
@@ -53,27 +73,7 @@
             </v-tabs>
           </v-card>
         </v-col>
-        <v-col class="col-3">
-          <v-card
-
-          >
-            <v-card-text id="user-greeting">
-              <!-- Hello username -->
-              Hello, {{firstName}}!
-            </v-card-text>
-            <v-card-text class="pt-0 pb-0">
-              <!-- Hello username -->
-              Your available rewards
-            </v-card-text>
-            <v-card-title id="available-rewards" class="font-weight-black headline pt-0" style="font-size:10em">
-              <!-- Your available rewards -->
-              {{rewardCount}}
-            </v-card-title>
-            
-          </v-card>
-        </v-col>
       </v-row>
-      
     </section>
   </section>
 </template>
@@ -91,23 +91,7 @@ import {
 export default Vue.extend({
   components: { DashboardList },
   name: "Home",
-  computed: {
-    width() {
-      switch (this.$vuetify.breakpoint.name) {
-        case "xs":
-          return "100%";
-        case "sm":
-          return "100%";
-        case "md":
-          return "50%";
-        case "lg":
-          return "50%";
-        case "xl":
-          return "50%";
-      }
-      return "50%";
-    },
-  },
+
   data() {
     return {
       tab: null,
