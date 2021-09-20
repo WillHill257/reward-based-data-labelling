@@ -16,10 +16,10 @@
             <v-icon color="cyan">mdi-magnify</v-icon>
           </v-btn>
         </v-toolbar>
-        <v-tabs v-model="tab" align-with-title>
+        <v-tabs id="dashboard-tabs" v-model="tab" align-with-title>
           <v-tabs-slider color="cyan"></v-tabs-slider>
 
-          <v-tab style="color: black">Mine</v-tab>
+          <v-tab id="authored-tab" style="color: black">Mine</v-tab>
           <v-tab-item>
             <DashboardList
               class="authored"
@@ -29,7 +29,7 @@
             ></DashboardList>
           </v-tab-item>
 
-          <v-tab style="color: black">Currently Doing</v-tab>
+          <v-tab id="accepted-tab" style="color: black">Currently Doing</v-tab>
           <v-tab-item>
             <DashboardList
               class="accepted"
@@ -39,7 +39,7 @@
             ></DashboardList>
           </v-tab-item>
 
-          <v-tab style="color: black">Available</v-tab>
+          <v-tab id="available-tab" style="color: black">Available</v-tab>
           <v-tab-item>
             <DashboardList
               class="available"
@@ -126,21 +126,21 @@ export default Vue.extend({
       );
     },
 
-    determineListHeight(): void {
-      // determine top of dashboard row
-      const row: Element = document.getElementsByClassName("dashboard-row")[0];
-      const rowTop: number = row.getBoundingClientRect().top;
+    // determineListHeight(): void {
+    //   // determine top of dashboard row
+    //   const row: Element = document.getElementsByClassName("dashboard-row")[0];
+    //   const rowTop: number = row.getBoundingClientRect().top;
 
-      // determine height of screen
-      const screenHeight: number = this.determineViewportHeight();
+    //   // determine height of screen
+    //   const screenHeight: number = this.determineViewportHeight();
 
-      // set the height of these lists
-      Array.from(row.getElementsByClassName("recycler-view")).forEach(
-        (item: any) => {
-          item.style.height = 0.9 * (screenHeight - rowTop) + "px";
-        }
-      );
-    },
+    //   // set the height of these lists
+    //   Array.from(row.getElementsByClassName("recycler-view")).forEach(
+    //     (item: any) => {
+    //       item.style.height = 0.9 * (screenHeight - rowTop) + "px";
+    //     }
+    //   );
+    // },
 
     handleResponseList(list: Array<any>) {
       // assign the job data type
