@@ -66,23 +66,7 @@ import {
 export default Vue.extend({
   components: { DashboardList },
   name: "Home",
-  computed: {
-    width() {
-      switch (this.$vuetify.breakpoint.name) {
-        case "xs":
-          return "100%";
-        case "sm":
-          return "100%";
-        case "md":
-          return "50%";
-        case "lg":
-          return "50%";
-        case "xl":
-          return "50%";
-      }
-      return "50%";
-    },
-  },
+
   data() {
     return {
       tab: null,
@@ -117,28 +101,28 @@ export default Vue.extend({
       ],
     };
   },
-
-  methods: {
-    determineViewportHeight(): number {
-      return Math.max(
-        document.documentElement.clientHeight || 0,
-        window.innerHeight || 0
-      );
+  computed: {
+    width() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "100%";
+        case "sm":
+          return "100%";
+        case "md":
+          return "50%";
+        case "lg":
+          return "50%";
+        case "xl":
+          return "50%";
+      }
+      return "50%";
     },
-
-    // determineListHeight(): void {
-    //   // determine top of dashboard row
-    //   const row: Element = document.getElementsByClassName("dashboard-row")[0];
-    //   const rowTop: number = row.getBoundingClientRect().top;
-
-    //   // determine height of screen
-    //   const screenHeight: number = this.determineViewportHeight();
-
-    //   // set the height of these lists
-    //   Array.from(row.getElementsByClassName("recycler-view")).forEach(
-    //     (item: any) => {
-    //       item.style.height = 0.9 * (screenHeight - rowTop) + "px";
-    //     }
+  },
+  methods: {
+    // determineViewportHeight(): number {
+    //   return Math.max(
+    //     document.documentElement.clientHeight || 0,
+    //     window.innerHeight || 0
     //   );
     // },
 
@@ -154,25 +138,33 @@ export default Vue.extend({
 
   mounted() {
     //this.determineListHeight();
-    console.log("authored");
 
     //filters and returns available jobs (those that are not full)
-    getAvailableJobs().then((response: any) => {
-      this.available = this.handleResponseList(response.data);
-      console.log(this.available);
-    });
+    getAvailableJobs()
+      .then((response: any) => {
+        this.available = this.handleResponseList(response.data);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
 
     //filters and returns jobs accepted by currently logged in user
-    getAcceptedJobs().then((response: any) => {
-      this.accepted = this.handleResponseList(response.data);
-      console.log(this.accepted);
-    });
+    getAcceptedJobs()
+      .then((response: any) => {
+        this.accepted = this.handleResponseList(response.data);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
 
     //filters and returns jobs that were created by currently logged in user
-    getAuthoredJobs().then((response: any) => {
-      this.authored = this.handleResponseList(response.data);
-      console.log(this.authored);
-    });
+    getAuthoredJobs()
+      .then((response: any) => {
+        this.authored = this.handleResponseList(response.data);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
   },
 });
 </script>
