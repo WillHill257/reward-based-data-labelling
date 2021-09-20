@@ -26,7 +26,7 @@
           </v-card>
         </v-col>
         <v-col class="col-xl-9 col-lg-9 col-md-9">
-          <v-card :max-width="width">
+          <v-card id="dashboard-tabs" :max-width="width">
             <v-toolbar color="white" dark flat>
               <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
 
@@ -127,23 +127,6 @@ export default Vue.extend({
         },
       ],
     };
-  },
-  computed: {
-    width() {
-      switch (this.$vuetify.breakpoint.name) {
-        case "xs":
-          return "100%";
-        case "sm":
-          return "100%";
-        case "md":
-          return "50%";
-        case "lg":
-          return "50%";
-        case "xl":
-          return "50%";
-      }
-      return "50%";
-    },
   },
   methods: {
     // determineViewportHeight(): number {
