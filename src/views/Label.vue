@@ -3,8 +3,11 @@
     <!-- Allows entire screen to be filled by card -->
     <v-main>
       <v-container>
-        <v-row align="left" justify="left" style="padding: 5px">
+        <v-row align="left" justify="space-between" style="padding: 5px">
           <BackButton />
+          <JobTimer 
+            :batchID="batchID"
+          />
         </v-row>
         <v-row class="pt-2">
           <v-card class="label-card">
@@ -111,10 +114,11 @@ import { Job } from "@/store/modules/job";
 import { computeFetchEndpoint, sendLabels } from "@/api/Item.api";
 import { getCompleteBatch, getNextBatch } from "@/api/Batch.api";
 import BackButton from "@/components/BackButton.vue";
+import JobTimer from "@/components/JobTimer.vue";
 
 export default Vue.extend({
   name: "LabelImages",
-  components: { FinishJob, BackButton },
+  components: { FinishJob, BackButton, JobTimer },
 
   props: {
     jobID: String,

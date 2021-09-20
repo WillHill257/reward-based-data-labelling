@@ -20,4 +20,8 @@ const markBatchFinished = (batchID: string): Promise<any> => {
   return httpClient.put(END_POINT + "/complete/" + batchID);
 };
 
-export { getCompleteBatch, getNextBatch, deleteLabeller, markBatchFinished };
+const batchTimer = (batchID: string): Promise<any> => {
+  return httpClient.get(END_POINT + "/expiry/" + batchID);
+};
+
+export { getCompleteBatch, getNextBatch, deleteLabeller, markBatchFinished, batchTimer };

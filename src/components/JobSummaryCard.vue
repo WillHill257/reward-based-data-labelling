@@ -1,8 +1,11 @@
 <template>
   <v-card elevation="4" outlined tile height="200px">
     <!-- Title display -->
-    <v-card-title class="job-title">
+    <v-card-title class="job-title" justify="space-between">
       {{ title }}
+      <!-- <JobTimer 
+            :batchID="batchID"
+          /> -->
     </v-card-title>
 
     <v-card-subtitle class="job-type">
@@ -57,7 +60,9 @@
 <script lang="ts">
 import { deleteLabeller } from "@/api/Batch.api";
 import Vue from "vue";
+// import JobTimer from "@/components/JobTimer.vue";
 export default Vue.extend({
+  // components:{JobTimer},
   props: {
     id: { type: String, required: true },
     title: { type: String, required: true },
@@ -66,6 +71,7 @@ export default Vue.extend({
     description: { type: String, required: true },
     batchID: { type: String, required: true },
   },
+  
 
   computed: {
     canLabel() {
