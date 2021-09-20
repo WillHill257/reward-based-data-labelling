@@ -39,6 +39,16 @@
       >
         Label
       </v-btn>
+      <v-btn
+      v-if="isMine"
+       id="btn-job-results"
+      color="blue"
+      text
+      @click="gotToResults(id)"
+      >
+      
+      Results
+      </v-btn>
 
       <!-- button to quit/leave labelling job -->
       <v-btn
@@ -65,7 +75,9 @@ export default Vue.extend({
     labels: { type: Array, required: true },
     description: { type: String, required: true },
     batchID: { type: String, required: true },
+    isMine: { type: Boolean, required: true },
   },
+  
 
   computed: {
     canLabel() {
@@ -75,9 +87,12 @@ export default Vue.extend({
     },
   },
 
+
   methods: {
     goToJob(jobId: string) {
       // view in-depth details for the job
+      console.log(jobId);
+      
       this.$router.push({ name: "ViewJob", params: { jobID: jobId } });
     },
     goToLabel(jobId: string, batchId: string) {
@@ -87,6 +102,14 @@ export default Vue.extend({
         params: { jobID: jobId, batchID: batchId },
       });
     },
+    gotToResults(jobID: string)
+    {
+      this.$router.push({
+        name: "jobResults",
+        params: {jobID:jobID}
+      })
+    },
+  
     //leave the labelling job
     quitJob() {
       deleteLabeller(this.batchID)

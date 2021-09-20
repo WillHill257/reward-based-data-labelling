@@ -9,6 +9,7 @@ import CreateJob from "../components/CreateJob/CreateJob.vue";
 import LabelImages from "../views/Label.vue";
 import ListJobs from "../views/ListJobs.vue";
 import About from "../views/About.vue";
+import jobResults from "../views/jobResults.vue"
 
 import store from "@/store";
 import { UserModule } from "@/store/modules/user";
@@ -80,6 +81,12 @@ const routes: Array<RouteConfig> = [
     path: "/listjobs",
     name: "ListJobs",
     component: ListJobs,
+    props: true,
+  },
+  {
+    path: "/jobResults",
+    name: "jobResults",
+    component: jobResults,
     props: true,
   },
   // otherwise redirect to home
