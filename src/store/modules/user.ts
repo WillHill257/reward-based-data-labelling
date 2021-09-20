@@ -66,6 +66,7 @@ class User extends VuexModule implements UserState {
     this.lastName = "";
     this.email = "";
     this.token = "";
+    this.rewardCount = 0;
   }
 
   //Actions

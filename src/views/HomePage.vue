@@ -57,7 +57,7 @@
           <v-card
 
           >
-            <v-card-text>
+            <v-card-text id="user-greeting">
               <!-- Hello username -->
               Hello, {{firstName}}!
             </v-card-text>
@@ -65,7 +65,7 @@
               <!-- Hello username -->
               Your available rewards
             </v-card-text>
-            <v-card-title class="font-weight-black headline pt-0" style="font-size:10em">
+            <v-card-title id="available-rewards" class="font-weight-black headline pt-0" style="font-size:10em">
               <!-- Your available rewards -->
               {{rewardCount}}
             </v-card-title>

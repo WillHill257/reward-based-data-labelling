@@ -30,7 +30,7 @@ describe("When loaded", () => {
 
   // all the ui elements we expect on the page should appear
   it("should have all the necessary UI elements", () => {
-    expect(wrapper.find(".authored").exists()).toBe(true);
+    /*expect(wrapper.find(".authored").exists()).toBe(true);
     expect(wrapper.find(".accepted").exists()).toBe(true);
     expect(wrapper.find(".available").exists()).toBe(true);
     expect(wrapper.find(".authored").html()).toContain("Mine");
@@ -38,7 +38,9 @@ describe("When loaded", () => {
     expect(wrapper.find(".available").html()).toContain("Available");
     expect(wrapper.find(".authored").props().endpoint).toBe("authored");
     expect(wrapper.find(".accepted").props().endpoint).toBe("accepted");
-    expect(wrapper.find(".available").props().endpoint).toBe("available");
+    expect(wrapper.find(".available").props().endpoint).toBe("available");*/
+    expect(wrapper.find("#user-greeting").exists()).toBe(true);
+    expect(wrapper.find("#available-rewards").exists()).toBe(true);
   });
   
   // test("testing handleresponselist", async ()=>{
