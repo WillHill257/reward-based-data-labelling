@@ -1,9 +1,10 @@
 <template>
-    <div class="text-xs-center">
+    <div class="text-center">
         <span class ="blue--text">
-        {{`${days} days ${hours} : ${mins} : ${secs}`}}
-        </span>
-        
+            <!-- &lt == < (js has an issue with that symbol for some reason so that is the fix) -->
+            <!-- ? is a ternary operator and works like an if statement -->
+        {{`${days>0 ? days+"D":""} ${hours>0 ? hours+"H":""} ${mins &lt; 9 ? "0"+mins:mins}M ${secs &lt; 9 ? "0"+secs:secs}S`}}
+        </span>        
     </div>
 </template>
 
@@ -46,7 +47,6 @@ export default Vue.extend({
             this.expiry = new Date(res.data.expiry);
             setInterval( ()=>{
                 const distance = (this.expiry.getTime()-Date.now());
-
                 this.days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 this.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 this.mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -69,6 +69,7 @@ export default Vue.extend({
 {
     color: rgb(101, 181, 246);
 } */
+
 
 </style>
 
