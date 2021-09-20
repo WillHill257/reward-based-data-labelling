@@ -112,23 +112,3 @@ describe("When loaded", () => {
   //   expect(1).toBe(1);
   // })
 });
-
-describe("changing screen size", () => {
-  it("returns the correct width dashboard tabs", () => {
-    const wrapper: any = shallowMount(HomePage, {
-      vuetify,
-    });
-    wrapper.vm.$vuetify.breakpoint.name = "xs";
-
-    expect(wrapper.vm.width).toEqual("100%");
-    wrapper.vm.$vuetify.breakpoint.name = "sm";
-
-    expect(wrapper.vm.width).toEqual("100%");
-    wrapper.vm.$vuetify.breakpoint.name = "md";
-    expect(wrapper.vm.width).toEqual("50%");
-    wrapper.vm.$vuetify.breakpoint.name = "lg";
-    expect(wrapper.vm.width).toEqual("50%");
-    wrapper.vm.$vuetify.breakpoint.name = "xl";
-    expect(wrapper.vm.width).toEqual("50%");
-  });
-});

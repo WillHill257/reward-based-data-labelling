@@ -4,58 +4,83 @@
     <!-- <router-link to="/login">Go to Login</router-link> -->
     <v-spacer></v-spacer>
     <section>
-      <v-card :max-width="width">
-        <v-toolbar color="white" dark flat>
-          <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
+      <v-row class="flex-row-reverse">
+        <v-col class="col-xl-3 col-lg-3 col-md-3">
+          <v-card>
+            <v-card-text id="user-greeting">
+              <!-- Hello username -->
+              Hello, {{ firstName }}!
+            </v-card-text>
+            <v-card-text class="pt-0 pb-0">
+              <!-- Hello username -->
+              Your available rewards
+            </v-card-text>
+            <v-card-title
+              id="available-rewards"
+              class="font-weight-black headline pt-0"
+              style="font-size: 10em"
+            >
+              <!-- Your available rewards -->
+              {{ rewardCount }}
+            </v-card-title>
+          </v-card>
+        </v-col>
+        <v-col class="col-xl-9 col-lg-9 col-md-9">
+          <v-card :max-width="width">
+            <v-toolbar color="white" dark flat>
+              <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
 
-          <v-toolbar-title>Your Dashboard</v-toolbar-title>
+              <v-toolbar-title>Your Dashboard</v-toolbar-title>
 
-          <v-spacer></v-spacer>
+              <v-spacer></v-spacer>
 
-          <v-btn icon>
-            <v-icon color="cyan">mdi-magnify</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-tabs id="dashboard-tabs" v-model="tab" align-with-title>
-          <v-tabs-slider color="cyan"></v-tabs-slider>
+              <v-btn icon>
+                <v-icon color="cyan">mdi-magnify</v-icon>
+              </v-btn>
+            </v-toolbar>
+            <v-tabs v-model="tab" align-with-title>
+              <v-tabs-slider color="cyan"></v-tabs-slider>
 
-          <v-tab id="authored-tab" style="color: black">Mine</v-tab>
-          <v-tab-item>
-            <DashboardList
-              class="authored"
-              title="Mine"
-              :jobs="authored"
-              endpoint="authored"
-            ></DashboardList>
-          </v-tab-item>
+              <v-tab style="color: black">Mine</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="authored"
+                  title="Mine"
+                  :jobs="authored"
+                  endpoint="authored"
+                ></DashboardList>
+              </v-tab-item>
 
-          <v-tab id="accepted-tab" style="color: black">Currently Doing</v-tab>
-          <v-tab-item>
-            <DashboardList
-              class="accepted"
-              title="Currently Doing"
-              :jobs="accepted"
-              endpoint="accepted"
-            ></DashboardList>
-          </v-tab-item>
+              <v-tab style="color: black">Currently Doing</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="accepted"
+                  title="Currently Doing"
+                  :jobs="accepted"
+                  endpoint="accepted"
+                ></DashboardList>
+              </v-tab-item>
 
-          <v-tab id="available-tab" style="color: black">Available</v-tab>
-          <v-tab-item>
-            <DashboardList
-              class="available"
-              title="Available"
-              :jobs="available"
-              endpoint="available"
-            ></DashboardList>
-          </v-tab-item>
-        </v-tabs>
-      </v-card>
+              <v-tab style="color: black">Available</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="available"
+                  title="Available"
+                  :jobs="available"
+                  endpoint="available"
+                ></DashboardList>
+              </v-tab-item>
+            </v-tabs>
+          </v-card>
+        </v-col>
+      </v-row>
     </section>
   </section>
 </template>
 
 <script lang="ts">
 import DashboardList from "@/components/DashboardList.vue";
+import { UserModule } from "@/store/modules/user";
 import Vue from "vue";
 import {
   getAvailableJobs,
@@ -71,6 +96,8 @@ export default Vue.extend({
     return {
       tab: null,
       isShowDialog: false,
+      firstName: UserModule.firstName,
+      rewardCount: UserModule.rewardCount,
       //dummy data for initial screen when database is empty
       accepted: [
         {
