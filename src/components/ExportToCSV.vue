@@ -3,8 +3,8 @@
     <v-btn
       :loading="loading"
       :disabled="loading"
-      color="blue-grey"
-      class="ma-2 white--text"
+      color="primary"
+      class="export-button ma-2 white--text"
       @click.native="loader = 'loading'"
     >
       Export to CSV
@@ -55,6 +55,7 @@ export default Vue.extend({
           this.loading = false;
         },
         () => {
+          this.loading = false;
           this.isShowDialog = true;
         }
       );
