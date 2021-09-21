@@ -1,6 +1,6 @@
 # jinx
 
-[![Coverage Status](https://coveralls.io/repos/github/andrewboyley/reward-based-data-labelling/badge.svg?branch=main&t=HJlYN4)](https://coveralls.io/github/andrewboyley/reward-based-data-labelling?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/andrewboyley/reward-based-data-labelling/badge.svg?branch=develop&t=HJlYN4)](https://coveralls.io/github/andrewboyley/reward-based-data-labelling?branch=develop)
 
 [![Node.js CI](https://github.com/andrewboyley/reward-based-data-labelling/actions/workflows/CI.yml/badge.svg)](https://github.com/andrewboyley/reward-based-data-labelling/actions/workflows/CI.yml)
 
