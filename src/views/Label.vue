@@ -327,22 +327,44 @@ export default Vue.extend({
       var count =0;
       let labelarr = new Array<any>();
 
+      //labelarr.fill("[]");
+      console.log(labelarr.length);
+      console.log(this.images.length);
+  
+      for (let index = 0; index < this.images.length; index++) {
+        labelarr[index] = "[]";
+        
+      }
+      console.log(labelarr);
+      
+
       //go through all the images labels and add them to an array
       for (let index = 0; index < this.images.length; index++) {
-        labelarr[index] = JSON.stringify(data.images[index].labels.value); 
+        if(data.images[index].labels.value ===undefined ){
+          labelarr[index] = "[]"; 
+        }else{
+          labelarr[index] = JSON.stringify(data.images[index].labels.value);
+          }
+        
       }
 
       //go through the array made and count the number of images that have labels in them
-      for (let index = 0; index < labelarr.length; index++) {
+      for (let index = 0; index < this.images.length; index++) {
         if(labelarr[index] != "[]"){ //check in there are any labels
           count++;
         }
       }
+      console.log(count);
 
       //calculate the progress as a percentage
-      var prog = (count/this.images.length)*100;
+      var prog = (count/labelarr.length)*100;
+      prog = Math.round(prog  * 100) / 100;
       this.progressCount = prog;
       //return the progress as a percentage
+      console.log(labelarr);
+      console.log(prog);
+      prog = Math.round(prog  * 100) / 100;
+
       return prog;
     },
 
