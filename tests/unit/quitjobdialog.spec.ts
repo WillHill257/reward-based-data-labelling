@@ -50,12 +50,6 @@ describe("QuitJobDialog", () => {
   });
 
   it("Calls removeLabeller in quitJob", async () => {
-    // jest.mock("../../src/api/Batch.api", () => ({
-    //   markBatchFinished: () => {
-    //     return new Promise((resolve: any, reject: any) => {});
-    //   },
-    // }));
-
     const wrapper: any = shallowMount(QuitJob, {
       propsData: mockPropsData,
     });
@@ -65,21 +59,4 @@ describe("QuitJobDialog", () => {
     wrapper.vm.quitJob();
     expect(spy).toHaveBeenCalled();
   });
-
-//   it("markBatchCompleted calls the correct callbacks", async () => {
-//     const successFunction = () => {
-//       console.log("hello");
-//     };
-//     const failureFunction = jest.fn();
-//     const wrapper: any = shallowMount(FinishJob, {
-//       propsData: mockPropsData,
-//     });
-//     const apiSpy = jest.spyOn(BatchApi, "markBatchFinished");
-//     apiSpy.mockResolvedValue({});
-//     //apiSpy.mockRejectedValue({});
-//     wrapper.vm.markBatchCompleted(successFunction, failureFunction);
-
-//     expect(apiSpy).toHaveBeenCalled();
-//   });
-
 });

@@ -51,10 +51,7 @@
         <v-icon left> mdi-minus-circle </v-icon>Quit Job
       </v-btn>
     </v-card-actions>
-	<FinishJob
-      :isShowDialog.sync="isShowDialog"
-      :batchID="batchID"
-    />
+    <FinishJob :isShowDialog.sync="isShowDialog" :batchID="batchID" />
   </v-card>
 </template>
 
@@ -64,7 +61,7 @@ import FinishJob from "@/components/QuitJobDialog.vue";
 
 import Vue from "vue";
 export default Vue.extend({
-	components: { FinishJob },
+  components: { FinishJob },
 
   props: {
     id: { type: String, required: true },
@@ -75,7 +72,7 @@ export default Vue.extend({
     batchID: { type: String, required: true },
   },
 
-	data() {
+  data() {
     return {
       isShowDialog: false,
     };
@@ -103,14 +100,7 @@ export default Vue.extend({
     },
     //leave the labelling job
     quitJob() {
-			this.isShowDialog = true;
-    //   deleteLabeller(this.batchID)
-    //     .then(() => {
-    //       location.reload();
-    //     })
-    //     .catch((err: any) => {
-    //       alert("Something went wrong. Please contact support...");
-    //     });
+      this.isShowDialog = true;
     },
   },
 });
