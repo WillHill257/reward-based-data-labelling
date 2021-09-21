@@ -6,6 +6,7 @@ import {
   VuexModule,
 } from "vuex-module-decorators";
 import { signupUser, loginUser } from "@/api/Users.api";
+import { updateReward } from "@/api/Batch.api";
 import router from "@/router";
 import store from "@/store";
 
@@ -31,8 +32,12 @@ class User extends VuexModule implements UserState {
   rewardCount = 0;
 
   // Getters
-  get getFirstName(): string {
+  get getFirstName(): any {
     return this.firstName;
+  }
+
+  get getReward(): number {
+    return this.rewardCount;
   }
 
   get isLoggedIn(): boolean {
@@ -66,6 +71,11 @@ class User extends VuexModule implements UserState {
     this.email = "";
     this.token = "";
     this.rewardCount = 0;
+  }
+
+  @Mutation
+  UPDATE_REWARD(reward: number): void {
+    this.rewardCount = reward;
   }
 
   //Actions
@@ -103,8 +113,21 @@ class User extends VuexModule implements UserState {
   @Action
   async logoutUser() {
     this.context.commit("LOGOUT_USER");
-    localStorage.removeItem("token");
+    localStorage.clear();
     router.push("/login");
+  }
+
+  @Action
+  async updateUserReward(jobId: string, success: any, failure: any) {
+    updateReward(jobId)
+      .then((res: any) => {
+        console.log(res.body.reward);
+        this.context.commit("UPDATE_REWARD", res.body.reward);
+        success();
+      })
+      .catch(() => {
+        failure();
+      });
   }
 }
 

@@ -78,13 +78,13 @@
 
 <script lang="ts">
 import DashboardList from "@/components/DashboardList.vue";
-import { UserModule } from "@/store/modules/user";
 import Vue from "vue";
 import {
   getAvailableJobs,
   getAuthoredJobs,
   getAcceptedJobs,
 } from "@/api/Job.api";
+import { getUser } from "@/api/Users.api";
 
 export default Vue.extend({
   components: { DashboardList },
@@ -94,8 +94,8 @@ export default Vue.extend({
     return {
       tab: null,
       isShowDialog: false,
-      firstName: UserModule.firstName,
-      rewardCount: UserModule.rewardCount,
+      firstName: "",
+      rewardCount: "",
       //dummy data for initial screen when database is empty
       accepted: [
         {
@@ -126,14 +126,8 @@ export default Vue.extend({
       ],
     };
   },
-  methods: {
-    // determineViewportHeight(): number {
-    //   return Math.max(
-    //     document.documentElement.clientHeight || 0,
-    //     window.innerHeight || 0
-    //   );
-    // },
 
+  methods: {
     handleResponseList(list: Array<any>) {
       // assign the job data type
       for (let i = 0; i < list.length; i++) {
@@ -145,8 +139,6 @@ export default Vue.extend({
   },
 
   mounted() {
-    //this.determineListHeight();
-
     //filters and returns available jobs (those that are not full)
     getAvailableJobs()
       .then((response: any) => {
@@ -172,6 +164,15 @@ export default Vue.extend({
       })
       .catch((error: any) => {
         console.error(error);
+      });
+
+    getUser()
+      .then((res: any) => {
+        this.firstName = res.data.firstName;
+        this.rewardCount = res.data.rewardCount;
+      })
+      .catch((err: any) => {
+        console.error(err);
       });
   },
 });
