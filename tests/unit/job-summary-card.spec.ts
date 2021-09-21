@@ -233,7 +233,7 @@ describe("Checking routing functions", () => {
 });
 
 describe("Check Quit Job", () => {
-  test("successfully deletes labeller", async () => {
+  test("dialog is displayed", async () => {
     // mock view
     const wrapper: any = shallowMount(JobSummaryCard, {
       vuetify,
@@ -247,79 +247,9 @@ describe("Check Quit Job", () => {
       },
     });
 
-    //spy on the close dailogue function
-    const postSpy = jest.spyOn(BatchApi, "deleteLabeller");
-    postSpy.mockResolvedValue({ status: 200 });
+    wrapper.vm.quitJob();
+    await wrapper.vm.$nextTick();
 
-    await wrapper.vm.quitJob(); // random id
-    await flushPromises();
-
-    //expect it to have been called if the dialogu was closed
-    expect(postSpy).toHaveBeenCalledTimes(1);
-  });
-
-  test("unsuccessfully deletes labeller", async () => {
-    // mock view
-    const wrapper: any = shallowMount(JobSummaryCard, {
-      vuetify,
-      propsData: {
-        id: jobs[0]["_id"],
-        title: jobs[0]["title"],
-        type: jobs[0]["type"],
-        labels: jobs[0]["labels"],
-        description: jobs[0]["description"],
-        batchID: jobs[0]["batchID"],
-      },
-    });
-
-    //spy on the close dailogue function
-    const postSpy = jest.spyOn(BatchApi, "deleteLabeller");
-    postSpy.mockRejectedValue({ status: 400 });
-
-    await wrapper.vm.quitJob(); // random id
-    await flushPromises();
-
-    //expect it to have been called if the dialogu was closed
-    expect(postSpy).toBeCalled();
+    expect(wrapper.vm.$data.isShowDialog).toBe(true);
   });
 });
-
-// describe("Checking buttons route correctly", () => {
-//   test("going to a particular job" , ()=>{
-//     // mock the router
-//     const mockRouter = {
-//       push: jest.fn()
-//     }
-//     const wrapper: any = shallowMount(JobSummaryCard,{vuetify,
-//       mocks:{
-//         $route: mockRouter
-//       }
-
-//     });
-//     //check that the router redirects user to the aprropriate place
-//     wrapper.vm.$router = mockRouter
-//     const pushSpy = jest.spyOn(mockRouter, "push");
-
-//     wrapper.vm.goToJob(jobs[0]._id)
-//     expect(pushSpy).toHaveBeenCalled
-//   })
-
-//   test("going to the label page" , ()=>{
-//     // mock the router
-//     const mockRouter = {
-//       push: jest.fn()
-//     }
-//     const wrapper: any = shallowMount(JobSummaryCard,{vuetify,
-//       mocks:{
-//         $route: mockRouter
-//       }
-
-//     });
-//     //check that the router redirects user to the aprropriate place
-//     wrapper.vm.$router = mockRouter
-//     const pushSpy = jest.spyOn(mockRouter, "push");
-
-//     wrapper.vm.goToLabel()
-//     expect(pushSpy).toHaveBeenCalled
-//   })
-// });
