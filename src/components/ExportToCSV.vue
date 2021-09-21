@@ -29,6 +29,7 @@ import { exportJobToCSV } from "@/api/Job.api";
 import ErrorDialog from "./ErrorDialog.vue";
 
 export default Vue.extend({
+  name: "ExportToCSV",
   components: { ErrorDialog },
   props: {
     jobID: { type: String, required: true },

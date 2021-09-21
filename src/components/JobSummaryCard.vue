@@ -39,13 +39,8 @@
       >
         Label
       </v-btn>
-      <v-btn id="btn-job-results"
-      color="blue"
-      text
-      @click="gotToResults(id)"
-      >
-      
-      Results
+      <v-btn id="btn-job-results" color="blue" text @click="gotToResults(id)">
+        Results
       </v-btn>
 
       <!-- button to quit/leave labelling job -->
@@ -55,7 +50,6 @@
         color="blue"
         text
         @click="quitJob"
-        
       >
         <v-icon left> mdi-minus-circle </v-icon>Quit Job
       </v-btn>
@@ -81,7 +75,6 @@ export default Vue.extend({
     batchID: { type: String, required: true },
     isMine: { type: Boolean, required: true },
   },
-  
 
   data() {
     return {
@@ -97,18 +90,11 @@ export default Vue.extend({
     },
   },
 
-  async mounted()
-  {
-    if(this.$props.isMine)
-    {
-
-    }
-  },
   methods: {
     goToJob(jobId: string) {
       // view in-depth details for the job
       console.log(jobId);
-      
+
       this.$router.push({ name: "ViewJob", params: { jobID: jobId } });
     },
     goToLabel(jobId: string, batchId: string) {
@@ -118,14 +104,13 @@ export default Vue.extend({
         params: { jobID: jobId, batchID: batchId },
       });
     },
-    gotToResults(jobID: string)
-    {
+    gotToResults(jobID: string) {
       this.$router.push({
         name: "jobResults",
-        params: {jobID:jobID}
-      })
+        params: { jobID: jobID },
+      });
     },
-  
+
     //leave the labelling job
     quitJob() {
       this.isShowDialog = true;

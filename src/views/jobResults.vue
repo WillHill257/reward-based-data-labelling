@@ -1,9 +1,8 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center" class="pb-2">
+      <ExportToCSV class="results-export-button pr-1 pb-1" :jobID="jobID" />
     </v-row>
-
-
     <v-row>
       <!-- this handles the formating of the images -->
 
@@ -15,7 +14,6 @@
         md="4"
         sm="6"
         xs="12"
-        
       >
         <!-- this is where the images are set to load -->
         <v-img
@@ -26,36 +24,33 @@
         >
         </v-img>
 
-      <v-btn 
-      v-bind:id="'label'+index" style="width:270px">
-        </v-btn>
-
+        <v-btn v-bind:id="'label' + index" style="width: 270px"> </v-btn>
       </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
-
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent } from "@vue/composition-api";
 import Vue from "vue";
 import router from "@/router";
 import { Job } from "@/store/modules/job";
+import ExportToCSV from "@/components/ExportToCSV.vue";
 
 export default Vue.extend({
+  components: { ExportToCSV },
   props: { jobID: String },
- 
-data() {
+
+  data() {
     // these are the return vars used to the jobs information
     return {
       jobTitle: "",
       url: "",
       images: [],
       paginatedImages: [],
-      paginatedLabels:[],
+      paginatedLabels: [],
       count: 0,
       bottom: false,
       labels: [],
-
     };
   },
 
@@ -69,19 +64,14 @@ data() {
     if (!response.data.error) {
       this.jobTitle = response.data.title;
 
-
-
-      for (var i = 0 ; i<response.data.images.length; i++)
-      {
-        if(response.data.images[i].assignedLabels[0] != undefined)
-        {
-        this.labels.push(response.data.images[i].assignedLabels[0]);
-        }
-        else{
-          this.labels.push("Unlabelled")
+      for (var i = 0; i < response.data.images.length; i++) {
+        if (response.data.images[i].assignedLabels[0] != undefined) {
+          this.labels.push(response.data.images[i].assignedLabels[0]);
+        } else {
+          this.labels.push("Unlabelled");
         }
       }
-      console.log(this.labels)
+      console.log(this.labels);
 
       await this.fetchImages();
     }
@@ -89,25 +79,23 @@ data() {
 
     //console.warn(temp);
   },
-  
-    methods: {
+
+  methods: {
     async fetchImages() {
       const jobID = this.$props.jobID;
       const imageResponse = await Job.getImages(
         "http://localhost:4000/api/images?jobID=" + jobID
       );
-  
+
       if (!imageResponse.data.error) {
         const fetchedImages = imageResponse.data.map(
           (image) =>
             "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
-          
         );
         const temp = [];
 
         for (let i = 0; i < fetchedImages.length; i++) {
           temp.push(fetchedImages.splice(0, 12));
-
         }
         this.paginatedImages = temp;
         await this.addImages();
@@ -132,18 +120,16 @@ data() {
       }
     },
 
-    addLabels(){
-      for (var i =0; i < this.images.length; i++)
-      {
-         document.getElementById('label' + i).innerText = this.labels[i];
-      // console.log(curr)
-       //  $refs.label1.innerText = "hi"//this.labels[i];
+    addLabels() {
+      for (var i = 0; i < this.images.length; i++) {
+        document.getElementById("label" + i).innerText = this.labels[i];
+        // console.log(curr)
+        //  $refs.label1.innerText = "hi"//this.labels[i];
       }
     },
-
   },
 
-   watch: {
+  watch: {
     bottom(bottom) {
       if (bottom && window.scrollY > 0) {
         this.addImages();
@@ -158,9 +144,12 @@ data() {
     this.addImages();
     this.addLabels();
   },
-
-
 });
-
 </script>
 
+<style scoped>
+.results-export-button {
+  margin-left: auto;
+  margin-right: 0;
+}
+</style>
