@@ -1,7 +1,5 @@
 <template>
   <section id="home">
-    <h3>Welcome to jinx</h3>
-    <!-- <router-link to="/login">Go to Login</router-link> -->
     <v-spacer></v-spacer>
     <section>
       <v-row class="flex-row-reverse">
@@ -34,9 +32,9 @@
 
               <v-spacer></v-spacer>
 
-              <v-btn icon>
+              <!-- <v-btn icon>
                 <v-icon color="cyan">mdi-magnify</v-icon>
-              </v-btn>
+              </v-btn> -->
             </v-toolbar>
             <v-tabs v-model="tab" align-with-title>
               <v-tabs-slider color="cyan"></v-tabs-slider>
