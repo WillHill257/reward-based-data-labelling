@@ -2,10 +2,8 @@
   <v-dialog v-model="isShowDialog" @click:outside="closeDialog" max-width="350">
     <v-card id="QuitJobCard" class="pt-0">
       <v-card-title class="headline justify-center"> Quit Job? </v-card-title>
-      
-	  <v-card-text>
-        Are you sure you would like to quit this job?
-      </v-card-text>
+
+      <v-card-text> Are you sure you would like to quit this job? </v-card-text>
       <v-card-actions>
         <v-btn
           id="cancel-button"
@@ -15,23 +13,17 @@
         >
           Cancel
         </v-btn>
-		<v-spacer></v-spacer>
-		<v-btn
-		id="quit-button"
-        class="ma-2"
-        color="red"
-		text
-        @click="quitJob()"
-
-      	>
-        
-        <v-icon
-		  left
+        <v-spacer></v-spacer>
+        <v-btn
+          id="quit-button"
+          class="ma-2"
+          color="red"
+          text
+          @click="quitJob()"
         >
-          mdi-cancel
-        </v-icon>
-		Quit
-      </v-btn>
+          <v-icon left> mdi-cancel </v-icon>
+          Quit
+        </v-btn>
         <!-- <v-btn
           id="quit -button"
           color="red"
@@ -66,18 +58,18 @@ export default Vue.extend({
       this.$emit("update:isShowDialog", false);
     },
 
-	removeLabeller(success: any, failure: any){
-		deleteLabeller(this.$props.batchID)
-		.then(() => {
-			success();
-		})
-		.catch((err: any) => {
+    removeLabeller(success: any, failure: any) {
+      deleteLabeller(this.$props.batchID)
+        .then(() => {
+          success();
+        })
+        .catch((err: any) => {
           failure(err);
         });
-	},
+    },
 
-	quitJob(): void {
-    	this.removeLabeller(
+    quitJob(): void {
+      this.removeLabeller(
         () => {
           this.closeDialog();
         },

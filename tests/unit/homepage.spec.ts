@@ -58,7 +58,6 @@ let jobs = [
 ];
 
 describe("When loaded", () => {
-  //console.log = jest.fn();
   const mockResponse = it("should be vue instance", () => {
     const wrapper: any = mount(HomePage, {
       attachTo: document.body,

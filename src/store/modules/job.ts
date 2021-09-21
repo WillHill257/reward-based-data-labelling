@@ -70,7 +70,6 @@ export default class JobModule extends VuexModule implements JobState {
   @Action
   async createJob(payload: any) {
     try {
-      console.log("trying");
       const response: any = await createJob(
         payload.title,
         payload.description,

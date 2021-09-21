@@ -71,13 +71,10 @@ export default Vue.extend({
           this.labels.push("Unlabelled");
         }
       }
-      console.log(this.labels);
 
       await this.fetchImages();
     }
     // get request for the images with a specific ID
-
-    //console.warn(temp);
   },
 
   methods: {
@@ -123,8 +120,6 @@ export default Vue.extend({
     addLabels() {
       for (var i = 0; i < this.images.length; i++) {
         document.getElementById("label" + i).innerText = this.labels[i];
-        // console.log(curr)
-        //  $refs.label1.innerText = "hi"//this.labels[i];
       }
     },
   },

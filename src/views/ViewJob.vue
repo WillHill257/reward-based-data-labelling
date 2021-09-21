@@ -161,7 +161,7 @@ export default Vue.extend({
           router.push({ name: "HomePage" });
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
           alert("Oops something has gone wrong! \n Please try again later");
         });
     },

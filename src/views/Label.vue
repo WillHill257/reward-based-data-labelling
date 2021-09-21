@@ -238,7 +238,7 @@ export default Vue.extend({
             this.canFinish = this.canFinishMethod();
           })
           .catch((error: any) => {
-            console.log(error);
+            console.error(error);
           });
       }
     },

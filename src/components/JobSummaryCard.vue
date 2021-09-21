@@ -4,7 +4,7 @@
     <v-card-title class="job-title">
       {{ title }}
       <v-spacer></v-spacer>
-      <JobTimer v-if="batchID != undefined" :batchID="batchID" />
+      <JobTimer v-if="batchID !== 'undefined'" :batchID="batchID" />
     </v-card-title>
     <v-card-subtitle class="job-type">
       {{ type }}
@@ -55,18 +55,18 @@
         <v-icon left> mdi-minus-circle </v-icon>Quit Job
       </v-btn>
     </v-card-actions>
-    <FinishJob :isShowDialog.sync="isShowDialog" :batchID="batchID" />
+    <QuitJobDialog :isShowDialog.sync="isShowDialog" :batchID="batchID" />
   </v-card>
 </template>
 
 <script lang="ts">
 // import { deleteLabeller } from "@/api/Batch.api";
-import FinishJob from "@/components/QuitJobDialog.vue";
+import QuitJobDialog from "@/components/QuitJobDialog.vue";
 
 import Vue from "vue";
 import JobTimer from "@/components/JobTimer.vue";
 export default Vue.extend({
-  components: { JobTimer, FinishJob },
+  components: { JobTimer, QuitJobDialog },
 
   props: {
     id: { type: String, required: true },
@@ -88,15 +88,13 @@ export default Vue.extend({
     canLabel() {
       // the batchID is only going to be set for the 'Accepted' jobs, otherwise it will be undefined
       // we only want to be able to label the accepted batches
-      return this.$props.batchID !== undefined;
+      return this.$props.batchID !== "undefined";
     },
   },
 
   methods: {
     goToJob(jobId: string) {
       // view in-depth details for the job
-      console.log(jobId);
-
       this.$router.push({ name: "ViewJob", params: { jobID: jobId } });
     },
     goToLabel(jobId: string, batchId: string) {

@@ -39,12 +39,7 @@
             </v-alert>
 
             <!-- Title input field-->
-            <v-text-field
-              v-model="title"
-              label="Title"
-              id="title-input"
-              :rules="titleRules"
-            >
+            <v-text-field v-model="title" label="Title" id="title-input">
             </v-text-field>
 
             <!--Description input field-->
@@ -52,7 +47,6 @@
               v-model="description"
               label="Description"
               id="description-input"
-              :rules="descriptionRules"
             >
             </v-textarea>
 
@@ -62,7 +56,6 @@
               label="Reward"
               id="reward-input"
               type="number"
-              :rules="rewardRules"
               min="1"
               step="1"
             >
@@ -103,7 +96,6 @@
               label="Number of labellers"
               id="numLabellers"
               type="number"
-              :rules="labellerRules"
               min="1"
               step="1"
             >
@@ -164,33 +156,6 @@ export default Vue.extend({
       jobJson: {},
       reward: 1,
       selectedNumber: 0,
-      //validation rules
-      // descriptionRules: [(v: string) => !!v || "Description is required"],
-      // titleRules: [(v: string) => !!v || "Title is required"],
-      // labellerRules: [
-      //   [(v: string) => !!v || "The number of labellers is required"],
-      //   [
-      //     (v: string) =>
-      //       !isNaN(parseFloat(v)) ||
-      //       "The number of labellers must be a numeric value",
-      //   ],
-      //   [
-      //     (v: string) =>
-      //       parseFloat(v) >= 1 || "There must be at least one labeller",
-      //   ],
-      // ],
-      // rewardRules: [
-      //   [(v: string) => !!v || "Reward is required"],
-      //   [
-      //     (v: string) =>
-      //       !isNaN(parseFloat(v)) || "The reward must be a numeric value",
-      //   ],
-      //   [
-      //     (v: string) =>
-      //       parseFloat(v) >= 1 || "The reward must be at least one",
-      //   ],
-      // ],
-      //labelRules: [(v: string) => (!!v || this.labelArray.length == 0) || "Enter labels as comma separated values and press enter"],
     };
   },
 
@@ -241,7 +206,6 @@ export default Vue.extend({
         return;
         // no labellers entered
       } else if (this.selectedNumber === 0) {
-        console.log("selectedNumber", this.selectedNumber);
         this.errorMessage = "Please select number of labellers required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
@@ -264,7 +228,6 @@ export default Vue.extend({
           .createJob(this.jobJson)
           .then(async (response) => {
             // when job is successfully created, upload the images
-            // console.log(response);
             // create the form data to contain the images
             let formData = new FormData();
             // append the job ID to the form data
@@ -286,7 +249,7 @@ export default Vue.extend({
             // uploads all the images through the image api
           })
           .catch((error) => {
-            console.log(error);
+            console.error(error);
           });
       }
       // close the dialog after submit

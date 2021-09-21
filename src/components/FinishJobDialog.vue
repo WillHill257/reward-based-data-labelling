@@ -83,7 +83,6 @@ export default Vue.extend({
 
     updateRewardAmount(success: any, failure: any) {
       // make the api call
-      console.log(this.$props.jobID)
       updateReward(this.$props.jobID)
         .then(() => {
           success();
@@ -121,7 +120,7 @@ export default Vue.extend({
               this.closeDialog();
             })
             .catch((error) => {
-              console.log(error);
+              console.error(error);
               alert("Oops something has gone wrong! \n Please try again later");
               this.closeDialog();
             });

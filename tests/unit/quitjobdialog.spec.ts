@@ -43,7 +43,6 @@ describe("QuitJobDialog", () => {
 
     const quitSpy = jest.spyOn(wrapper.vm, "quitJob");
     const container = wrapper.find("#quit-button");
-    console.log(container.exists());
     await container.trigger("click");
 
     expect(quitSpy).toHaveBeenCalled();

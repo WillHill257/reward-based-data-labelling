@@ -24,7 +24,7 @@
           </v-card>
         </v-col>
         <v-col class="col-xl-9 col-lg-9 col-md-9">
-          <v-card id="dashboard-tabs" :max-width="width">
+          <v-card id="dashboard-tabs">
             <v-toolbar color="white" dark flat>
               <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
 
@@ -153,7 +153,7 @@ export default Vue.extend({
         this.available = this.handleResponseList(response.data);
       })
       .catch((error: any) => {
-        console.log(error);
+        console.error(error);
       });
 
     //filters and returns jobs accepted by currently logged in user
@@ -162,7 +162,7 @@ export default Vue.extend({
         this.accepted = this.handleResponseList(response.data);
       })
       .catch((error: any) => {
-        console.log(error);
+        console.error(error);
       });
 
     //filters and returns jobs that were created by currently logged in user
@@ -171,7 +171,7 @@ export default Vue.extend({
         this.authored = this.handleResponseList(response.data);
       })
       .catch((error: any) => {
-        console.log(error);
+        console.error(error);
       });
   },
 });
