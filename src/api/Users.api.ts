@@ -28,4 +28,6 @@ const signupUser = (
   return httpClient.post("/auth/register", data);
 };
 
+//call endpoint for reward amounts
+
 export { loginUser, signupUser };

@@ -1,36 +1,84 @@
 <template>
   <section id="home">
-    <h3>Welcome to jinx</h3>
-    <!-- <router-link to="/login">Go to Login</router-link> -->
+    <v-spacer></v-spacer>
+    <section>
+      <v-row class="flex-row-reverse">
+        <v-col class="col-xl-3 col-lg-3 col-md-3">
+          <v-card>
+            <v-card-text id="user-greeting">
+              <!-- Hello username -->
+              Hello, {{ firstName }}!
+            </v-card-text>
+            <v-card-text class="pt-0 pb-0">
+              <!-- Hello username -->
+              Your available rewards
+            </v-card-text>
+            <v-card-title
+              id="available-rewards"
+              class="font-weight-black headline pt-0"
+              style="font-size: 10em"
+            >
+              <!-- Your available rewards -->
+              {{ rewardCount }}
+            </v-card-title>
+          </v-card>
+        </v-col>
+        <v-col class="col-xl-9 col-lg-9 col-md-9">
+          <v-card id="dashboard-tabs" :max-width="width">
+            <v-toolbar color="white" dark flat>
+              <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
 
-    <section class="dashboard-row basic-grid">
-      <!-- displays all jobs that have been authored by logged in user -->
-      <DashboardList
-        class="authored"
-        title="Mine"
-        :jobs="authored"
-        endpoint="authored"
-      ></DashboardList>
-      <!-- displays all jobs that have been accepted by logged in user -->
-      <DashboardList
-        class="accepted"
-        title="Currently Doing"
-        :jobs="accepted"
-        endpoint="accepted"
-      ></DashboardList>
-      <!-- displays all available jobs (those that have not reached capacity yet) -->
-      <DashboardList
-        class="available"
-        title="Available"
-        :jobs="available"
-        endpoint="available"
-      ></DashboardList>
+              <v-toolbar-title>Your Dashboard</v-toolbar-title>
+
+              <v-spacer></v-spacer>
+
+              <!-- <v-btn icon>
+                <v-icon color="cyan">mdi-magnify</v-icon>
+              </v-btn> -->
+            </v-toolbar>
+            <v-tabs v-model="tab" align-with-title>
+              <v-tabs-slider color="cyan"></v-tabs-slider>
+
+              <v-tab style="color: black">Mine</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="authored"
+                  title="Mine"
+                  :jobs="authored"
+                  endpoint="authored"
+                ></DashboardList>
+              </v-tab-item>
+
+              <v-tab style="color: black">Currently Doing</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="accepted"
+                  title="Currently Doing"
+                  :jobs="accepted"
+                  endpoint="accepted"
+                ></DashboardList>
+              </v-tab-item>
+
+              <v-tab style="color: black">Available</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="available"
+                  title="Available"
+                  :jobs="available"
+                  endpoint="available"
+                ></DashboardList>
+              </v-tab-item>
+            </v-tabs>
+          </v-card>
+        </v-col>
+      </v-row>
     </section>
   </section>
 </template>
 
 <script lang="ts">
 import DashboardList from "@/components/DashboardList.vue";
+import { UserModule } from "@/store/modules/user";
 import Vue from "vue";
 import {
   getAvailableJobs,
@@ -44,7 +92,10 @@ export default Vue.extend({
 
   data() {
     return {
+      tab: null,
       isShowDialog: false,
+      firstName: UserModule.firstName,
+      rewardCount: UserModule.rewardCount,
       //dummy data for initial screen when database is empty
       accepted: [
         {
@@ -75,30 +126,13 @@ export default Vue.extend({
       ],
     };
   },
-
   methods: {
-    determineViewportHeight(): number {
-      return Math.max(
-        document.documentElement.clientHeight || 0,
-        window.innerHeight || 0
-      );
-    },
-
-    determinListHeight(): void {
-      // determine top of dashboard row
-      const row: Element = document.getElementsByClassName("dashboard-row")[0];
-      const rowTop: number = row.getBoundingClientRect().top;
-
-      // determine height of screen
-      const screenHeight: number = this.determineViewportHeight();
-
-      // set the height of these lists
-      Array.from(row.getElementsByClassName("recycler-view")).forEach(
-        (item: any) => {
-          item.style.height = 0.9 * (screenHeight - rowTop) + "px";
-        }
-      );
-    },
+    // determineViewportHeight(): number {
+    //   return Math.max(
+    //     document.documentElement.clientHeight || 0,
+    //     window.innerHeight || 0
+    //   );
+    // },
 
     handleResponseList(list: Array<any>) {
       // assign the job data type
@@ -111,23 +145,34 @@ export default Vue.extend({
   },
 
   mounted() {
-    this.determinListHeight();
+    //this.determineListHeight();
 
     //filters and returns available jobs (those that are not full)
-    getAvailableJobs().then((response: any) => {
-      this.available = this.handleResponseList(response.data);
-    });
+    getAvailableJobs()
+      .then((response: any) => {
+        this.available = this.handleResponseList(response.data);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
 
     //filters and returns jobs accepted by currently logged in user
-    getAcceptedJobs().then((response: any) => {
-      this.accepted = this.handleResponseList(response.data);
-      console.log(this.accepted);
-    });
+    getAcceptedJobs()
+      .then((response: any) => {
+        this.accepted = this.handleResponseList(response.data);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
 
     //filters and returns jobs that were created by currently logged in user
-    getAuthoredJobs().then((response: any) => {
-      this.authored = this.handleResponseList(response.data);
-    });
+    getAuthoredJobs()
+      .then((response: any) => {
+        this.authored = this.handleResponseList(response.data);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
   },
 });
 </script>

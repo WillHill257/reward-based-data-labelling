@@ -14,6 +14,7 @@ let user: UserState = {
   lastName: "",
   email: "",
   token: "",
+  rewardCount: 0,
 };
 
 // test login

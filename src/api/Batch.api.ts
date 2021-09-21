@@ -24,4 +24,16 @@ const batchTimer = (batchID: string): Promise<any> => {
   return httpClient.get(END_POINT + "/expiry/" + batchID);
 };
 
-export { getCompleteBatch, getNextBatch, deleteLabeller, markBatchFinished, batchTimer };
+const updateReward = (jobID: string): Promise<any> => {
+  // set this user's completed flag true for this batch
+  return httpClient.put(END_POINT + "/reward/" + jobID);
+};
+
+export {
+  getCompleteBatch,
+  getNextBatch,
+  deleteLabeller,
+  markBatchFinished,
+  batchTimer,
+  updateReward,
+};

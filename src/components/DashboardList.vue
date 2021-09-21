@@ -23,6 +23,7 @@
             :labels="item.labels"
             :description="item.description"
             :batchID="item.batch_id"
+            :isMine = "endpoint == 'authored'"
           ></JobSummaryCard>
           <v-row
             v-else
@@ -84,6 +85,8 @@ export default Vue.extend({
     },
   },
 
+
+
   methods: {
     goToJobList() {
       // todo - Pass through argument so knows what kind of job to display
@@ -92,6 +95,8 @@ export default Vue.extend({
         params: { endpoint: this.endpoint },
       });
     },
+
+
   },
 });
 </script>

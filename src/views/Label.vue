@@ -282,10 +282,10 @@ export default Vue.extend({
       // update the labels for the current image
       this.updateLabels(this.imagenext);
 
-      if (this.imagenext >= this.images.length - 1) {
+      this.imagenext += 1;
+
+      if (this.imagenext > this.images.length - 1) {
         this.imagenext = 0;
-      } else {
-        this.imagenext += 1;
       }
 
       // update the labels
@@ -295,10 +295,10 @@ export default Vue.extend({
       // update the labels for the current image
       this.updateLabels(this.imagenext);
 
-      if (this.imagenext <= 0) {
+      this.imagenext -= 1;
+
+      if (this.imagenext < 0) {
         this.imagenext = this.images.length - 1;
-      } else {
-        this.imagenext -= 1;
       }
 
       // update the labels
