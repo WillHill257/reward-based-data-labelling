@@ -3,7 +3,7 @@
     <!-- Allows entire screen to be filled by card -->
     <v-main>
       <v-container>
-        <v-row align="left" justify="space-between" style="padding: 5px">
+        <v-row justify="space-between" style="padding: 5px">
           <BackButton />
           <JobTimer :batchID="batchID" />
         </v-row>
@@ -43,7 +43,7 @@
                       height="25"
                       :value="calcProgress()"
                     >
-                      <strong>{{ progressCount }}%</strong>
+                      <strong>{{ calcProgress() }}%</strong>
                     </v-progress-linear>
                   </v-row>
 
