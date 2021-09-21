@@ -1,48 +1,55 @@
 <template>
-  <v-dialog v-model="isShowDialog" @click:outside="closeDialog" max-width="350">
-    <v-card id="QuitJobCard" class="pt-0">
-      <v-card-title class="headline justify-center"> Quit Job? </v-card-title>
+  <div>
+    <v-dialog
+      v-model="isShowDialog"
+      @click:outside="closeDialog"
+      max-width="350"
+    >
+      <v-card id="QuitJobCard" class="pt-0">
+        <v-card-title class="headline justify-center"> Quit Job? </v-card-title>
 
-      <v-card-text> Are you sure you would like to quit this job? </v-card-text>
-      <v-card-actions>
-        <v-btn
-          id="cancel-button"
-          color="deep-blue lighten-2"
-          text
-          @click="closeDialog()"
-        >
-          Cancel
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn
-          id="quit-button"
-          class="ma-2"
-          color="red"
-          text
-          @click="quitJob()"
-        >
-          <v-icon left> mdi-cancel </v-icon>
-          Quit
-        </v-btn>
-        <!-- <v-btn
-          id="quit -button"
-          color="red"
-          text
-          @click="quitJob()"
-        >
-          Quit
-        </v-btn> -->
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+        <v-card-text>
+          Are you sure you would like to quit this job?
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            id="cancel-button"
+            color="deep-blue lighten-2"
+            text
+            @click="closeDialog()"
+          >
+            Cancel
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
+            id="quit-button"
+            class="ma-2"
+            color="red"
+            text
+            @click="quitJob()"
+          >
+            <v-icon left> mdi-cancel </v-icon>
+            Quit
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <ErrorDialog
+      :isShowDialog.sync="showError"
+      :title="'An error occurred'"
+      :message="'Please try again. If the problem persists, please contact support.'"
+    />
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { deleteLabeller } from "@/api/Batch.api";
+import ErrorDialog from "@/components/ErrorDialog.vue";
 
 export default Vue.extend({
   name: "QuitJob",
+  components: { ErrorDialog },
   props: {
     isShowDialog: {
       type: Boolean,
@@ -53,6 +60,13 @@ export default Vue.extend({
       required: true,
     },
   },
+
+  data() {
+    return {
+      showError: false,
+    };
+  },
+
   methods: {
     closeDialog(): void {
       this.$emit("update:isShowDialog", false);
@@ -74,7 +88,7 @@ export default Vue.extend({
           this.closeDialog();
         },
         (err: any) => {
-          alert("Oops something has gone wrong! \n Please try again later");
+          this.showError = true;
         }
       );
     },
