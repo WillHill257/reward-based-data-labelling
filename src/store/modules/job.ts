@@ -80,7 +80,7 @@ export default class JobModule extends VuexModule implements JobState {
       );
       this.context.commit("CREATE_JOB", response.data);
       return response;
-    } catch (error) {
+    } catch (error: any) {
       // pass back the error message
       return Promise.reject(error.response.data.error);
     }
@@ -92,7 +92,7 @@ export default class JobModule extends VuexModule implements JobState {
       const response: any = await getJob(payload);
       this.context.commit("GET_JOB", response.data);
       return response;
-    } catch (error) {
+    } catch (error: any) {
       // pass back the error message
       return Promise.reject(error.response.data.error);
     }
@@ -104,7 +104,7 @@ export default class JobModule extends VuexModule implements JobState {
       const response: any = await getImages(payload);
       this.context.commit("GET_IMAGES", response.data);
       return response;
-    } catch (error) {
+    } catch (error: any) {
       // pass back the error message
       return Promise.reject(error.response.data.error);
     }

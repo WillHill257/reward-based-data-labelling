@@ -36,6 +36,7 @@
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
   },
   "dependencies": {
+    "@vue/composition-api": "^1.1.5",
     "axios": "^0.21.1",
     "babel-plugin-transform-decorators": "^6.24.1",
     "compressorjs": "^1.0.7",
