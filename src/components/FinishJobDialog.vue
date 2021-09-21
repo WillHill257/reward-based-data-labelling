@@ -42,7 +42,7 @@
 import { acceptJob } from "@/api/Job.api";
 import router from "@/router";
 import Vue from "vue";
-import { markBatchFinished } from "@/api/Batch.api";
+import { markBatchFinished, updateReward } from "@/api/Batch.api";
 
 export default Vue.extend({
   name: "FinishJob",
@@ -81,11 +81,31 @@ export default Vue.extend({
         });
     },
 
+    updateRewardAmount(success: any, failure: any) {
+      // make the api call
+      console.log(this.$props.jobID)
+      updateReward(this.$props.jobID)
+        .then(() => {
+          success();
+        })
+        .catch((err: any) => {
+          failure(err);
+        });
+    },
+
     finishJob(): void {
       this.markBatchCompleted(
         () => {
           router.push({ name: "HomePage" });
           this.closeDialog();
+          this.updateRewardAmount(
+            () => {
+              console.log("this worked");
+            },
+            (err: any) => {
+              alert("Oops something has gone wrong! \n Please try again later");
+            }
+          );
         },
         (err: any) => {
           alert("Oops something has gone wrong! \n Please try again later");

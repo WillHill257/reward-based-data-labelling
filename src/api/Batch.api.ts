@@ -20,8 +20,25 @@ const markBatchFinished = (batchID: string): Promise<any> => {
   return httpClient.put(END_POINT + "/complete/" + batchID);
 };
 
-const getprogress = (jobID: string): Promise<any>=>{
-  return httpClient.get(END_POINT+ "/progress/"+ jobID);
+const getprogress = (jobID: string): Promise<any> => {
+  return httpClient.get(END_POINT + "/progress/" + jobID);
 };
 
-export { getCompleteBatch, getNextBatch, deleteLabeller, markBatchFinished, getprogress };
+const batchTimer = (batchID: string): Promise<any> => {
+  return httpClient.get(END_POINT + "/expiry/" + batchID);
+};
+
+const updateReward = (jobID: string): Promise<any> => {
+  // set this user's completed flag true for this batch
+  return httpClient.put(END_POINT + "/reward/" + jobID);
+};
+
+export {
+  getCompleteBatch,
+  getNextBatch,
+  deleteLabeller,
+  markBatchFinished,
+  getprogress,
+  batchTimer,
+  updateReward,
+};
