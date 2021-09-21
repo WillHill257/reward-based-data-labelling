@@ -39,9 +39,7 @@
       >
         Label
       </v-btn>
-      <v-btn
-      v-if="isMine"
-       id="btn-job-results"
+      <v-btn id="btn-job-results"
       color="blue"
       text
       @click="gotToResults(id)"
@@ -57,6 +55,7 @@
         color="blue"
         text
         @click="quitJob"
+        
       >
         <v-icon left> mdi-minus-circle </v-icon>Quit Job
       </v-btn>
@@ -87,7 +86,13 @@ export default Vue.extend({
     },
   },
 
+  async mounted()
+  {
+    if(this.$props.isMine)
+    {
 
+    }
+  },
   methods: {
     goToJob(jobId: string) {
       // view in-depth details for the job
