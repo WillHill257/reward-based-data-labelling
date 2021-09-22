@@ -40,7 +40,9 @@
       >
         Label
       </v-btn>
-      <v-btn id="btn-job-results" color="blue" text @click="gotToResults(id)">
+      <v-btn 
+      v-if="isMine"
+      id="btn-job-results" color="blue" text @click="gotToResults(id)">
         Results
       </v-btn>
 
