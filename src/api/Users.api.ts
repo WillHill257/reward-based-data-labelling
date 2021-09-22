@@ -28,4 +28,9 @@ const signupUser = (
   return httpClient.post("/auth/register", data);
 };
 
-export { loginUser, signupUser };
+const getLeaderBoard = () => {
+  const req: Promise<any> = httpClient.get(`${END_POINT}/leaderboard`);
+  return req;
+}
+
+export { loginUser, signupUser , getLeaderBoard};
