@@ -24,15 +24,17 @@
       <p class="job-description clamp-lines">{{ description }}</p>
     </v-card-text>
 
-    <v-progress-circular class="progress" v-if="isMine"
-    id = "jobProgress"
-    rotate="-90"
-    size="100"
-    width="15"
-    color="primary"
-    :value="calcProgress()"
+    <v-progress-circular
+      class="progress"
+      v-if="isMine"
+      id="jobProgress"
+      rotate="-90"
+      size="110"
+      width="15"
+      color="red"
+      :value="calcProgress()"
     >
-    {{calcProgress(id)}}%
+      {{ calcProgress(id) }}%
     </v-progress-circular>
 
     <v-card-actions class="card-actions" flat>
@@ -51,9 +53,13 @@
       >
         Label
       </v-btn>
-      <v-btn 
-      v-if="isMine"
-      id="btn-job-results" color="blue" text @click="gotToResults(id)">
+      <v-btn
+        v-if="isMine"
+        id="btn-job-results"
+        color="blue"
+        text
+        @click="gotToResults(id)"
+      >
         Results
       </v-btn>
 
@@ -78,7 +84,7 @@ import QuitJobDialog from "@/components/QuitJobDialog.vue";
 
 import Vue from "vue";
 import JobTimer from "@/components/JobTimer.vue";
-import {getprogress} from "@/api/Batch.api";
+import { getprogress } from "@/api/Batch.api";
 export default Vue.extend({
   components: { JobTimer, QuitJobDialog },
 
@@ -131,13 +137,13 @@ export default Vue.extend({
       this.isShowDialog = true;
     },
 
-    calcProgress(){
-      getprogress(this.id).then((response:any)=>{
+    calcProgress() {
+      getprogress(this.id).then((response: any) => {
         this.progressValue = response.data[0].progress;
       });
       var value = JSON.stringify(this.progressValue);
       return value;
-    }
+    },
   },
 });
 </script>
@@ -152,10 +158,10 @@ export default Vue.extend({
   -webkit-box-orient: vertical;
 }
 
-.progress{
+.progress {
   position: absolute;
-  right: 47%;
-  top: 25%;
-  color: #359ff4;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style>
