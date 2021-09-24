@@ -5,7 +5,6 @@
         Welcome To Jinx Data Labelling Service
       </v-row>
       <!-- Heading row -->
-      <Leaderboard />
       <v-row
         v-if="$vuetify.breakpoint.mdAndUp"
         no-gutters
@@ -184,12 +183,7 @@
   </div>
 </template>
 <script>
-import Leaderboard from "@/components/Leaderboard.vue";
-
 export default {
-  components: {
-    Leaderboard,
-  },
   methods: {
     listJobsClick: function () {
       this.$router.push({ name: "ListJobs" });

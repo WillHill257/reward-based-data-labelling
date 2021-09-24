@@ -19,8 +19,9 @@
               style="font-size: 10em"
             >
               <!-- Your available rewards -->
-              {{ rewardCount }}
+              {{ rewardRounded(rewardCount) }}
             </v-card-title>
+            <Leaderboard />
           </v-card>
         </v-col>
         <v-col class="col-xl-9 col-lg-9 col-md-9">
@@ -78,6 +79,7 @@
 
 <script lang="ts">
 import DashboardList from "@/components/DashboardList.vue";
+import Leaderboard from "@/components/Leaderboard.vue";
 import Vue from "vue";
 import {
   getAvailableJobs,
@@ -87,7 +89,7 @@ import {
 import { getUser } from "@/api/Users.api";
 
 export default Vue.extend({
-  components: { DashboardList },
+  components: { DashboardList, Leaderboard },
   name: "Home",
 
   data() {
@@ -135,6 +137,10 @@ export default Vue.extend({
       }
 
       return list;
+    },
+
+    rewardRounded(num: number) {
+      return num.toFixed();
     },
   },
 

@@ -12,9 +12,9 @@
           <div class="text-h6">{{ items[0].firstName }}</div></v-col
         >
         <v-spacer></v-spacer>
-        <v-col class="text-right" cols="1">
+        <v-col class="text-right" cols="4">
           <span class="primary--text font-weight-medium text-h6">{{
-            items[0].rewardCount
+            rewardRounded(items[0].rewardCount)
           }}</span>
         </v-col>
       </v-row>
@@ -32,12 +32,14 @@
           <div class="text-subtitle-1">{{ items[i].firstName }}</div></v-col
         >
         <v-spacer></v-spacer>
-        <v-col class="text-right" cols="1">
-          <span>{{ items[i].rewardCount }}</span>
+        <v-col class="text-right" cols="4">
+          <span>{{ rewardRounded(items[i].rewardCount) }}</span>
         </v-col>
       </v-row>
     </div>
-    <div v-else class="text-body-1 text--secondary text-center">Currently no users</div>
+    <div v-else class="text-body-1 text--secondary text-center">
+      Currently no users
+    </div>
   </v-sheet>
 </template>
 
@@ -56,8 +58,13 @@ export default {
       items: [],
     };
   },
+
+  methods: {
+    rewardRounded(num) {
+      return num.toFixed();
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>
