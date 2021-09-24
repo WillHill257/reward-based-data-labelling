@@ -31,10 +31,9 @@
       rotate="-90"
       size="110"
       width="15"
-      color="red"
       :value="calcProgress()"
     >
-      {{ calcProgress(id) }}%
+      {{ calcProgress() }}%
     </v-progress-circular>
 
     <v-card-actions class="card-actions" flat>
@@ -138,6 +137,7 @@ export default Vue.extend({
     },
 
     calcProgress() {
+      if (this.id === "0") return;
       getprogress(this.id).then((response: any) => {
         this.progressValue = response.data[0].progress;
       });
