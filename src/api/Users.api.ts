@@ -24,6 +24,8 @@ const signupUser = (
   return httpClient.post("/auth/register", data);
 };
 
-//call endpoint for reward amounts
+const getUser = (): Promise<any> => {
+  return httpClient.get(END_POINT);
+};
 
-export { loginUser, signupUser };
+export { loginUser, signupUser, getUser };
