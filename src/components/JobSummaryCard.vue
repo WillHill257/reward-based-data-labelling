@@ -3,8 +3,9 @@
     <!-- Title display -->
     <v-card-title class="job-title">
       {{ title }}
+      <v-spacer></v-spacer>
+      <JobTimer v-if="batchID !== 'undefined'" :batchID="batchID" />
     </v-card-title>
-
     <v-card-subtitle class="job-type">
       {{ type }}
     </v-card-subtitle>
@@ -23,6 +24,18 @@
       <p class="job-description clamp-lines">{{ description }}</p>
     </v-card-text>
 
+    <v-progress-circular
+      class="progress"
+      v-if="isMine"
+      id="jobProgress"
+      rotate="-90"
+      size="110"
+      width="15"
+      :value="calcProgress()"
+    >
+      {{ calcProgress() }}%
+    </v-progress-circular>
+
     <v-card-actions class="card-actions" flat>
       <!-- button to view more details -->
       <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
@@ -39,6 +52,15 @@
       >
         Label
       </v-btn>
+      <v-btn
+        v-if="isMine"
+        id="btn-job-results"
+        color="blue"
+        text
+        @click="gotToResults(id)"
+      >
+        Results
+      </v-btn>
 
       <!-- button to quit/leave labelling job -->
       <v-btn
@@ -51,20 +73,19 @@
         <v-icon left> mdi-minus-circle </v-icon>Quit Job
       </v-btn>
     </v-card-actions>
-	<FinishJob
-      :isShowDialog.sync="isShowDialog"
-      :batchID="batchID"
-    />
+    <QuitJobDialog :isShowDialog.sync="isShowDialog" :batchID="batchID" />
   </v-card>
 </template>
 
 <script lang="ts">
 // import { deleteLabeller } from "@/api/Batch.api";
-import FinishJob from "@/components/QuitJobDialog.vue";
+import QuitJobDialog from "@/components/QuitJobDialog.vue";
 
 import Vue from "vue";
+import JobTimer from "@/components/JobTimer.vue";
+import { getprogress } from "@/api/Batch.api";
 export default Vue.extend({
-	components: { FinishJob },
+  components: { JobTimer, QuitJobDialog },
 
   props: {
     id: { type: String, required: true },
@@ -73,11 +94,13 @@ export default Vue.extend({
     labels: { type: Array, required: true },
     description: { type: String, required: true },
     batchID: { type: String, required: true },
+    isMine: { type: Boolean, required: true },
   },
 
-	data() {
+  data() {
     return {
       isShowDialog: false,
+      progressValue: "",
     };
   },
 
@@ -85,7 +108,7 @@ export default Vue.extend({
     canLabel() {
       // the batchID is only going to be set for the 'Accepted' jobs, otherwise it will be undefined
       // we only want to be able to label the accepted batches
-      return this.$props.batchID !== undefined;
+      return this.$props.batchID !== "undefined";
     },
   },
 
@@ -101,16 +124,25 @@ export default Vue.extend({
         params: { jobID: jobId, batchID: batchId },
       });
     },
+    gotToResults(jobID: string) {
+      this.$router.push({
+        name: "jobResults",
+        params: { jobID: jobID },
+      });
+    },
+
     //leave the labelling job
     quitJob() {
-			this.isShowDialog = true;
-    //   deleteLabeller(this.batchID)
-    //     .then(() => {
-    //       location.reload();
-    //     })
-    //     .catch((err: any) => {
-    //       alert("Something went wrong. Please contact support...");
-    //     });
+      this.isShowDialog = true;
+    },
+
+    calcProgress() {
+      if (this.id === "0") return;
+      getprogress(this.id).then((response: any) => {
+        this.progressValue = response.data[0].progress;
+      });
+      var value = JSON.stringify(this.progressValue);
+      return value;
     },
   },
 });
@@ -124,5 +156,12 @@ export default Vue.extend({
   display: -webkit-box;
   -webkit-line-clamp: 2; /* number of lines to show */
   -webkit-box-orient: vertical;
+}
+
+.progress {
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
 }
 </style>

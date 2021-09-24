@@ -40,6 +40,7 @@ describe("User module get functions", () => {
       lastName: "Doe",
       email: "john.doe@example.com",
       token: "sometoken",
+      rewardCount: 3, //just a random number
     };
 
     service.LOGIN_USER(user);
@@ -54,6 +55,7 @@ describe("User module get functions", () => {
       lastName: "Doe",
       email: "john.doe@example.com",
       token: "sometoken",
+      rewardCount: 3, //just a random number
     };
 
     service.LOGIN_USER(user);
@@ -72,6 +74,7 @@ describe("User Module Mutations", () => {
       lastName: "Doe",
       email: "john.doe@example.com",
       token: "sometoken",
+      rewardCount: 3, //just a random number
     };
 
     // mutate
@@ -91,6 +94,7 @@ describe("User Module Mutations", () => {
       lastName: "Doe",
       email: "jane.doe@example.com",
       token: "sometoken",
+      rewardCount: 3, //just a random number
     };
 
     // mutate
@@ -109,6 +113,7 @@ describe("User Module Mutations", () => {
       lastName: "Doe",
       email: "john.doe@example.com",
       token: "sometoken",
+      rewardCount: 3, //just a random number
     };
 
     service.LOGOUT_USER();

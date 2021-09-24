@@ -105,6 +105,7 @@ describe("Labelling Page - Loaded UI elements", () => {
     expect(wrapper.find("#prevImageBtn").exists()).toBe(true);
     expect(wrapper.find("#finishBtn").exists()).toBe(false); // don't want to see if can't finish a batch
     expect(wrapper.find("#backbutton").exists()).toBe(true);
+    expect(wrapper.find("#progressBar").exists()).toBe(true);
   });
 
   test("should show the Finish button when batch is complete", async () => {
@@ -887,6 +888,68 @@ describe("Labelling Page - Checking methods", () => {
     expect(updateLabelsSpy).toBeCalledTimes(1);
     expect(loadLabelsSpy).toBeCalledTimes(1);
     expect(wrapper.vm.$data.imagenext).toEqual(0);
+  });
+
+  test("progress bar - returns value", async () => {
+    const wrapper: any = shallowMount(LabelImages, {
+      vuetify,
+      propsData: {
+        jobID: "6135cfe89c361f61fee112f0", // random
+        batchID: "6135cfe89c361f61fee112f1", //random
+      },
+    });
+
+    // update the batchData
+    wrapper.vm.$data.images = [
+      "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+      "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+    ];
+    wrapper.vm.$data.batchData = {
+      _id: "6135fe34b96a23707ba24e2d",
+      batch_number: 0,
+      job: "6135fe34b96a23707ba24e2c",
+      labellers: [
+        {
+          completed: true,
+          _id: "6135fe3eb96a23707ba24e49",
+          labeller: "612e5fffbd71d580e76062ee",
+          expiry: " 2021-09-07T11:40:46.539Z",
+        },
+      ],
+      __v: 0,
+      images: [
+        {
+          batchNumber: 0,
+          _id: "6135fe34b96a23707ba24e30",
+          value: "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+          job: "6135fe34b96a23707ba24e2c",
+          labels: {
+            labeller: "6135fe34b96a23707ba24fff",
+            value: ["something"],
+          },
+          __v: 1,
+        },
+        {
+          batchNumber: 0,
+          _id: "6135fe34b96a23707ba24e31",
+          value: "2dmLzMOYP1K1SQMwBObYpMsTbHHR4Inmz7my.jpg",
+          job: "6135fe34b96a23707ba24e2c",
+          labels: {
+            labeller: "6135fe34b96a23707ba24fff",
+            value: [],
+          },
+          __v: 1,
+        },
+        
+      ],
+    };
+
+    wrapper.vm.$data.progressCount =0;
+
+    await wrapper.vm.calcProgress();
+    await flushPromises();
+
+    expect(wrapper.vm.$data.progressCount).toEqual(50);
   });
 });
 

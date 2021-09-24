@@ -3,8 +3,9 @@
     <!-- Allows entire screen to be filled by card -->
     <v-main>
       <v-container>
-        <v-row align="left" justify="left" style="padding: 5px">
+        <v-row justify="space-between" style="padding: 5px">
           <BackButton />
+          <JobTimer :batchID="batchID" />
         </v-row>
         <v-row class="pt-2">
           <v-card class="label-card">
@@ -33,6 +34,17 @@
                     <v-card-text class="text-center">
                       Select the label(s) that best match the image
                     </v-card-text>
+                  </v-row>
+
+                  <!-- Progress bar-->
+                  <v-row justify="center">
+                    <v-progress-linear
+                      id="progressBar"
+                      height="25"
+                      :value="calcProgress()"
+                    >
+                      <strong>{{ calcProgress() }}%</strong>
+                    </v-progress-linear>
                   </v-row>
 
                   <!-- Labels -->
@@ -111,10 +123,11 @@ import { Job } from "@/store/modules/job";
 import { computeFetchEndpoint, sendLabels } from "@/api/Item.api";
 import { getCompleteBatch, getNextBatch } from "@/api/Batch.api";
 import BackButton from "@/components/BackButton.vue";
+import JobTimer from "@/components/JobTimer.vue";
 
 export default Vue.extend({
   name: "LabelImages",
-  components: { FinishJob, BackButton },
+  components: { FinishJob, BackButton, JobTimer },
 
   props: {
     jobID: String,
@@ -137,6 +150,7 @@ export default Vue.extend({
       isShowDialog: false,
       canAcceptNew: false,
       canFinish: false,
+      progressCount: 0,
     };
   },
 
@@ -224,7 +238,7 @@ export default Vue.extend({
             this.canFinish = this.canFinishMethod();
           })
           .catch((error: any) => {
-            console.log(error);
+            console.error(error);
           });
       }
     },
@@ -307,6 +321,43 @@ export default Vue.extend({
         this.canAcceptNew = true;
       }
       this.isShowDialog = true;
+    },
+
+    calcProgress() {
+      //set local variables
+      const data: any = this.batchData; //get the batch data
+      var count = 0;
+      let labelarr = new Array<any>();
+
+      for (let index = 0; index < this.images.length; index++) {
+        labelarr[index] = "[]";
+      }
+
+      //go through all the images labels and add them to an array
+      for (let index = 0; index < this.images.length; index++) {
+        if (data.images[index].labels.value === undefined) {
+          labelarr[index] = "[]";
+        } else {
+          labelarr[index] = JSON.stringify(data.images[index].labels.value);
+        }
+      }
+
+      //go through the array made and count the number of images that have labels in them
+      for (let index = 0; index < this.images.length; index++) {
+        if (labelarr[index] != "[]") {
+          //check in there are any labels
+          count++;
+        }
+      }
+
+      //calculate the progress as a percentage
+      var prog = (count / labelarr.length) * 100;
+      prog = Math.round(prog * 100) / 100;
+      this.progressCount = prog;
+      //return the progress as a percentage
+      prog = Math.round(prog * 100) / 100;
+
+      return prog;
     },
   },
 });
