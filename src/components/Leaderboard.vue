@@ -2,7 +2,7 @@
   <v-sheet class="mx-auto pa-2" elevation="2" rounded max-width="500">
     <div class="text-h5 text-center mb-6 font-weight-bold">Leaderboard</div>
 
-    <div v-if="items.length != 0">
+    <div v-if="items.length != 0" id="leaderboard">
       <v-row class="mx-2" :align="'center'">
         <v-col cols="1" class="mr-2"
           ><v-icon color="primary">mdi-trophy</v-icon>
@@ -37,7 +37,7 @@
         </v-col>
       </v-row>
     </div>
-    <div v-else class="text-body-1 text--secondary text-center">
+    <div v-else class="text-body-1 text--secondary text-center" id = "unavailable">
       Currently no users
     </div>
   </v-sheet>
@@ -61,7 +61,9 @@ export default {
 
   methods: {
     rewardRounded(num) {
-      return num.toFixed();
+      //console.log(items);
+      return Number(num).toFixed();
+      
     },
   },
 };
