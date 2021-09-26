@@ -66,6 +66,12 @@
         </v-img>
       </v-col>
     </v-row>
+
+    <ErrorDialog
+      :isShowDialog.sync="showError"
+      :title="'An error occurred'"
+      :message="'Please try again. If the problem persists, please contact support.'"
+    />
   </v-container>
 </template>
 
@@ -74,9 +80,10 @@ import Vue from "vue";
 import router from "@/router";
 import { Job } from "@/store/modules/job";
 import { acceptJob } from "@/api/Job.api";
-// import { acceptBatch } from "@/api/Batch.api";
+import ErrorDialog from "@/components/ErrorDialog.vue";
 
 export default Vue.extend({
+  components: { ErrorDialog },
   props: { jobID: String },
   data() {
     // these are the return vars used to the jobs information
@@ -93,6 +100,7 @@ export default Vue.extend({
       author: "",
       labellers: [],
       numLabellersRequired: 0,
+      showError: false,
     };
   },
   async mounted() {
@@ -139,21 +147,6 @@ export default Vue.extend({
     },
     // Accept Button
     onAccept() {
-      //TODO get the users actaul userID
-      // var acceptJobJson = {
-      //   user: "60a62a9fab8896534b7a8d23",
-      // };
-
-      // if (this.labellers.includes("60a62a9fab8896534b7a8d23")) {
-      //   alert("You have already accepted this job!");
-      //   return;
-      // }
-
-      // if (this.author == "60a62a9fab8896534b7a8d23") {
-      //   alert("You cannot accept a job you have created");
-      //   return;
-      // }
-
       const jobID = this.$props.jobID;
 
       acceptJob(jobID)
@@ -161,8 +154,8 @@ export default Vue.extend({
           router.push({ name: "HomePage" });
         })
         .catch((error) => {
-          console.log(error);
-          alert("Oops something has gone wrong! \n Please try again later");
+          console.error(error);
+          this.showError = true;
         });
     },
     bottomVisible() {

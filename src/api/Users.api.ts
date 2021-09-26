@@ -3,10 +3,8 @@ import httpClient from "./httpClient";
 const END_POINT = "/user";
 
 const loginUser = (email: string, password: string): Promise<any> => {
-  console.log("Logging in " + email);
   const data = { email: email, password: password };
   const req: Promise<any> = httpClient.post("/auth/login", data);
-  console.log(req);
   return req;
 };
 
@@ -16,8 +14,6 @@ const signupUser = (
   email: string,
   password: string
 ): Promise<any> => {
-  console.log("Signing up...");
-
   const data = {
     firstName: firstName,
     surname: lastName,
@@ -27,5 +23,7 @@ const signupUser = (
 
   return httpClient.post("/auth/register", data);
 };
+
+//call endpoint for reward amounts
 
 export { loginUser, signupUser };

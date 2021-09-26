@@ -46,7 +46,6 @@ describe("FinishJobDialog", () => {
 
     const finishSpy = jest.spyOn(wrapper.vm, "finishJob");
     const container = wrapper.find("#finish-button");
-    console.log(container.exists());
     await container.trigger("click");
 
     expect(finishSpy).toHaveBeenCalled();
@@ -70,9 +69,7 @@ describe("FinishJobDialog", () => {
   });
 
   it("markBatchCompleted calls the correct callbacks", async () => {
-    const successFunction = () => {
-      console.log("hello");
-    };
+    const successFunction = () => {};
     const failureFunction = jest.fn();
     const wrapper: any = shallowMount(FinishJob, {
       propsData: mockPropsData,
@@ -94,7 +91,6 @@ describe("FinishJobDialog", () => {
 
     const acceptNewSpy = jest.spyOn(wrapper.vm, "acceptNew");
     const container = wrapper.find("#accept-new-button");
-    console.log(container.exists());
     await container.trigger("click");
 
     expect(acceptNewSpy).toHaveBeenCalled();

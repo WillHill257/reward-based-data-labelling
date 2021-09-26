@@ -4,11 +4,7 @@
     <v-card-title class="job-title">
       {{ title }}
       <v-spacer></v-spacer>
-      <JobTimer class="txtTimer" 
-      v-if= "batchID != undefined" 
-            :batchID="batchID"
-        />
-      
+      <JobTimer class="txtTimer" v-if="batchID !== 'undefined'" :batchID="batchID" />
     </v-card-title>
     <v-card-subtitle class="job-type">
       {{ type }}
@@ -44,6 +40,9 @@
       >
         Label
       </v-btn>
+      <v-btn id="btn-job-results" color="blue" text @click="gotToResults(id)">
+        Results
+      </v-btn>
 
       <!-- button to quit/leave labelling job -->
       <v-btn
@@ -56,15 +55,19 @@
         <v-icon left> mdi-minus-circle </v-icon>Quit Job
       </v-btn>
     </v-card-actions>
+    <QuitJobDialog :isShowDialog.sync="isShowDialog" :batchID="batchID" />
   </v-card>
 </template>
 
 <script lang="ts">
-import { deleteLabeller } from "@/api/Batch.api";
+// import { deleteLabeller } from "@/api/Batch.api";
+import QuitJobDialog from "@/components/QuitJobDialog.vue";
+
 import Vue from "vue";
 import JobTimer from "@/components/JobTimer.vue";
 export default Vue.extend({
-  components:{JobTimer},
+  components: { JobTimer, QuitJobDialog },
+
   props: {
     id: { type: String, required: true },
     title: { type: String, required: true },
@@ -72,14 +75,20 @@ export default Vue.extend({
     labels: { type: Array, required: true },
     description: { type: String, required: true },
     batchID: { type: String, required: true },
+    isMine: { type: Boolean, required: true },
   },
-  
+
+  data() {
+    return {
+      isShowDialog: false,
+    };
+  },
 
   computed: {
     canLabel() {
       // the batchID is only going to be set for the 'Accepted' jobs, otherwise it will be undefined
       // we only want to be able to label the accepted batches
-      return this.$props.batchID !== undefined;
+      return this.$props.batchID !== "undefined";
     },
   },
 
@@ -95,15 +104,16 @@ export default Vue.extend({
         params: { jobID: jobId, batchID: batchId },
       });
     },
+    gotToResults(jobID: string) {
+      this.$router.push({
+        name: "jobResults",
+        params: { jobID: jobID },
+      });
+    },
+
     //leave the labelling job
     quitJob() {
-      deleteLabeller(this.batchID)
-        .then(() => {
-          location.reload();
-        })
-        .catch((err: any) => {
-          alert("Something went wrong. Please contact support...");
-        });
+      this.isShowDialog = true;
     },
   },
 });
