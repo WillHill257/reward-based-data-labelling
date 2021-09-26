@@ -5,6 +5,7 @@ import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 import flushPromises from "flush-promises";
 
+
 Vue.use(Vuetify);
 
 const vuetify = new Vuetify();
@@ -47,6 +48,7 @@ describe("When loaded", () => {
     expect(wrapper.findAll(".pill").length).toBe(jobs[0]["labels"].length);
     expect(wrapper.find(".job-description").exists()).toBe(true);
     expect(wrapper.find(".btn-view-job").exists()).toBe(true);
+    expect(wrapper.find(".txtTimer").exists()).toBe(true);
   });
 });
 
