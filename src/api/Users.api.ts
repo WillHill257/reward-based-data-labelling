@@ -24,6 +24,13 @@ const signupUser = (
   return httpClient.post("/auth/register", data);
 };
 
-//call endpoint for reward amounts
+const getLeaderBoard = () => {
+  const req: Promise<any> = httpClient.get(`${END_POINT}/leaderboard`);
+  return req;
+};
 
-export { loginUser, signupUser };
+const getUser = (): Promise<any> => {
+  return httpClient.get(END_POINT);
+};
+
+export { loginUser, signupUser, getLeaderBoard, getUser };

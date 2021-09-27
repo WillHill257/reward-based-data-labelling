@@ -5,11 +5,14 @@ import Vuetify from "vuetify";
 import VueRouter from "vue-router";
 import flushPromises from "flush-promises";
 import * as BatchApi from "@/api/Batch.api";
-
+import { Job } from "@/store/modules/job";
 
 Vue.use(Vuetify);
 
 const vuetify = new Vuetify();
+let progress = [{ progress: "75" }];
+
+const mockProgressResponse = { data: progress };
 
 //mock job
 let jobs = [
@@ -20,6 +23,7 @@ let jobs = [
     labels: ["a", "b"],
     description: "Description",
     batchID: "6135cfe89c361f61fee112ef",
+    isMine: true,
   },
 ];
 
@@ -34,6 +38,7 @@ describe("When loaded", () => {
       labels: jobs[0]["labels"],
       description: jobs[0]["description"],
       batchID: jobs[0]["batchID"],
+      isMine: jobs[0]["isMine"],
     },
   });
   //check that is is an instance of view
@@ -50,6 +55,7 @@ describe("When loaded", () => {
     expect(wrapper.find(".job-description").exists()).toBe(true);
     expect(wrapper.find(".btn-view-job").exists()).toBe(true);
     expect(wrapper.find(".txtTimer").exists()).toBe(true);
+    expect(wrapper.find(".progress").exists()).toBe(true);
   });
 });
 
@@ -253,5 +259,31 @@ describe("Check Quit Job", () => {
     await wrapper.vm.$nextTick();
 
     expect(wrapper.vm.$data.isShowDialog).toBe(true);
+  });
+});
+
+describe("test job progress", () => {
+  const getProgressSpy = jest.spyOn(BatchApi, "getprogress");
+  getProgressSpy.mockResolvedValue(mockProgressResponse);
+
+  test("job progress is returned when isMine is true", async () => {
+    const wrapper: any = shallowMount(JobSummaryCard, {
+      vuetify,
+      propsData: {
+        id: jobs[0]["_id"],
+        title: jobs[0]["title"],
+        type: jobs[0]["type"],
+        labels: jobs[0]["labels"],
+        description: jobs[0]["description"],
+        batchID: jobs[0]["batchID"],
+        isMine: jobs[0]["isMine"],
+      },
+    });
+
+    wrapper.vm.$data.progressValue = "";
+    await wrapper.vm.calcProgress();
+    await flushPromises();
+
+    expect(wrapper.vm.$data.progressValue).toEqual("75");
   });
 });

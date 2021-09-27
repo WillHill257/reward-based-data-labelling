@@ -54,6 +54,7 @@ import { acceptJob } from "@/api/Job.api";
 import router from "@/router";
 import Vue from "vue";
 import { markBatchFinished, updateReward } from "@/api/Batch.api";
+import { UserModule } from "@/store/modules/user";
 import ErrorDialog from "@/components/ErrorDialog.vue";
 
 export default Vue.extend({
@@ -101,23 +102,24 @@ export default Vue.extend({
         });
     },
 
-    updateRewardAmount(success: any, failure: any) {
-      // make the api call
-      updateReward(this.$props.jobID)
-        .then(() => {
-          success();
-        })
-        .catch((err: any) => {
-          failure(err);
-        });
-    },
+    // updateRewardAmount(success: any, failure: any) {
+    //   // make the api call
+    //   updateReward(this.$props.jobID)
+    //     .then(() => {
+    //       success();
+    //     })
+    //     .catch((err: any) => {
+    //       failure(err);
+    //     });
+    // },
 
     finishJob(): void {
       this.markBatchCompleted(
         () => {
           router.push({ name: "HomePage" });
           this.closeDialog();
-          this.updateRewardAmount(
+          UserModule.updateUserReward(
+            this.$props.jobID,
             () => {
               console.log("this worked");
             },
