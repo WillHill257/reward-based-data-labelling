@@ -4,7 +4,7 @@
     <v-card-title class="job-title">
       {{ title }}
       <v-spacer></v-spacer>
-      <JobTimer v-if="batchID !== 'undefined'" :batchID="batchID" />
+      <JobTimer class="txtTimer" v-if="batchID !== 'undefined'" :batchID="batchID" />
     </v-card-title>
     <v-card-subtitle class="job-type">
       {{ type }}

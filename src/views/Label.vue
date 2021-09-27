@@ -5,7 +5,7 @@
       <v-container>
         <v-row justify="space-between" style="padding: 5px">
           <BackButton />
-          <JobTimer :batchID="batchID" />
+          <JobTimer class="txtTimer" :batchID="batchID" />
         </v-row>
         <v-row class="pt-2">
           <v-card class="label-card">

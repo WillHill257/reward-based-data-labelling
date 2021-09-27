@@ -30,7 +30,7 @@
   </v-container>
 </template>
 <script>
-import { defineComponent } from "@vue/composition-api";
+
 import Vue from "vue";
 import router from "@/router";
 import { Job } from "@/store/modules/job";

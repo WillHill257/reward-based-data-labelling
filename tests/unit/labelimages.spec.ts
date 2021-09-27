@@ -106,6 +106,7 @@ describe("Labelling Page - Loaded UI elements", () => {
     expect(wrapper.find("#finishBtn").exists()).toBe(false); // don't want to see if can't finish a batch
     expect(wrapper.find("#backbutton").exists()).toBe(true);
     expect(wrapper.find("#progressBar").exists()).toBe(true);
+    expect(wrapper.find(".txtTimer").exists()).toBe(true);
   });
 
   test("should show the Finish button when batch is complete", async () => {

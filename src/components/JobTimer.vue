@@ -26,21 +26,23 @@ export default Vue.extend({
     batchID: { type: String, required: true },
   },
   mounted() {
+      
     this.expiryTime();
   },
 
   data() {
     return {
       expiry: new Date(),
-      days: 0,
-      hours: 0,
-      mins: 0,
-      secs: 0,
+      days: NaN,
+      hours: NaN,
+      mins: NaN,
+      secs: NaN,
       showError: false,
     };
   },
 
   methods: {
+
     expiryTime() {
       batchTimer(this.$props.batchID)
         .then((res: any) => {
