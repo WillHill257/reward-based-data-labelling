@@ -43,7 +43,7 @@
                       height="25"
                       :value="calcProgress()"
                     >
-                      <strong>{{ calcProgress() }}%</strong>
+                      <strong>{{ progressCount }}%</strong>
                     </v-progress-linear>
                   </v-row>
 
@@ -354,9 +354,8 @@ export default Vue.extend({
       var prog = (count / labelarr.length) * 100;
       prog = Math.round(prog * 100) / 100;
       this.progressCount = prog;
+      
       //return the progress as a percentage
-      prog = Math.round(prog * 100) / 100;
-
       return prog;
     },
   },

@@ -100,7 +100,7 @@ export default Vue.extend({
   data() {
     return {
       isShowDialog: false,
-      progressValue: "",
+      progressValue: 0,
     };
   },
 
@@ -139,8 +139,11 @@ export default Vue.extend({
     calcProgress() {
       if (this.id === "0") return;
       getprogress(this.id).then((response: any) => {
-        this.progressValue = response.data[0].progress;
+        this.progressValue = Math.round(response.data[0].progress);
+        //this.progressValue = val.toString();
+        console.log(response);
       });
+      console.log(this.progressValue);
       var value = JSON.stringify(this.progressValue);
       return value;
     },

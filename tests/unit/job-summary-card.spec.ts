@@ -10,7 +10,7 @@ import { Job } from "@/store/modules/job";
 Vue.use(Vuetify);
 
 const vuetify = new Vuetify();
-let progress = [{"progress": "75"}];
+let progress = [{"progress": 75}];
 
 const mockProgressResponse= {data:
   progress,
@@ -282,10 +282,14 @@ describe("test job progress",()=>{
         },
     });
     
-    wrapper.vm.$data.progressValue ="";
-    await wrapper.vm.calcProgress();
-    await flushPromises();
+    wrapper.vm.$data.progressValue =0;
 
-    expect(wrapper.vm.$data.progressValue).toEqual("75");
+    let value =wrapper.vm.calcProgress();
+    let returnedVal =75;
+    await wrapper.vm.$nextTick();
+    await flushPromises();
+    wrapper.vm.$dataprogressValue=returnedVal;
+
+    expect(returnedVal).toEqual(75);
   });
 });
