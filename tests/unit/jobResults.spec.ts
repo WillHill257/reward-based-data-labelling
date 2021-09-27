@@ -6,6 +6,7 @@ import flushPromises from "flush-promises";
 import { VuexModule } from "vuex-module-decorators";
 import Vuex, { Store } from "vuex";
 import * as Job from "@/api/Job.api";
+import { nextTick } from "vue/types/umd";
 jest.mock("../../src/api/Job.api", () => ({
   getJob: jest.fn(),
   getImages: jest.fn(),
@@ -112,36 +113,48 @@ describe("testing mounted", () => {
 
   describe("test label assignment",  () => {
   test("test label assignment", async () => {
-    // mock view job
-    const wrapper: any = shallowMount(jobResults, {
-      vuetify,
-    });
-
     const getJobSpy = jest.spyOn(Job, "getJob");
     const mockLabelResponse = {
         data: {
             images:[{
-                assignedLabels:[undefined, "hello"]
-            }]
+                assignedLabels:[undefined]
+            }, {
+              assignedLabels:["hello", "hello2"]
+          }]
         }
     }
     getJobSpy.mockResolvedValue(mockLabelResponse);
-    await wrapper.vm.$mounted;
-    expect(wrapper.vm.$data.labels[0]).toEqual("unlabelled");
+
+    const wrapper: any = shallowMount(jobResults, {
+      vuetify,
+    });
+
+
+    await flushPromises();
+    expect(getJobSpy).toHaveBeenCalled();
+    expect(wrapper.vm.$data.labels[0]).toEqual("Unlabelled");
     expect(wrapper.vm.$data.labels[1]).toEqual("hello");
 
   });
   }),
  
-
-  test("test bottom visible", () => {
+  test("test bottom visible",async () => {
     // mock view job
     const wrapper: any = shallowMount(jobResults, {
       vuetify,
     });
+   
+
+    const getImageSpy = jest.spyOn(wrapper.vm, "addImages");
+    const getLabelSpy = jest.spyOn(wrapper.vm, "addLabels");
 
     //check that the bottom is visible
     const bottomVisible = wrapper.vm.bottomVisible();
     expect(bottomVisible).toEqual(true || false);
+    wrapper.vm.$options.watch.bottom.call(wrapper.vm,5)
+    expect(getImageSpy).toHaveBeenCalledTimes(0);
+    expect(getLabelSpy).toHaveBeenCalledTimes(0);
   });
+
+
 
