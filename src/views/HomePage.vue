@@ -9,7 +9,7 @@
               <!-- Hello username -->
               Hello, {{ firstName }}!
             </v-card-text>
-            <v-card-text class="pt-0 pb-0">
+            <v-card-text id="heading" class="pt-0 pb-0">
               <!-- Hello username -->
               Your available rewards
             </v-card-text>
@@ -140,7 +140,7 @@ export default Vue.extend({
     },
 
     rewardRounded(num: number) {
-      return num.toFixed();
+      return Number(num).toFixed();
     },
   },
 

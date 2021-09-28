@@ -30,7 +30,7 @@
   </v-container>
 </template>
 <script>
-import { defineComponent } from "@vue/composition-api";
+
 import Vue from "vue";
 import router from "@/router";
 import { Job } from "@/store/modules/job";
@@ -119,7 +119,10 @@ export default Vue.extend({
 
     addLabels() {
       for (var i = 0; i < this.images.length; i++) {
+        if(document.getElementById("label" + i)!=null)
+        {
         document.getElementById("label" + i).innerText = this.labels[i];
+        }
       }
     },
   },

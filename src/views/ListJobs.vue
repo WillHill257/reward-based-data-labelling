@@ -2,19 +2,24 @@
   <section id="list-jobs">
     <goBack />
 
-    <h1 v-if="!jobs.length">There are no jobs available</h1> <!--if there are no jobs availiable this heading will be displayed-->
-    <h1 v-else>Jobs</h1> <!--when jobs are avaliable this heading will be displayed along with a list of jobs to accept-->
+    <h1 v-if="!jobs.length">There are no jobs available</h1>
+    <!--if there are no jobs availiable this heading will be displayed-->
+    <h1 v-else>Jobs</h1>
+    <!--when jobs are avaliable this heading will be displayed along with a list of jobs to accept-->
 
     <section class="basic-grid">
-      <div v-for="job in jobs" :key="job._id"> <!--for every job that is avaliable the JobSummary compnent will be called and process the job-->
+      <div v-for="job in jobs" :key="job._id">
+        <!--for every job that is avaliable the JobSummary compnent will be called and process the job-->
         <!-- when this component  is called it takes in the job info, processes it and returns the job in a summary card format-->
-        <JobSummaryCard 
+        <JobSummaryCard
           class="card"
           :id="job._id"
           :title="job.title"
           :type="job.type"
           :labels="job.labels"
           :description="job.description"
+          :batchID="'undefined'"
+          :isMine="endpoint == 'authored'"
         ></JobSummaryCard>
       </div>
     </section>
@@ -38,7 +43,7 @@ import {
   getAuthoredJobs,
   getAcceptedJobs,
   getAllJobs,
-} from "@/api/Job.api";// import the relavant api calls
+} from "@/api/Job.api"; // import the relavant api calls
 
 export default Vue.extend({
   components: {
@@ -106,7 +111,8 @@ export default Vue.extend({
           this.jobs = this.handleResponseList(response.data);
         });
         break;
-      default: // if there is no endpoint, the api returns a list of all the jobs is processed and displayed
+      default:
+        // if there is no endpoint, the api returns a list of all the jobs is processed and displayed
         getAllJobs().then((response: any) => {
           this.jobs = this.handleResponseList(response.data);
         });
