@@ -9,7 +9,6 @@ const createJob = (
   rewards: number,
   numLabellersRequired: number
 ): Promise<any> => {
-  console.log("Creating Job...");
   const params = {
     title: title,
     description: description,
@@ -22,19 +21,16 @@ const createJob = (
 };
 
 const getJob = (url: string): Promise<any> => {
-  console.log("Getting job...");
   const req: Promise<any> = httpClient.get(url);
   return req;
 };
 
 const getImages = (url: string): Promise<any> => {
-  console.log("Getting images...");
   const req: Promise<any> = httpClient.get(url);
   return req;
 };
 
 const acceptJob = (jobId: string): Promise<any> => {
-  console.log("Accepting job...");
   return httpClient.put("/job/labeller/" + jobId);
 };
 
@@ -58,6 +54,10 @@ const getAllJobs = (): Promise<any> => {
   return httpClient.get("/job");
 };
 
+const exportJobToCSV = (jobID: string): Promise<any> => {
+  return httpClient.get(END_POINT + "/export/" + jobID);
+};
+
 export {
   createJob,
   getJob,
@@ -67,4 +67,5 @@ export {
   getAuthoredJobs,
   getAcceptedJobs,
   getAllJobs,
+  exportJobToCSV,
 };

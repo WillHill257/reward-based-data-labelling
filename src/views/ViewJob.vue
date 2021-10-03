@@ -17,7 +17,7 @@
       <v-card width="95%" height="75%" class="jobs" id="job-summary">
         <v-card-title class=""> {{ jobTitle }}</v-card-title>
         <v-card-subtitle class="pb-1 pt-1">
-          Reward: {{ reward/numLabellersRequired }}
+          Reward: {{ reward }}
         </v-card-subtitle>
         <v-chip-group class="mx-4" active-class="primary--text" column>
           <v-col style="padding: 0 0">
@@ -44,7 +44,7 @@
         lg="3"
         md="4"
         sm="6"
-        xa="6"
+        xs="12"
       >
         <!-- this is where the images are set to load -->
         <v-img
@@ -66,6 +66,12 @@
         </v-img>
       </v-col>
     </v-row>
+
+    <ErrorDialog
+      :isShowDialog.sync="showError"
+      :title="'An error occurred'"
+      :message="'Please try again. If the problem persists, please contact support.'"
+    />
   </v-container>
 </template>
 
@@ -74,11 +80,13 @@ import Vue from "vue";
 import router from "@/router";
 import { Job } from "@/store/modules/job";
 import { acceptJob } from "@/api/Job.api";
+import ErrorDialog from "@/components/ErrorDialog.vue";
 
 export default Vue.extend({
+  components: { ErrorDialog },
   props: { jobID: String },
   data() {
-    // these are the return vars used to set the jobs information
+    // these are the return vars used to the jobs information
     return {
       jobTitle: "",
       jobDescription: "",
@@ -92,6 +100,7 @@ export default Vue.extend({
       author: "",
       labellers: [],
       numLabellersRequired: 0,
+      showError: false,
     };
   },
   async mounted() {
@@ -118,24 +127,18 @@ export default Vue.extend({
     //console.warn(temp);
   },
   methods: {
-    //requests the images from the database
     async fetchImages() {
-      //this is the job ID that is passed from the view jobs page
       const jobID = this.$props.jobID;
       const imageResponse = await Job.getImages(
-        //requests the images with the sepcific job ID
         "http://localhost:4000/api/images?jobID=" + jobID
       );
-      // if there are no errors it gets the images
       if (!imageResponse.data.error) {
         const fetchedImages = imageResponse.data.map(
           (image) =>
             "http://localhost:4000/uploads/jobs/" + jobID + "/" + image.value
         );
-        //make a temp array to display the images
         const temp = [];
         for (let i = 0; i < fetchedImages.length; i++) {
-          //displays 12 images at a time
           temp.push(fetchedImages.splice(0, 12));
         }
         this.paginatedImages = temp;
@@ -148,18 +151,13 @@ export default Vue.extend({
 
       acceptJob(jobID)
         .then((response) => {
-          console.log(response);
-          // alert(
-          //   "You have successfully accepted the job! \n Check it out in your dashboard"
-          // );
           router.push({ name: "HomePage" });
         })
         .catch((error) => {
-          console.log(error);
-          alert("Oops something has gone wrong! \n Please try again later");
+          console.error(error);
+          this.showError = true;
         });
     },
-    //returns a true or false if you are at the bottom of the page
     bottomVisible() {
       const scrollY = window.scrollY;
       const visible = document.documentElement.clientHeight;
@@ -170,7 +168,6 @@ export default Vue.extend({
     //this implements the infite scrolling by adding another 12 pictures to the screen
     //when the user scrolls to the bottom of the page
     addImages() {
-      //adds 12 images at a time to the array to display the pictures
       let arr = this.paginatedImages;
       if (arr[this.count]) {
         this.images.push(...arr[this.count]);
@@ -189,7 +186,6 @@ export default Vue.extend({
   },
   //this is the observer class for the infinite scrolling
   watch: {
-    //if the user scrolls to the bottom of the page 12 more images are loaded onto the screen
     bottom(bottom) {
       if (bottom && window.scrollY > 0) {
         this.addImages();
@@ -201,6 +197,9 @@ export default Vue.extend({
       this.bottom = this.bottomVisible();
     });
     this.addImages();
+  },
+  labelImagesClick() {
+    this.$router.push({ name: "LabelImages" });
   },
 });
 </script>

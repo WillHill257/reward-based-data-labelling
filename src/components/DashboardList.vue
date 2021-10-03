@@ -22,6 +22,8 @@
             :type="item.type"
             :labels="item.labels"
             :description="item.description"
+            :batchID="item.batch_id"
+            :isMine="endpoint == 'authored'"
           ></JobSummaryCard>
           <v-row
             v-else
@@ -71,6 +73,12 @@ export default Vue.extend({
       // add the correct number of jobs to the array
       if (this.jobs.length <= this.limit) returns = this.jobs;
       else returns = this.jobs.slice(0, this.limit);
+
+      for (let element of returns) {
+        if (!element.batch_id) {
+          element.batch_id = "undefined";
+        }
+      }
 
       // add the View All button
       returns.push({ title: this.sentinel });

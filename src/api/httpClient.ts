@@ -44,7 +44,7 @@ httpClient.interceptors.request.use(
 const errorInterceptor = (error: AxiosError) => {
   // check if it's a server error
   if (!error.response) {
-    console.log("Network/Server error");
+    console.error("Network/Server error");
     return Promise.reject(error);
   }
 

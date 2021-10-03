@@ -6,6 +6,7 @@ import {
   VuexModule,
 } from "vuex-module-decorators";
 import { signupUser, loginUser } from "@/api/Users.api";
+import { updateReward } from "@/api/Batch.api";
 import router from "@/router";
 import store from "@/store";
 
@@ -14,6 +15,7 @@ export interface UserState {
   lastName: string;
   email: string;
   token: string;
+  rewardCount: number;
 }
 
 @Module({
@@ -27,10 +29,15 @@ class User extends VuexModule implements UserState {
   lastName = "";
   email = "";
   token = localStorage.getItem("token") || "";
+  rewardCount = 0;
 
   // Getters
-  get getFirstName(): string {
+  get getFirstName(): any {
     return this.firstName;
+  }
+
+  get getReward(): number {
+    return this.rewardCount;
   }
 
   get isLoggedIn(): boolean {
@@ -41,11 +48,11 @@ class User extends VuexModule implements UserState {
   //Mutation functions MUST NOT be async functions. Also do not define them as arrow ➡️ functions, since we need to rebind them at runtime.
   @Mutation
   SIGNUP_USER(payload: any) {
-    console.log("Mutating signup");
     this.firstName = payload.firstName;
     this.lastName = payload.lastName;
     this.email = payload.email;
     this.token = payload.token;
+    this.rewardCount = payload.rewardCount;
   }
 
   @Mutation
@@ -54,6 +61,7 @@ class User extends VuexModule implements UserState {
     this.lastName = payload.lastName;
     this.email = payload.email;
     this.token = payload.token;
+    this.rewardCount = payload.rewardCount;
   }
 
   @Mutation
@@ -62,6 +70,12 @@ class User extends VuexModule implements UserState {
     this.lastName = "";
     this.email = "";
     this.token = "";
+    this.rewardCount = 0;
+  }
+
+  @Mutation
+  UPDATE_REWARD(reward: number): void {
+    this.rewardCount = reward;
   }
 
   //Actions
@@ -74,10 +88,9 @@ class User extends VuexModule implements UserState {
         payload.email,
         payload.password
       );
-      console.log(response);
       localStorage.setItem("token", response.data.token);
       this.context.commit("SIGNUP_USER", response.data);
-    } catch (error) {
+    } catch (error: any) {
       // pass back the error message
       localStorage.removeItem("token");
       return Promise.reject(error.response.data.error);
@@ -90,8 +103,7 @@ class User extends VuexModule implements UserState {
       const response: any = await loginUser(payload.email, payload.password);
       localStorage.setItem("token", response.data.token);
       this.context.commit("LOGIN_USER", response.data);
-      console.log(response.data.token);
-    } catch (error) {
+    } catch (error: any) {
       // pass back the error message
       localStorage.removeItem("token");
       return Promise.reject(error.response.data.error);
@@ -101,8 +113,21 @@ class User extends VuexModule implements UserState {
   @Action
   async logoutUser() {
     this.context.commit("LOGOUT_USER");
-    localStorage.removeItem("token");
+    localStorage.clear();
     router.push("/login");
+  }
+
+  @Action
+  async updateUserReward(jobId: string, success: any, failure: any) {
+    updateReward(jobId)
+      .then((res: any) => {
+        console.log(res.body.reward);
+        this.context.commit("UPDATE_REWARD", res.body.reward);
+        success();
+      })
+      .catch(() => {
+        failure();
+      });
   }
 }
 

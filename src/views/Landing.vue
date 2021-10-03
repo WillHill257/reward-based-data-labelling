@@ -5,7 +5,6 @@
         Welcome To Jinx Data Labelling Service
       </v-row>
       <!-- Heading row -->
-
       <v-row
         v-if="$vuetify.breakpoint.mdAndUp"
         no-gutters

@@ -41,7 +41,7 @@
             label="Password"
             prepend-icon="mdi-lock"
             :type="showPassword ? 'text' : 'Password'"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" 
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="showPassword = !showPassword"
           >
           </v-text-field>
@@ -86,7 +86,6 @@ import { UserModule } from "@/store/modules/user";
 import { getModule } from "vuex-module-decorators";
 import Vue from "vue";
 
-
 export default Vue.extend({
   data() {
     return {
@@ -129,7 +128,6 @@ export default Vue.extend({
           });
       } else {
         //signup unsuccessful
-        console.log("Unsuccessful");
         this.setErrorAlert(
           this.verifyFields(
             this.firstName,
@@ -164,13 +162,13 @@ export default Vue.extend({
         cpWord === ""
       ) {
         return "All fields required";
-      //email must have @
+        //email must have @
       } else if (email.search("@") === -1) {
         return "Email is invalid";
       } else if (pWord !== cpWord) {
-      //passwords must match
+        //passwords must match
         return "Passwords do not match";
-      //password must be more than 8 characters
+        //password must be more than 8 characters
       } else if (pWord.length < 8) {
         return "Password too short";
       } else {

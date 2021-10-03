@@ -39,12 +39,7 @@
             </v-alert>
 
             <!-- Title input field-->
-            <v-text-field
-              v-model="title"
-              label="Title"
-              id="title-input"
-              :rules="titleRules"
-            >
+            <v-text-field v-model="title" label="Title" id="title-input">
             </v-text-field>
 
             <!--Description input field-->
@@ -52,7 +47,6 @@
               v-model="description"
               label="Description"
               id="description-input"
-              :rules="descriptionRules"
             >
             </v-textarea>
 
@@ -62,7 +56,6 @@
               label="Reward"
               id="reward-input"
               type="number"
-              :rules="rewardRules"
               min="1"
               step="1"
             >
@@ -103,7 +96,6 @@
               label="Number of labellers"
               id="numLabellers"
               type="number"
-              :rules="labellerRules"
               min="1"
               step="1"
             >
@@ -140,7 +132,7 @@ import Vue from "vue";
 import ImageUploader from "./components/ImageUploader.vue";
 import JobModule from "@/store/modules/job";
 import { getModule } from "vuex-module-decorators";
-import axios from "axios";
+import { uploadImages } from "@/api/Item.api";
 
 //TODO: keep track of userID with author
 export default Vue.extend({
@@ -164,33 +156,6 @@ export default Vue.extend({
       jobJson: {},
       reward: 1,
       selectedNumber: 0,
-      //validation rules
-      // descriptionRules: [(v: string) => !!v || "Description is required"],
-      // titleRules: [(v: string) => !!v || "Title is required"],
-      // labellerRules: [
-      //   [(v: string) => !!v || "The number of labellers is required"],
-      //   [
-      //     (v: string) =>
-      //       !isNaN(parseFloat(v)) ||
-      //       "The number of labellers must be a numeric value",
-      //   ],
-      //   [
-      //     (v: string) =>
-      //       parseFloat(v) >= 1 || "There must be at least one labeller",
-      //   ],
-      // ],
-      // rewardRules: [
-      //   [(v: string) => !!v || "Reward is required"],
-      //   [
-      //     (v: string) =>
-      //       !isNaN(parseFloat(v)) || "The reward must be a numeric value",
-      //   ],
-      //   [
-      //     (v: string) =>
-      //       parseFloat(v) >= 1 || "The reward must be at least one",
-      //   ],
-      // ],
-      //labelRules: [(v: string) => (!!v || this.labelArray.length == 0) || "Enter labels as comma separated values and press enter"],
     };
   },
 
@@ -221,34 +186,33 @@ export default Vue.extend({
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      //description empty
+        //description empty
       } else if (this.description == "") {
         this.errorMessage = "Description required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      //no files uploaded
+        //no files uploaded
       } else if (this.filesUploaded.length == 0) {
         this.errorMessage = "No files to upload";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      //no labels uploaded
+        //no labels uploaded
       } else if (this.labelArray.length == 0) {
         this.errorMessage = "Label(s) required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      // no labellers entered
+        // no labellers entered
       } else if (this.selectedNumber === 0) {
-        console.log("selectedNumber", this.selectedNumber);
         this.errorMessage = "Please select number of labellers required";
         this.errorVisibility = "visible";
         this.errorHeight = 40;
         return;
-      //reward cannot be 0 or non numeric so not included here
+        //reward cannot be 0 or non numeric so not included here
       } else {
-      //in the case that everything is correct
+        //in the case that everything is correct
         //create a job object
         this.jobJson = {
           title: this.title,
@@ -264,7 +228,6 @@ export default Vue.extend({
           .createJob(this.jobJson)
           .then(async (response) => {
             // when job is successfully created, upload the images
-            console.log(response);
             // create the form data to contain the images
             let formData = new FormData();
             // append the job ID to the form data
@@ -282,11 +245,11 @@ export default Vue.extend({
               formData.append("labels", label);
             }
             //formData.append("labels", this.labelArray)
-            await this.uploadImages(formData);
+            await this.upload(formData);
             // uploads all the images through the image api
           })
           .catch((error) => {
-            console.log(error);
+            console.error(error);
           });
       }
       // close the dialog after submit
@@ -319,14 +282,15 @@ export default Vue.extend({
     removeItem(index: any) {
       this.filesUploaded.splice(index, 1);
     },
-    async uploadImages(formData: any) {
-      const url = "http://localhost:4000/api/images/";
-      const response = await axios.post(url, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      console.log(response);
+    async upload(formData: any) {
+      // const url = "http://localhost:4000/api/images/";
+      // const response = await axios.post(url, formData, {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data",
+      //   },
+      // });
+      const response = await uploadImages(formData);
+
       this.closeDialog();
     },
   },
