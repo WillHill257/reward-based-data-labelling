@@ -25,6 +25,8 @@
         </v-img>
 
         <v-btn v-bind:id="'label' + index" style="width: 270px"> </v-btn>
+        <v-btn v-bind:id="'rating' + index" style="width: 270px"> </v-btn>
+
       </v-col>
     </v-row>
   </v-container>
@@ -125,6 +127,16 @@ export default Vue.extend({
         }
       }
     },
+
+	//TODO add the actual user ratings
+	addRatings() {
+		for (var i = 0; i < this.images.length; i++) {
+			if(document.getElementById("rating" + i) != null)
+			{
+				document.getElementById("rating" + i).innerText = "87%  Reliable";
+			}
+		}
+	}
   },
 
   watch: {
