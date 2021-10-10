@@ -7,6 +7,12 @@ const getCompleteBatch = (batchID: string): Promise<any> => {
   return httpClient.get(END_POINT + "/" + batchID);
 };
 
+const getCompletedBatches = (): Promise<any> => {
+  // get the batches completed by a user
+  console.log("THERE");
+  return httpClient.get(END_POINT + "/completed");
+};
+
 const getNextBatch = (jobId: string): Promise<any> => {
   return httpClient.get(END_POINT + "/next/" + jobId);
 };
@@ -34,6 +40,7 @@ const updateReward = (jobID: string): Promise<any> => {
 };
 
 export {
+  getCompletedBatches,
   getCompleteBatch,
   getNextBatch,
   deleteLabeller,

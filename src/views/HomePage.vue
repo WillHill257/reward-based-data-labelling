@@ -69,6 +69,16 @@
                   endpoint="available"
                 ></DashboardList>
               </v-tab-item>
+
+            <v-tab style="color: black">Completed</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="completed"
+                  title="Completed"
+                  :batch="completed"
+                  endpoint="completed"
+                ></DashboardList>
+              </v-tab-item>
             </v-tabs>
           </v-card>
         </v-col>
@@ -87,6 +97,7 @@ import {
   getAcceptedJobs,
 } from "@/api/Job.api";
 import { getUser } from "@/api/Users.api";
+import { getCompletedBatches } from "@/api/Batch.api";
 
 export default Vue.extend({
   components: { DashboardList, Leaderboard },
@@ -118,6 +129,15 @@ export default Vue.extend({
         },
       ],
       available: [
+        {
+          _id: "0",
+          title: "Title",
+          type: "Type",
+          description: "Description",
+          labels: ["a", "b"],
+        },
+      ],
+      completed: [
         {
           _id: "0",
           title: "Title",
@@ -158,6 +178,15 @@ export default Vue.extend({
     getAcceptedJobs()
       .then((response: any) => {
         this.accepted = this.handleResponseList(response.data);
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
+
+    getCompletedBatches()
+      .then((response: any) => {
+        console.log("THIS IS WHAT THE RESPONSE DATA LOOKS LIKE ", response.data);
+        this.completed = this.handleResponseList(response.data);
       })
       .catch((error: any) => {
         console.error(error);
