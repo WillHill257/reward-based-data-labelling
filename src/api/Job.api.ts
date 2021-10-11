@@ -49,6 +49,11 @@ const getAcceptedJobs = (): Promise<any> => {
   return httpClient.get("/job/accepted");
 };
 
+const getCompletedJobs = (): Promise<any> => {
+  // get the batches completed by a user
+  return httpClient.get(END_POINT + "/completed");
+};
+
 const getAllJobs = (): Promise<any> => {
   // get all the jobs
   return httpClient.get("/job");
@@ -66,6 +71,7 @@ export {
   getAvailableJobs,
   getAuthoredJobs,
   getAcceptedJobs,
+  getCompletedJobs,
   getAllJobs,
   exportJobToCSV,
 };

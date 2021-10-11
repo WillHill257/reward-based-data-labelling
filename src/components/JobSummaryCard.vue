@@ -4,7 +4,11 @@
     <v-card-title class="job-title">
       {{ title }}
       <v-spacer></v-spacer>
-      <JobTimer class="txtTimer" v-if="batchID !== 'undefined'" :batchID="batchID" />
+      <JobTimer
+        class="txtTimer"
+        v-if="batchID !== 'undefined'"
+        :batchID="batchID"
+      />
     </v-card-title>
     <v-card-subtitle class="job-type">
       {{ type }}
@@ -141,9 +145,7 @@ export default Vue.extend({
       getprogress(this.id).then((response: any) => {
         this.progressValue = Math.round(response.data[0].progress);
         //this.progressValue = val.toString();
-        console.log(response);
       });
-      console.log(this.progressValue);
       var value = JSON.stringify(this.progressValue);
       return value;
     },
