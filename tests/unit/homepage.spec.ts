@@ -41,6 +41,18 @@ jest.mock("../../src/api/Job.api", () => ({
       },
     ],
   }),
+  getCompletedJobs: jest.fn().mockResolvedValue({
+    status: 200,
+    data: [
+      {
+        _id: "0",
+        title: "Title",
+        type: "Type",
+        description: "Description",
+        labels: ["a", "b"],
+      },
+    ],
+  }),
 }));
 
 Vue.use(Vuetify);
@@ -91,6 +103,7 @@ describe("When loaded", () => {
     const availJobSpy = jest.spyOn(JobApi, "getAvailableJobs");
     const acceptedJobSpy = jest.spyOn(JobApi, "getAcceptedJobs");
     const authoredJobSpy = jest.spyOn(JobApi, "getAuthoredJobs");
+    const completedJobSpy = jest.spyOn(JobApi, "getCompletedJobs");
     const wrapper: any = shallowMount(HomePage, {
       vuetify,
     });
@@ -98,6 +111,7 @@ describe("When loaded", () => {
     expect(availJobSpy).toHaveBeenCalled();
     expect(acceptedJobSpy).toHaveBeenCalled();
     expect(authoredJobSpy).toHaveBeenCalled();
+    expect(completedJobSpy).toHaveBeenCalled();
     const handleResponseListSpy = jest.spyOn(wrapper.vm, "handleResponseList");
     await flushPromises();
     expect(handleResponseListSpy).toHaveBeenCalled();
