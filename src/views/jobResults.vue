@@ -25,15 +25,16 @@
         </v-img>
 
         <v-btn v-bind:id="'label' + index" style="width: 270px"> </v-btn>
+        <v-btn v-bind:id="'rating' + index" style="width: 270px"> </v-btn>
       </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
-
 import Vue from "vue";
 import router from "@/router";
 import { Job } from "@/store/modules/job";
+import { getRating } from "@/api/Users.api";
 import ExportToCSV from "@/components/ExportToCSV.vue";
 
 export default Vue.extend({
@@ -75,6 +76,7 @@ export default Vue.extend({
       await this.fetchImages();
     }
     // get request for the images with a specific ID
+    this.addRatings();
   },
 
   methods: {
@@ -119,9 +121,17 @@ export default Vue.extend({
 
     addLabels() {
       for (var i = 0; i < this.images.length; i++) {
-        if(document.getElementById("label" + i)!=null)
-        {
-        document.getElementById("label" + i).innerText = this.labels[i];
+        if (document.getElementById("label" + i) != null) {
+          document.getElementById("label" + i).innerText = this.labels[i];
+        }
+      }
+    },
+
+    //TODO add the actual user ratings
+    addRatings() {
+      for (var i = 0; i < this.images.length; i++) {
+        if (document.getElementById("rating" + i) != null) {
+          document.getElementById("rating" + i).innerText = "87%  Reliable";
         }
       }
     },

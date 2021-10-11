@@ -11,7 +11,7 @@
             </v-card-text>
             <v-card-text id="heading" class="pt-0 pb-0">
               <!-- Hello username -->
-              Your available rewards
+              Your available rewards<span class="float-right" style="color:grey">Your rating</span>
             </v-card-text>
             <v-card-title
               id="available-rewards"
@@ -20,6 +20,16 @@
             >
               <!-- Your available rewards -->
               {{ rewardRounded(rewardCount) }}
+              <v-spacer></v-spacer>
+              
+              <v-card-title
+              id = "user-rating"
+              class="font-weight-black headline"
+              style="font-size: 10em"
+              >
+                {{rewardRounded(rating)}}
+              </v-card-title>
+
             </v-card-title>
             <Leaderboard />
           </v-card>
@@ -69,6 +79,16 @@
                   endpoint="available"
                 ></DashboardList>
               </v-tab-item>
+
+              <v-tab style="color: black">Completed</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="completed"
+                  title="Completed"
+                  :jobs="completed"
+                  endpoint="completed"
+                ></DashboardList>
+              </v-tab-item>
             </v-tabs>
           </v-card>
         </v-col>
@@ -85,8 +105,10 @@ import {
   getAvailableJobs,
   getAuthoredJobs,
   getAcceptedJobs,
+  getCompletedJobs,
 } from "@/api/Job.api";
-import { getUser } from "@/api/Users.api";
+import { getUser, getRating } from "@/api/Users.api";
+
 
 export default Vue.extend({
   components: { DashboardList, Leaderboard },
@@ -98,6 +120,7 @@ export default Vue.extend({
       isShowDialog: false,
       firstName: "",
       rewardCount: "",
+      rating:"",
       //dummy data for initial screen when database is empty
       accepted: [
         {
@@ -118,6 +141,15 @@ export default Vue.extend({
         },
       ],
       available: [
+        {
+          _id: "0",
+          title: "Title",
+          type: "Type",
+          description: "Description",
+          labels: ["a", "b"],
+        },
+      ],
+      completed: [
         {
           _id: "0",
           title: "Title",
@@ -163,6 +195,14 @@ export default Vue.extend({
         console.error(error);
       });
 
+    getCompletedJobs()
+      .then((response: any) => {
+        this.completed = this.handleResponseList(response.data);
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
+
     //filters and returns jobs that were created by currently logged in user
     getAuthoredJobs()
       .then((response: any) => {
@@ -178,6 +218,14 @@ export default Vue.extend({
         this.rewardCount = res.data.rewardCount;
       })
       .catch((err: any) => {
+        console.error(err);
+      });
+
+    getRating()
+      .then((res:any)=>{
+        this.rating = res.data.rating;
+      })
+      .catch((err:any)=>{
         console.error(err);
       });
   },

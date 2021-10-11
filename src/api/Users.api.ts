@@ -33,4 +33,8 @@ const getUser = (): Promise<any> => {
   return httpClient.get(END_POINT);
 };
 
-export { loginUser, signupUser, getLeaderBoard, getUser };
+const getRating = (): Promise<any> =>{
+  return httpClient.get(END_POINT+ "/rating");
+}
+
+export { loginUser, signupUser, getLeaderBoard, getUser, getRating };

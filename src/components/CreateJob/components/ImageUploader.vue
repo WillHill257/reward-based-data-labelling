@@ -58,7 +58,14 @@ export default Vue.extend({
         new Compressor(file, {
           quality: 0.7,
           success: (resultFile) => {
-            this.onFilesUploaded(resultFile);
+            if (resultFile instanceof Blob) {
+              const uploadFile = new File([resultFile], resultFile.name, {
+                type: resultFile.type,
+              });
+              this.onFilesUploaded(uploadFile);
+            } else {
+              this.onFilesUploaded(resultFile);
+            }
           },
         });
       }
@@ -92,7 +99,14 @@ export default Vue.extend({
             new Compressor(file, {
               quality: 0.7,
               success: (resultFile) => {
-                this.onFilesUploaded(resultFile);
+                if (resultFile instanceof Blob) {
+                  const uploadFile = new File([resultFile], resultFile.name, {
+                    type: resultFile.type,
+                  });
+                  this.onFilesUploaded(uploadFile);
+                } else {
+                  this.onFilesUploaded(resultFile);
+                }
               },
             });
           });
