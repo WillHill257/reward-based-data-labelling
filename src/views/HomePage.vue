@@ -70,12 +70,12 @@
                 ></DashboardList>
               </v-tab-item>
 
-            <v-tab style="color: black">Completed</v-tab>
+              <v-tab style="color: black">Completed</v-tab>
               <v-tab-item>
                 <DashboardList
                   class="completed"
                   title="Completed"
-                  :batch="completed"
+                  :jobs="completed"
                   endpoint="completed"
                 ></DashboardList>
               </v-tab-item>
@@ -95,9 +95,9 @@ import {
   getAvailableJobs,
   getAuthoredJobs,
   getAcceptedJobs,
+  getCompletedJobs,
 } from "@/api/Job.api";
 import { getUser } from "@/api/Users.api";
-import { getCompletedBatches } from "@/api/Batch.api";
 
 export default Vue.extend({
   components: { DashboardList, Leaderboard },
@@ -183,9 +183,8 @@ export default Vue.extend({
         console.error(error);
       });
 
-    getCompletedBatches()
+    getCompletedJobs()
       .then((response: any) => {
-        console.log("THIS IS WHAT THE RESPONSE DATA LOOKS LIKE ", response.data);
         this.completed = this.handleResponseList(response.data);
       })
       .catch((error: any) => {
