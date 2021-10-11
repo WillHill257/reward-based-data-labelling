@@ -33,6 +33,11 @@ const updateReward = (jobID: string): Promise<any> => {
   return httpClient.put(END_POINT + "/reward/" + jobID);
 };
 
+const findReward = (jobID: string): Promise<any> => {
+  // set this user's completed flag true for this batch
+  return httpClient.get(END_POINT + "/findreward/" + jobID);
+};
+
 export {
   getCompleteBatch,
   getNextBatch,
@@ -41,4 +46,5 @@ export {
   getprogress,
   batchTimer,
   updateReward,
+  findReward,
 };

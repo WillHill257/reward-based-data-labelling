@@ -80,6 +80,7 @@ import Vue from "vue";
 import router from "@/router";
 import { Job } from "@/store/modules/job";
 import { acceptJob } from "@/api/Job.api";
+import { findReward } from "@/api/Batch.api";
 import ErrorDialog from "@/components/ErrorDialog.vue";
 
 export default Vue.extend({
@@ -114,7 +115,11 @@ export default Vue.extend({
       this.jobTitle = response.data.title;
       this.jobDescription = response.data.description;
       this.labels = response.data.labels;
-      this.reward = response.data.rewards;
+      await findReward(jobID)
+        .then((res) =>{
+          this.reward = res.data;
+
+      });
       this.author = response.data.author;
       this.labellers = response.data.labellers;
       this.numLabellersRequired = response.data.numLabellersRequired;
