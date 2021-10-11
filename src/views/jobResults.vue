@@ -36,6 +36,7 @@ import router from "@/router";
 import { Job } from "@/store/modules/job";
 import { getRating } from "@/api/Users.api";
 import ExportToCSV from "@/components/ExportToCSV.vue";
+import { getAvgRatings } from "@/api/Job.api";
 
 export default Vue.extend({
   components: { ExportToCSV },
@@ -52,6 +53,7 @@ export default Vue.extend({
       count: 0,
       bottom: false,
       labels: [],
+      ratings: [],
     };
   },
 
@@ -75,6 +77,8 @@ export default Vue.extend({
 
       await this.fetchImages();
     }
+    await this.fetchRatings();
+
     // get request for the images with a specific ID
     this.addRatings();
   },
@@ -102,6 +106,15 @@ export default Vue.extend({
       }
     },
 
+    async fetchRatings() {
+      const jobID = this.$props.jobID;
+      let temp = await getAvgRatings(jobID);
+
+      this.ratings = temp.data;
+      this.addRatings();
+      console.log(this.ratings);
+    },
+
     bottomVisible() {
       const scrollY = window.scrollY;
       const visible = document.documentElement.clientHeight;
@@ -127,11 +140,10 @@ export default Vue.extend({
       }
     },
 
-    //TODO add the actual user ratings
     addRatings() {
       for (var i = 0; i < this.images.length; i++) {
         if (document.getElementById("rating" + i) != null) {
-          document.getElementById("rating" + i).innerText = "87%  Reliable";
+          document.getElementById("rating" + i).innerText = this.ratings[i];
         }
       }
     },
