@@ -9,6 +9,14 @@
       />
 
       <v-spacer></v-spacer>
+      <v-switch
+        inset
+        :label="`Dark theme`"
+        @change="toggleTheme()"
+        v-model="this.$vuetify.theme.dark"
+        id="theme-switcher"
+        class="pt-5"
+      ></v-switch>
 
       <!-- if the user is not logged in we show them the logout button only -->
       <div v-if="!isLoggedIn">
@@ -34,19 +42,16 @@
     <!-- //this is the hamburger navigation bar. //this is declaring what it does and
     how it looks. -->
     <v-navigation-drawer
-      color="rgb(80,200,200)"
       v-model="drawer"
       absolute
       temporary
       right
       fixed
       clipped
+      id="drawer"
     >
       <v-list nav dense>
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        >
+        <v-list-item-group v-model="group">
           <!-- these are the items in the nav bar -->
           <v-list-item v-for="item in items" :key="item.text" :to="item.link">
             <v-list-item-title>{{ item.text }}</v-list-item-title>
@@ -93,6 +98,11 @@ export default Vue.extend({
     },
   },
   methods: {
+    toggleTheme() {
+      // localStorage.setItem("dark-theme",this.$vuetify.theme.dark);
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
+    },
     populateNavItems() {
       // set nav items and routes
       this.items = [
@@ -121,12 +131,28 @@ export default Vue.extend({
   },
   mounted() {
     this.populateNavItems();
+    const theme = localStorage.getItem("dark_theme");
+    if (theme) {
+      if (theme == "true") {
+        this.$vuetify.theme.dark = true;
+      } else {
+        this.$vuetify.theme.dark = false;
+      }
+    }
   },
 });
 </script>
 <style scoped>
-#AppBarIntro {
+#AppBarIntro.theme--light {
   background-color: rgb(80, 200, 200);
+}
+
+#drawer.theme--light {
+  background-color: rgb(80, 200, 200);
+}
+
+#AppBarIntro {
+  /* background-color: rgb(80, 200, 200); */
   max-height: 65px;
   font-weight: 600;
   max-width: 100%;
@@ -135,6 +161,10 @@ export default Vue.extend({
 #AppBarlogo {
   max-width: 65px;
   margin-left: 5px;
+}
+
+#AppBarlogo:hover {
+  cursor: pointer;
 }
 
 #AppBarButton {

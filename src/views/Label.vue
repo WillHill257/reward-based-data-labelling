@@ -246,8 +246,8 @@ export default Vue.extend({
     setLabelActive(label: string) {
       document.querySelectorAll("." + label).forEach((element: any) => {
         if (element) {
-          element.classList.add("light-green");
-          element.classList.add("lighten-3");
+          element.classList.add("primary");
+          element.classList.add("darken-3");
           element.classList.add("v-chip--active");
         }
       });

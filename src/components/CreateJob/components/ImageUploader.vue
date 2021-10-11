@@ -116,6 +116,8 @@ export default Vue.extend({
 
 <style scoped>
 #dragAndDropContainer {
-  background-color: #ebebeb;
+  /* background-color: #ebebeb; */
+  border: 1px solid rgba(128, 128, 128, 0.486);
+  border-radius: 10px;
 }
 </style>

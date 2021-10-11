@@ -26,7 +26,7 @@
         </v-col>
         <v-col class="col-xl-9 col-lg-9 col-md-9">
           <v-card id="dashboard-tabs">
-            <v-toolbar color="white" dark flat>
+            <v-toolbar flat>
               <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
 
               <v-toolbar-title>Your Dashboard</v-toolbar-title>
@@ -40,7 +40,7 @@
             <v-tabs v-model="tab" align-with-title>
               <v-tabs-slider color="cyan"></v-tabs-slider>
 
-              <v-tab style="color: black">Mine</v-tab>
+              <v-tab>Mine</v-tab>
               <v-tab-item>
                 <DashboardList
                   class="authored"
@@ -50,7 +50,7 @@
                 ></DashboardList>
               </v-tab-item>
 
-              <v-tab style="color: black">Currently Doing</v-tab>
+              <v-tab>Currently Doing</v-tab>
               <v-tab-item>
                 <DashboardList
                   class="accepted"
@@ -60,7 +60,7 @@
                 ></DashboardList>
               </v-tab-item>
 
-              <v-tab style="color: black">Available</v-tab>
+              <v-tab>Available</v-tab>
               <v-tab-item>
                 <DashboardList
                   class="available"
