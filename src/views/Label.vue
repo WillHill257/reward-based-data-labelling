@@ -256,8 +256,8 @@ export default Vue.extend({
     setLabelInactive(label: string) {
       document.querySelectorAll("." + label).forEach((element: any) => {
         if (element) {
-          element.classList.remove("light-green");
-          element.classList.remove("lighten-3");
+          element.classList.remove("primary");
+          element.classList.remove("darken-3");
           element.classList.remove("v-chip--active");
         }
       });
@@ -354,7 +354,7 @@ export default Vue.extend({
       var prog = (count / labelarr.length) * 100;
       prog = Math.round(prog * 100) / 100;
       this.progressCount = prog;
-      
+
       //return the progress as a percentage
       return prog;
     },
