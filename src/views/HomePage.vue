@@ -69,6 +69,16 @@
                   endpoint="available"
                 ></DashboardList>
               </v-tab-item>
+
+              <v-tab style="color: black">Completed</v-tab>
+              <v-tab-item>
+                <DashboardList
+                  class="completed"
+                  title="Completed"
+                  :jobs="completed"
+                  endpoint="completed"
+                ></DashboardList>
+              </v-tab-item>
             </v-tabs>
           </v-card>
         </v-col>
@@ -85,6 +95,7 @@ import {
   getAvailableJobs,
   getAuthoredJobs,
   getAcceptedJobs,
+  getCompletedJobs,
 } from "@/api/Job.api";
 import { getUser } from "@/api/Users.api";
 
@@ -126,6 +137,15 @@ export default Vue.extend({
           labels: ["a", "b"],
         },
       ],
+      completed: [
+        {
+          _id: "0",
+          title: "Title",
+          type: "Type",
+          description: "Description",
+          labels: ["a", "b"],
+        },
+      ],
     };
   },
 
@@ -158,6 +178,14 @@ export default Vue.extend({
     getAcceptedJobs()
       .then((response: any) => {
         this.accepted = this.handleResponseList(response.data);
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
+
+    getCompletedJobs()
+      .then((response: any) => {
+        this.completed = this.handleResponseList(response.data);
       })
       .catch((error: any) => {
         console.error(error);
