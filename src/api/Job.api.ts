@@ -59,6 +59,12 @@ const getAllJobs = (): Promise<any> => {
   return httpClient.get("/job");
 };
 
+const getAvgRatings = (jobID: string): Promise<any> => {
+	// get the average rating for each image
+
+	return httpClient.get(END_POINT + "/ratings/" + jobID);
+}
+
 const exportJobToCSV = (jobID: string): Promise<any> => {
   return httpClient.get(END_POINT + "/export/" + jobID);
 };
@@ -74,4 +80,5 @@ export {
   getCompletedJobs,
   getAllJobs,
   exportJobToCSV,
+  getAvgRatings
 };
