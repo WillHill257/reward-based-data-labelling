@@ -117,7 +117,6 @@ export default Vue.extend({
 
 		this.ratings = temp.data;
 		this.addRatings();
-		console.log(this.ratings);
 
 	},
 
@@ -153,7 +152,7 @@ export default Vue.extend({
 			if(document.getElementById("rating" + i) != null)
 			{
 				document.getElementById("rating" + i).innerText = this.ratings[i];
-				console.log(this.ratings[i]);
+				// console.log(this.ratings[i]);
 			}
 		}
 	}
