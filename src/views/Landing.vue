@@ -19,7 +19,7 @@
           />
 
           <v-card-title>Step 1</v-card-title>
-          <v-card-text style="color: black">
+          <v-card-text>
             View the available jobs. Pick a job that matches your skillset best.
             Accept the job.</v-card-text
           >
@@ -31,7 +31,7 @@
             src="../assets/UndrawImages/UndrawLabel.svg"
           />
           <v-card-title>Step 2</v-card-title>
-          <v-card-text style="color: black">
+          <v-card-text>
             Match the given labels to the images. Complete the set of pictures
             given.
           </v-card-text>
@@ -44,7 +44,7 @@
             src="../assets/UndrawImages/UndrawPaid.svg"
           />
           <v-card-title>Step 3</v-card-title>
-          <v-card-text style="color: black">
+          <v-card-text>
             Your work is verified. You are rewarded. It's that
             simple.</v-card-text
           >
@@ -85,7 +85,7 @@
       >
         <v-col>
           <v-text>Step 1 <br /></v-text>
-          <v-text style="color: black; font-size: 11px">
+          <v-text style="font-size: 11px">
             View the available jobs. Pick a job that matches your skillset best.
             Accept the job.</v-text
           >
@@ -106,7 +106,7 @@
       >
         <v-col>
           <v-text>Step 2 <br /></v-text>
-          <v-text style="color: black; font-size: 11px">
+          <v-text style="font-size: 11px">
             Match the given labels to the images. Complete the set of pictures
             given.</v-text
           >
@@ -127,7 +127,7 @@
       >
         <v-col>
           <v-text>Step 3 <br /></v-text>
-          <v-text style="color: black; font-size: 11px">
+          <v-text style="font-size: 11px">
             Your work is verified. You are rewarded. It's that simple.</v-text
           >
         </v-col>

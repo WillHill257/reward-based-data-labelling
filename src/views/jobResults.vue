@@ -26,20 +26,17 @@
 
         <v-btn v-bind:id="'label' + index" style="width: 270px"> </v-btn>
         <v-btn v-bind:id="'rating' + index" style="width: 270px"> </v-btn>
-
       </v-col>
     </v-row>
   </v-container>
 </template>
 <script>
-
 import Vue from "vue";
 import router from "@/router";
 import { Job } from "@/store/modules/job";
+import { getRating } from "@/api/Users.api";
 import ExportToCSV from "@/components/ExportToCSV.vue";
-import {
-  getAvgRatings,
-} from "@/api/Job.api";
+import { getAvgRatings } from "@/api/Job.api";
 
 export default Vue.extend({
   components: { ExportToCSV },
@@ -56,7 +53,7 @@ export default Vue.extend({
       count: 0,
       bottom: false,
       labels: [],
-	  ratings: [],
+      ratings: [],
     };
   },
 
@@ -80,10 +77,10 @@ export default Vue.extend({
 
       await this.fetchImages();
     }
-	await this.fetchRatings();
-
+    await this.fetchRatings();
 
     // get request for the images with a specific ID
+    this.addRatings();
   },
 
   methods: {
@@ -107,8 +104,6 @@ export default Vue.extend({
         await this.addImages();
         this.addLabels();
       }
-
-	 
     },
 
 	async fetchRatings(){
@@ -120,6 +115,10 @@ export default Vue.extend({
 
 	},
 
+      this.ratings = temp.data;
+      this.addRatings();
+      console.log(this.ratings);
+    },
 
     bottomVisible() {
       const scrollY = window.scrollY;
@@ -140,9 +139,8 @@ export default Vue.extend({
 
     addLabels() {
       for (var i = 0; i < this.images.length; i++) {
-        if(document.getElementById("label" + i)!=null)
-        {
-        document.getElementById("label" + i).innerText = this.labels[i];
+        if (document.getElementById("label" + i) != null) {
+          document.getElementById("label" + i).innerText = this.labels[i];
         }
       }
     },

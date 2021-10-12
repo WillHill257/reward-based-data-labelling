@@ -104,7 +104,7 @@
             <v-card-actions style="padding-top: 3%">
               <!--Submit button-->
               <v-btn
-                color="green"
+                color="primary"
                 id="submit-input"
                 type="button"
                 @click.native="onSubmitClicked"

@@ -1,11 +1,11 @@
 * {
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
     sans-serif;
-  color: black;
+  /* color: black; */
 }
 
 #AppBarIntro {
-  background-color: rgb(80, 200, 200);
+  /* background-color: rgb(80, 200, 200); */
   max-height: 65px;
   font-weight: 600;
   max-width: 1300px;
@@ -24,7 +24,6 @@ h1 {
   text-align: center;
   /* margin-top: 10%; */
   font-size: 50px;
-  color: black;
   font-weight: 600;
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
     sans-serif;
@@ -40,12 +39,12 @@ h1 {
 }
 
 .LandingCard {
-  background-color: white;
+  /* background-color: white; */
   border: 10px solid black;
 }
 
 .MobileLandingCard {
-  background-color: white;
+  /* background-color: white; */
   border: 10px solid red;
   @media (min-width: 480px) {
     height: 1300px;

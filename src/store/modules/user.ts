@@ -113,7 +113,9 @@ class User extends VuexModule implements UserState {
   @Action
   async logoutUser() {
     this.context.commit("LOGOUT_USER");
-    localStorage.clear();
+    // localStorage.clear();
+    localStorage.removeItem("token");
+
     router.push("/login");
   }
 
