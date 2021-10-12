@@ -115,10 +115,6 @@ export default Vue.extend({
 
 	},
 
-      this.ratings = temp.data;
-      this.addRatings();
-      console.log(this.ratings);
-    },
 
     bottomVisible() {
       const scrollY = window.scrollY;
@@ -153,7 +149,7 @@ export default Vue.extend({
 				// console.log(this.ratings[i]);
 			}
 		}
-	}
+	},
   },
 
   watch: {
