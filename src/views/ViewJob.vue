@@ -115,17 +115,18 @@ export default Vue.extend({
       this.jobTitle = response.data.title;
       this.jobDescription = response.data.description;
       this.labels = response.data.labels;
-      await findReward(jobID)
-        .then((res) =>{
-          this.reward = res.data;
 
-      });
+      // this.reward = 10;
       this.author = response.data.author;
       this.labellers = response.data.labellers;
       this.numLabellersRequired = response.data.numLabellersRequired;
 
       this.changeAcceptVisibility(response.data.canAccept);
       await this.fetchImages();
+
+      await findReward(jobID).then((res) => {
+        this.reward = res.data;
+      });
     }
     // get request for the images with a specific ID
 
