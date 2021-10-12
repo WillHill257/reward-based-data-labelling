@@ -106,14 +106,15 @@ export default Vue.extend({
       }
     },
 
-    async fetchRatings() {
-      const jobID = this.$props.jobID;
-      let temp = await getAvgRatings(jobID);
+	async fetchRatings(){
+      	const jobID = this.$props.jobID;
+		let temp = await getAvgRatings(jobID);
 
-      this.ratings = temp.data;
-      this.addRatings();
-      console.log(this.ratings);
-    },
+		this.ratings = temp.data;
+		this.addRatings();
+
+	},
+
 
     bottomVisible() {
       const scrollY = window.scrollY;
@@ -140,13 +141,15 @@ export default Vue.extend({
       }
     },
 
-    addRatings() {
-      for (var i = 0; i < this.images.length; i++) {
-        if (document.getElementById("rating" + i) != null) {
-          document.getElementById("rating" + i).innerText = this.ratings[i];
-        }
-      }
-    },
+	addRatings() {
+		for (var i = 0; i < this.images.length; i++) {
+			if(document.getElementById("rating" + i) != null)
+			{
+				document.getElementById("rating" + i).innerText = this.ratings[i].toFixed(2);
+				// console.log(this.ratings[i]);
+			}
+		}
+	},
   },
 
   watch: {

@@ -11,7 +11,8 @@
       <v-spacer></v-spacer>
       <v-switch
         inset
-        :label="`Dark theme`"
+        :prepend-icon="'mdi-weather-sunny'"
+        :append-icon="'mdi-moon-waning-crescent'"
         @change="toggleTheme()"
         v-model="this.$vuetify.theme.dark"
         id="theme-switcher"

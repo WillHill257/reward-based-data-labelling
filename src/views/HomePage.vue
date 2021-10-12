@@ -11,7 +11,11 @@
             </v-card-text>
             <v-card-text id="heading" class="pt-0 pb-0">
               <!-- Hello username -->
-              Your available rewards<span class="float-right" style="color:grey">Your rating</span>
+              Your available rewards<span
+                class="float-right"
+                style="color: grey"
+                >Your rating</span
+              >
             </v-card-text>
             <v-card-title
               id="available-rewards"
@@ -21,15 +25,14 @@
               <!-- Your available rewards -->
               {{ rewardRounded(rewardCount) }}
               <v-spacer></v-spacer>
-              
-              <v-card-title
-              id = "user-rating"
-              class="font-weight-black headline"
-              style="font-size: 10em"
-              >
-                {{rewardRounded(rating)}}
-              </v-card-title>
 
+              <v-card-title
+                id="user-rating"
+                class="font-weight-black headline"
+                style="font-size: 10em"
+              >
+                {{ rewardRounded(rating) }}
+              </v-card-title>
             </v-card-title>
             <Leaderboard />
           </v-card>
@@ -80,7 +83,7 @@
                 ></DashboardList>
               </v-tab-item>
 
-              <v-tab style="color: black">Completed</v-tab>
+              <v-tab>Completed</v-tab>
               <v-tab-item>
                 <DashboardList
                   class="completed"
@@ -109,7 +112,6 @@ import {
 } from "@/api/Job.api";
 import { getUser, getRating } from "@/api/Users.api";
 
-
 export default Vue.extend({
   components: { DashboardList, Leaderboard },
   name: "Home",
@@ -120,7 +122,7 @@ export default Vue.extend({
       isShowDialog: false,
       firstName: "",
       rewardCount: "",
-      rating:"",
+      rating: "",
       //dummy data for initial screen when database is empty
       accepted: [
         {
@@ -222,10 +224,10 @@ export default Vue.extend({
       });
 
     getRating()
-      .then((res:any)=>{
+      .then((res: any) => {
         this.rating = res.data.rating;
       })
-      .catch((err:any)=>{
+      .catch((err: any) => {
         console.error(err);
       });
   },
