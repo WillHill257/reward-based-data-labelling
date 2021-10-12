@@ -145,7 +145,7 @@ export default Vue.extend({
 		for (var i = 0; i < this.images.length; i++) {
 			if(document.getElementById("rating" + i) != null)
 			{
-				document.getElementById("rating" + i).innerText = this.ratings[i];
+				document.getElementById("rating" + i).innerText = this.ratings[i].toFixed(2);
 				// console.log(this.ratings[i]);
 			}
 		}
