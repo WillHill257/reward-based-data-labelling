@@ -124,6 +124,7 @@ import { computeFetchEndpoint, sendLabels } from "@/api/Item.api";
 import { getCompleteBatch, getNextBatch } from "@/api/Batch.api";
 import BackButton from "@/components/BackButton.vue";
 import JobTimer from "@/components/JobTimer.vue";
+import { findReward } from "@/api/Batch.api";
 
 export default Vue.extend({
   name: "LabelImages",
@@ -190,6 +191,13 @@ export default Vue.extend({
     this.$nextTick(() => {
       this.loadLabels(0);
     });
+
+    //get the reward amount
+    await findReward(jobID)
+        .then((res) =>{
+          this.reward = res.data;
+
+      });
   },
 
   methods: {
