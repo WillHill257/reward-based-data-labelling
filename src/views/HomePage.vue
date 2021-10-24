@@ -37,7 +37,7 @@
             <Leaderboard />
           </v-card>
         </v-col>
-        <v-col class="col-xl-9 col-lg-9 col-md-9">
+        <v-col class="col-xl-9 col-lg-9 col-md-9"  >
           <v-card id="dashboard-tabs">
             <v-toolbar flat>
               <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
@@ -50,10 +50,12 @@
                 <v-icon color="cyan">mdi-magnify</v-icon>
               </v-btn> -->
             </v-toolbar>
-            <v-tabs v-model="tab" align-with-title>
+            <v-tabs v-model="tab" center-active fixed-tabs
+          
+            >      
               <v-tabs-slider color="cyan"></v-tabs-slider>
 
-              <v-tab>Mine</v-tab>
+              <v-tab >Mine</v-tab>
               <v-tab-item>
                 <DashboardList
                   class="authored"

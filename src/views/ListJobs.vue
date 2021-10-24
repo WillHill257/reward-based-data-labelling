@@ -20,6 +20,7 @@
           :description="job.description"
           :batchID="'undefined'"
           :isMine="endpoint == 'authored'"
+          
         ></JobSummaryCard>
       </div>
     </section>

@@ -29,13 +29,16 @@
     </v-card-text>
 
     <v-progress-circular
+    
       class="progress"
       v-if="isMine"
       id="jobProgress"
       rotate="-90"
       size="110"
-      width="15"
+      width="15" 
       :value="calcProgress()"
+
+
     >
       {{ calcProgress() }}%
     </v-progress-circular>
