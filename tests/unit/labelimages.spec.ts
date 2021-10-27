@@ -364,7 +364,7 @@ describe("Labelling Page - Checking methods", () => {
       },
     });
 
-		console.log("here");
+    console.log("here");
     // do the relevant mocking
     const sendLabelsSpy = jest.spyOn(ItemApi, "sendLabels");
     sendLabelsSpy.mockRejectedValue({ status: 400 });
@@ -468,8 +468,8 @@ describe("Labelling Page - Checking methods", () => {
     await wrapper.vm.$nextTick();
     await flushPromises();
 
-    const element = wrapper.find("." + availableLabels[0]);
-    expect(element.classes(availableLabels[0])).toBe(true);
+    const element = wrapper.find(".label-" + availableLabels[0]);
+    expect(element.classes("label-" + availableLabels[0])).toBe(true);
   });
 
   test("setLabelActive - label does not exist", async () => {
@@ -696,11 +696,11 @@ describe("Labelling Page - Checking methods", () => {
     const updateLabelsSpy = jest.spyOn(wrapper.vm, "updateLabels");
     const loadLabelsSpy = jest.spyOn(wrapper.vm, "loadLabels");
 
+    const result = await wrapper.vm.nextImage();
+
     // make sure the changes are in effect
     await wrapper.vm.$nextTick();
     await flushPromises();
-
-    const result = wrapper.vm.nextImage();
     expect(updateLabelsSpy).toBeCalledTimes(1);
     expect(loadLabelsSpy).toBeCalledTimes(1);
     expect(wrapper.vm.$data.imagenext).toEqual(1);
@@ -749,11 +749,11 @@ describe("Labelling Page - Checking methods", () => {
     const updateLabelsSpy = jest.spyOn(wrapper.vm, "updateLabels");
     const loadLabelsSpy = jest.spyOn(wrapper.vm, "loadLabels");
 
+    const result = await wrapper.vm.nextImage();
+
     // make sure the changes are in effect
     await wrapper.vm.$nextTick();
     await flushPromises();
-
-    const result = wrapper.vm.nextImage();
     expect(updateLabelsSpy).toBeCalledTimes(1);
     expect(loadLabelsSpy).toBeCalledTimes(1);
     expect(wrapper.vm.$data.imagenext).toEqual(0);
@@ -827,12 +827,12 @@ describe("Labelling Page - Checking methods", () => {
 
     const updateLabelsSpy = jest.spyOn(wrapper.vm, "updateLabels");
     const loadLabelsSpy = jest.spyOn(wrapper.vm, "loadLabels");
-
+		
+    const result =await wrapper.vm.prevImage();
     // make sure the changes are in effect
     await wrapper.vm.$nextTick();
     await flushPromises();
 
-    const result = wrapper.vm.prevImage();
     expect(updateLabelsSpy).toBeCalledTimes(1);
     expect(loadLabelsSpy).toBeCalledTimes(1);
     expect(wrapper.vm.$data.imagenext).toEqual(1);
@@ -880,12 +880,12 @@ describe("Labelling Page - Checking methods", () => {
 
     const updateLabelsSpy = jest.spyOn(wrapper.vm, "updateLabels");
     const loadLabelsSpy = jest.spyOn(wrapper.vm, "loadLabels");
+    const result = await wrapper.vm.prevImage();
 
     // make sure the changes are in effect
     await wrapper.vm.$nextTick();
     await flushPromises();
 
-    const result = wrapper.vm.prevImage();
     expect(updateLabelsSpy).toBeCalledTimes(1);
     expect(loadLabelsSpy).toBeCalledTimes(1);
     expect(wrapper.vm.$data.imagenext).toEqual(0);
@@ -941,11 +941,10 @@ describe("Labelling Page - Checking methods", () => {
           },
           __v: 1,
         },
-        
       ],
     };
 
-    wrapper.vm.$data.progressCount =0;
+    wrapper.vm.$data.progressCount = 0;
 
     await wrapper.vm.calcProgress();
     await flushPromises();

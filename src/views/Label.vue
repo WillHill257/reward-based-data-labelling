@@ -238,16 +238,17 @@ export default Vue.extend({
     async updateLabels(index: number) {
       if (this.batchData) {
         const data: any = this.batchData;
-        let res: any = await sendLabels(
-          data.images[index]._id,
-          this.selectedLabels
-        );
-        console.log(res);
-
-        if (!res.error) {
+        try {
+          let res: any = await sendLabels(
+            data.images[index]._id,
+            this.selectedLabels
+          );
           (this.batchData as any).images[index].labels.value = res.data;
           this.canFinish = this.canFinishMethod();
+        } catch (error) {
+          console.log(error);
         }
+
         // update the stored label data
       }
     },
