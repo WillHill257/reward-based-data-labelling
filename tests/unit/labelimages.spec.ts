@@ -364,13 +364,13 @@ describe("Labelling Page - Checking methods", () => {
       },
     });
 
+		console.log("here");
     // do the relevant mocking
     const sendLabelsSpy = jest.spyOn(ItemApi, "sendLabels");
     sendLabelsSpy.mockRejectedValue({ status: 400 });
 
     // this should NOT be called
     const canFinishMethodSpy = jest.spyOn(wrapper.vm, "canFinishMethod");
-
     // update the batchData
     wrapper.vm.$data.batchData = {
       _id: "6135fe34b96a23707ba24e2d",

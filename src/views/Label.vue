@@ -242,6 +242,7 @@ export default Vue.extend({
           data.images[index]._id,
           this.selectedLabels
         );
+        console.log(res);
 
         if (!res.error) {
           (this.batchData as any).images[index].labels.value = res.data;
