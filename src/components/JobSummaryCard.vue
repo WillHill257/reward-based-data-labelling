@@ -45,11 +45,16 @@
 
     <v-card-actions class="card-actions" flat>
       <!-- button to view more details -->
+	   <v-row 
+	   	style="margin-bottom: 5%"
+
+	   >
       <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
         View job
       </v-btn>
 
       <!-- button to begin/continue labelling job -->
+	  
       <v-btn
         v-if="canLabel"
         class="btn-label-job"
@@ -69,8 +74,11 @@
         Results
       </v-btn>
 
+
       <!-- button to quit/leave labelling job -->
-      <v-btn
+    
+	 
+            <v-btn
         v-if="canLabel"
         class="btn-quit-job"
         color="blue"
@@ -79,6 +87,9 @@
       >
         <v-icon left> mdi-minus-circle </v-icon>Quit Job
       </v-btn>
+
+    </v-row>
+      
     </v-card-actions>
     <QuitJobDialog :isShowDialog.sync="isShowDialog" :batchID="batchID" />
   </v-card>
