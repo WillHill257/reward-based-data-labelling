@@ -31,14 +31,25 @@
     <v-progress-circular
     
       class="progress"
-      v-if="isMine"
+      v-if="isMine && $vuetify.breakpoint.mdAndUp"
       id="jobProgress"
       rotate="-90"
-      size="110"
+	  size = "110"
       width="15" 
       :value="calcProgress()"
+    >
+      {{ calcProgress() }}%
+    </v-progress-circular>
 
-
+	<v-progress-circular
+    
+      class="progress"
+      v-if="isMine && $vuetify.breakpoint.smAndDown"
+      id="jobProgress"
+      rotate="-90"
+	  size = "60"
+      width="5" 
+      :value="calcProgress()"
     >
       {{ calcProgress() }}%
     </v-progress-circular>
@@ -179,7 +190,7 @@ export default Vue.extend({
 
 .progress {
   position: absolute;
-  right: 10%;
+  right: 5%;
   top: 50%;
   transform: translateY(-50%);
 }
