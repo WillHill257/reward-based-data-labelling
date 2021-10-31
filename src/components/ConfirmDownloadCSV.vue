@@ -4,6 +4,7 @@
       v-model="isShowDialog"
       @click:outside="closeDialog"
       max-width="350"
+      class="confirm-download-csv-dialog"
     >
       <v-card id="ConfirmDownloadCSV" class="pt-0">
         <v-card-title class="headline justify-center">
