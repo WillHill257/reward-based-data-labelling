@@ -1,7 +1,11 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center" class="pb-2">
-      <ExportToCSV class="results-export-button pr-1 pb-1" :jobID="jobID" />
+      <ExportToCSV
+        class="results-export-button pr-1 pb-1"
+        :jobID="jobID"
+        :jobProgress="progress"
+      />
     </v-row>
     <v-row>
       <!-- this handles the formating of the images -->
@@ -40,7 +44,10 @@ import { getAvgRatings } from "@/api/Job.api";
 
 export default Vue.extend({
   components: { ExportToCSV },
-  props: { jobID: String },
+  props: {
+    jobID: String,
+    progress: String,
+  },
 
   data() {
     // these are the return vars used to the jobs information
@@ -106,15 +113,13 @@ export default Vue.extend({
       }
     },
 
-	async fetchRatings(){
-      	const jobID = this.$props.jobID;
-		let temp = await getAvgRatings(jobID);
+    async fetchRatings() {
+      const jobID = this.$props.jobID;
+      let temp = await getAvgRatings(jobID);
 
-		this.ratings = temp.data;
-		this.addRatings();
-
-	},
-
+      this.ratings = temp.data;
+      this.addRatings();
+    },
 
     bottomVisible() {
       const scrollY = window.scrollY;
@@ -141,15 +146,15 @@ export default Vue.extend({
       }
     },
 
-	addRatings() {
-		for (var i = 0; i < this.images.length; i++) {
-			if(document.getElementById("rating" + i) != null)
-			{
-				document.getElementById("rating" + i).innerText = this.ratings[i].toFixed(2);
-				// console.log(this.ratings[i]);
-			}
-		}
-	},
+    addRatings() {
+      for (var i = 0; i < this.images.length; i++) {
+        if (document.getElementById("rating" + i) != null) {
+          document.getElementById("rating" + i).innerText = this.ratings[
+            i
+          ].toFixed(2);
+        }
+      }
+    },
   },
 
   watch: {

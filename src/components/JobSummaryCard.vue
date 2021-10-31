@@ -131,7 +131,7 @@ export default Vue.extend({
     gotToResults(jobID: string) {
       this.$router.push({
         name: "jobResults",
-        params: { jobID: jobID },
+        params: { jobID: jobID, progress: this.calcProgress() },
       });
     },
 
@@ -141,7 +141,7 @@ export default Vue.extend({
     },
 
     calcProgress() {
-      if (this.id === "0") return;
+      if (this.id === "0") return "0";
       getprogress(this.id).then((response: any) => {
         this.progressValue = Math.round(response.data[0].progress);
         //this.progressValue = val.toString();
