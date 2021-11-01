@@ -6,13 +6,11 @@
         id="AppBarlogo"
         src="../assets/images/JinxLogo.png"
         @click="$router.push({ name: 'HomePage' })"
-        :class= "this.$vuetify.theme.dark ? 'invertedLogo' : ''"
+        :class="this.$vuetify.theme.dark ? 'invertedLogo' : ''"
       />
-      
+
       <v-spacer></v-spacer>
-      <div v-if="isLoggedIn">
-        Hello, {{ firstName }}!
-      </div>
+      <div v-if="isLoggedIn">Hello, {{ firstName }}!</div>
       <v-spacer></v-spacer>
 
       <!-- if the user is not logged in we show them the logout button only -->
@@ -48,31 +46,36 @@
       id="drawer"
     >
       <v-list nav dense>
-        <v-switch
-          inset
-          :prepend-icon="'mdi-weather-sunny'"
-          :append-icon="'mdi-moon-waning-crescent'"
-          @change="toggleTheme()"
-          v-model="this.$vuetify.theme.dark"
-          id="theme-switcher"
-          class="pt-5"
-        ></v-switch>
+        <div class="theme-switch-wrapper">
+          <v-switch
+            inset
+            :prepend-icon="'mdi-weather-sunny'"
+            :append-icon="'mdi-moon-waning-crescent'"
+            @change="toggleTheme()"
+            v-model="this.$vuetify.theme.dark"
+            id="theme-switcher"
+            class="pt-5"
+          ></v-switch>
+        </div>
         <v-list-item-group v-model="group">
           <!-- these are the items in the nav bar -->
           <v-list-item v-for="item in items" :key="item.text" :to="item.link">
             <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>
-        </v-list-item-group>
-        <div v-if="isLoggedIn">
-          <v-btn @click="isShowDialog = true" icon>
-            <v-icon size="30">mdi-plus</v-icon>
-          </v-btn>
+          <!-- </v-list-item-group> -->
+          <!-- <v-list-item-group > -->
+          <!-- <v-btn @click="isShowDialog = true" icon> -->
+          <v-list-item v-if="isLoggedIn" @click="isShowDialog = true">
+            <v-list-item-title>Create Job</v-list-item-title>
+          </v-list-item>
+          <!-- <v-icon size="30">mdi-plus</v-icon> -->
+          <!-- </v-btn> -->
 
           <!-- logout -->
-          <v-list-item @click="logout()">
+          <v-list-item v-if="isLoggedIn" @click="logout()">
             <v-list-item-title>Logout</v-list-item-title>
           </v-list-item>
-        </div>
+        </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
     <CreateJob :isShowDialog.sync="isShowDialog" />
@@ -83,29 +86,33 @@
 import CreateJob from "@/components/CreateJob/CreateJob";
 import Vue from "vue";
 import { UserModule } from "@/store/modules/user";
-import {getUser} from "@/api/Users.api";
+import { getUser } from "@/api/Users.api";
 
 export default Vue.extend({
   name: "AppBar",
   components: { CreateJob },
   computed: {
     isLoggedIn() {
-      return UserModule.isLoggedIn;
+      const status = UserModule.isLoggedIn;
+      if (status) {
+        // logged in
+        this.determineUserName();
+      }
+      return status;
     },
   },
-  data (){
-    return{
+  data() {
+    return {
       firstName: "",
       // these are the names and the directories for the buttons in the side bar.
       drawer: false,
       group: null,
       items: [], // items is populated in populateNavItems - we require route resolving
       isShowDialog: false,
-    }
+    };
   },
   // data: () => ({
-    
-    
+
   // }),
   watch: {
     group() {
@@ -113,6 +120,17 @@ export default Vue.extend({
     },
   },
   methods: {
+    determineUserName() {
+      //getting the user name
+      getUser()
+        .then((res) => {
+          this.firstName = res.data.firstName;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+
     toggleTheme() {
       // localStorage.setItem("dark-theme",this.$vuetify.theme.dark);
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
@@ -124,10 +142,6 @@ export default Vue.extend({
         {
           text: "Landing",
           link: this.$router.resolve({ name: "Landing" }).href,
-        },
-        {
-          text: "About",
-          link: this.$router.resolve({ name: "About" }).href,
         },
         {
           text: "Home",
@@ -143,12 +157,8 @@ export default Vue.extend({
     logout() {
       UserModule.logoutUser();
     },
-
-    
   },
   mounted() {
-    
-
     this.populateNavItems();
     const theme = localStorage.getItem("dark_theme");
     if (theme) {
@@ -158,20 +168,10 @@ export default Vue.extend({
         this.$vuetify.theme.dark = false;
       }
     }
-
-    //getting the user name
-    getUser()
-      .then((res) => {
-        this.firstName = res.data.firstName;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
   },
-  
 });
 </script>
-<style scoped>
+<style>
 #AppBarIntro.theme--light {
   background-color: rgb(80, 200, 200);
 }
@@ -200,7 +200,13 @@ export default Vue.extend({
   font-weight: 600;
 }
 
-.invertedLogo{
-  filter:invert(1) hue-rotate(180deg);
+.theme-switch-wrapper .v-input__control {
+  width: auto;
+  flex-grow: 0;
+  transform: translateX(10%);
+}
+
+.invertedLogo {
+  filter: invert(1) hue-rotate(180deg);
 }
 </style>

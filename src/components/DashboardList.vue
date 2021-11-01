@@ -70,7 +70,6 @@ export default Vue.extend({
   computed: {
     items(): Array<any> {
       let returns: Array<any>;
-      console.log(this.jobs.length);
       // add the correct number of jobs to the array
       if (this.jobs.length <= this.limit) returns = this.jobs;
       else returns = this.jobs.slice(0, this.limit);
