@@ -11,6 +11,12 @@ const vuetify = new Vuetify();
 
 const propsData: any = {
   jobID: "6135cfe79c361f61fee112eb",
+  jobProgress: "100",
+};
+
+const nonCompleteProps: any = {
+  jobID: "6135cfe79c361f61fee112eb",
+  jobProgress: "90",
 };
 
 describe("UI Properties", () => {
@@ -61,7 +67,42 @@ describe("UI Properties", () => {
   });
 });
 
+describe("Displays confirmation dialog when necessary", () => {
+  it("displays confirmation dialog when job not completed", async () => {
+    const wrapper = mount(ExportToCSV, {
+      vuetify,
+      propsData: nonCompleteProps,
+    });
+
+    // click the button, and make sure the data elements update accoordingly
+    wrapper.find(".export-button").trigger("click");
+    await wrapper.vm.$nextTick();
+
+    // expect(download).toBeCalled();
+    expect(wrapper.vm.$data.loading).toBe(true);
+    expect(wrapper.vm.$data.loader).toBeNull();
+    expect(wrapper.vm.$data.showConfirmationDialog).toBe(true);
+  });
+});
+
 describe("Correctly executes functions", () => {
+  it("closes confirmation dialog", async () => {
+    const wrapper = mount(ExportToCSV, {
+      vuetify,
+      propsData: nonCompleteProps,
+    });
+
+    // click the button, and make sure the data elements update accoordingly
+    wrapper.find(".export-button").trigger("click");
+    await wrapper.vm.$nextTick();
+
+    (wrapper.vm as any).closeConfirmDialog();
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.$data.loading).toBe(false);
+    expect(wrapper.vm.$data.showConfirmationDialog).toBe(false);
+  });
+
   it("triggers loader on button click", async () => {
     const wrapper = mount(ExportToCSV, {
       vuetify,
