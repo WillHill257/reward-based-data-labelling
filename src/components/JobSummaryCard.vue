@@ -15,12 +15,10 @@
     </v-card-subtitle>
 
     <!-- labels available to label these images with -->
-    <v-chip-group class="jsc-label-group mx-4" active-class="primary--text">
-      <v-col style="padding: 0 0">
-        <v-chip class="pill" v-for="label in labels" :key="label" x-small>
-          {{ label }}
-        </v-chip>
-      </v-col>
+    <v-chip-group class="jsc-label-group mx-4">
+      <v-chip class="pill" v-for="label in labels" :key="label" x-small>
+        {{ label }}
+      </v-chip>
     </v-chip-group>
 
     <!-- description summary for the job -->
@@ -71,7 +69,17 @@
         <!-- button to quit/leave labelling job -->
 
         <v-btn
-          v-if="canLabel"
+          v-if="canLabel && $vuetify.breakpoint.smAndDown"
+          class="btn-quit-job"
+          color="blue"
+          text
+          @click="quitJob"
+        >
+          <v-icon left> mdi-minus-circle </v-icon>Quit
+        </v-btn>
+
+        <v-btn
+          v-if="canLabel && $vuetify.breakpoint.mdAndUp"
           class="btn-quit-job"
           color="blue"
           text
@@ -173,8 +181,13 @@ export default Vue.extend({
   top: 10%;
   transform: translateY(-10%);
 }
+</style>
 
-.jsc-label-group {
-  overflow-x: scroll;
+<style>
+.jsc-label-group .v-slide-group__wrapper {
+  overflow: scroll !important;
+}
+.jsc-label-group .v-slide-group__wrapper::-webkit-scrollbar {
+  display: none;
 }
 </style>

@@ -6,22 +6,21 @@
       <v-card width="500" class="mx-auto mt-9">
         <!-- Login form-->
         <v-card-title>Login</v-card-title>
-        <v-alert
-          id="globalError"
-          :value="alert"
-          dense
-          dismissible
-          outlined
-          type="warning"
-          >{{ Error }}</v-alert
-        >
         <v-card-text>
+          <v-alert
+            id="globalError"
+            :value="alert"
+            dense
+            dismissible
+            outlined
+            type="warning"
+            >{{ Error }}</v-alert
+          >
           <v-form ref="form" v-model="valid" lazy-validation class="mx-4">
             <!-- nter email address -->
             <v-text-field
               id="login-email-input"
               v-model="email"
-              :rules="emailRules"
               label="E-mail"
               required
               prepend-icon="mdi-account-circle"
@@ -31,7 +30,6 @@
             <v-text-field
               id="login-password-input"
               v-model="password"
-              :rules="passwordRules"
               label="Password"
               required
               prepend-icon="mdi-lock"
@@ -74,12 +72,7 @@ export default Vue.extend({
   data: () => ({
     valid: true,
     password: "",
-    passwordRules: [(v: string) => !!v || "Password is required"],
     email: "",
-    emailRules: [
-      (v: string) => !!v || "E-mail is required",
-      (v: string) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-    ],
     showPassword: false,
     Error: "",
     alert: false,
@@ -103,7 +96,8 @@ export default Vue.extend({
       };
 
       this.hideError();
-      if (this.validate()) {
+      const message = this.validate();
+      if (message === "true") {
         // if form is valid, continue with login
         //const userMod = getModule(UserModule, this.$store);
         UserModule.loginUser(user)
@@ -119,7 +113,7 @@ export default Vue.extend({
           });
       } else {
         // form is invalid - complete it correctly
-        this.setErrorMessage("Please complete the form");
+        this.setErrorMessage(message);
       }
     },
     setErrorMessage(message: string): void {
@@ -132,9 +126,21 @@ export default Vue.extend({
       this.alert = false;
       this.Error = "";
     },
-    validate(): boolean {
+    validate(): string {
       // check form rules are adhered to
-      return this.form.validate();
+      if (this.email == "" || this.password == "") {
+        return "Please complete form";
+      }
+
+      if (this.email.includes("@")) {
+        if (this.password != "" && this.password.length >= 8) {
+          return "true";
+        } else {
+          return "Email and password combination incorrect";
+        }
+      } else {
+        return "Please enter a valid email";
+      }
     },
   },
 });

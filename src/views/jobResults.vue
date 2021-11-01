@@ -1,6 +1,7 @@
 <template>
   <v-container fill-height>
     <v-row align="center" justify="center" class="pb-2">
+      <goBack />
       <ExportToCSV
         class="results-export-button pr-1 pb-1"
         :jobID="jobID"
@@ -41,9 +42,10 @@ import { Job } from "@/store/modules/job";
 import { getRating } from "@/api/Users.api";
 import ExportToCSV from "@/components/ExportToCSV.vue";
 import { getAvgRatings } from "@/api/Job.api";
+import goBack from "@/components/BackButton.vue";
 
 export default Vue.extend({
-  components: { ExportToCSV },
+  components: { ExportToCSV, goBack },
   props: {
     jobID: String,
     progress: String,
