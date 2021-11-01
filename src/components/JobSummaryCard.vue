@@ -15,7 +15,7 @@
     </v-card-subtitle>
 
     <!-- labels available to label these images with -->
-    <v-chip-group class="mx-4" active-class="primary--text" column>
+    <v-chip-group class="jsc-label-group mx-4" active-class="primary--text">
       <v-col style="padding: 0 0">
         <v-chip class="pill" v-for="label in labels" :key="label" x-small>
           {{ label }}
@@ -29,26 +29,12 @@
     </v-card-text>
 
     <v-progress-circular
-    
       class="progress"
-      v-if="isMine && $vuetify.breakpoint.mdAndUp"
+      v-if="isMine"
       id="jobProgress"
       rotate="-90"
-	  size = "110"
-      width="15" 
-      :value="calcProgress()"
-    >
-      {{ calcProgress() }}%
-    </v-progress-circular>
-
-	<v-progress-circular
-    
-      class="progress"
-      v-if="isMine && $vuetify.breakpoint.smAndDown"
-      id="jobProgress"
-      rotate="-90"
-	  size = "60"
-      width="5" 
+      size="60"
+      width="5"
       :value="calcProgress()"
     >
       {{ calcProgress() }}%
@@ -56,51 +42,44 @@
 
     <v-card-actions class="card-actions" flat>
       <!-- button to view more details -->
-	   <v-row 
-	   	style="margin-bottom: 5%"
+      <v-row style="margin-bottom: 5%">
+        <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
+          View job
+        </v-btn>
 
-	   >
-      <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
-        View job
-      </v-btn>
+        <!-- button to begin/continue labelling job -->
 
-      <!-- button to begin/continue labelling job -->
-	  
-      <v-btn
-        v-if="canLabel"
-        class="btn-label-job"
-        color="blue"
-        text
-        @click="goToLabel(id, batchID)"
-      >
-        Label
-      </v-btn>
-      <v-btn
-        v-if="isMine"
-        id="btn-job-results"
-        color="blue"
-        text
-        @click="gotToResults(id)"
-      >
-        Results
-      </v-btn>
+        <v-btn
+          v-if="canLabel"
+          class="btn-label-job"
+          color="blue"
+          text
+          @click="goToLabel(id, batchID)"
+        >
+          Label
+        </v-btn>
+        <v-btn
+          v-if="isMine"
+          id="btn-job-results"
+          color="blue"
+          text
+          @click="gotToResults(id)"
+        >
+          Results
+        </v-btn>
 
+        <!-- button to quit/leave labelling job -->
 
-      <!-- button to quit/leave labelling job -->
-    
-	 
-            <v-btn
-        v-if="canLabel"
-        class="btn-quit-job"
-        color="blue"
-        text
-        @click="quitJob"
-      >
-        <v-icon left> mdi-minus-circle </v-icon>Quit Job
-      </v-btn>
-
-    </v-row>
-      
+        <v-btn
+          v-if="canLabel"
+          class="btn-quit-job"
+          color="blue"
+          text
+          @click="quitJob"
+        >
+          <v-icon left> mdi-minus-circle </v-icon>Quit Job
+        </v-btn>
+      </v-row>
     </v-card-actions>
     <QuitJobDialog :isShowDialog.sync="isShowDialog" :batchID="batchID" />
   </v-card>
@@ -184,14 +163,18 @@ export default Vue.extend({
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-line-clamp: 1; /* number of lines to show */
   -webkit-box-orient: vertical;
 }
 
 .progress {
   position: absolute;
   right: 5%;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 10%;
+  transform: translateY(-10%);
+}
+
+.jsc-label-group {
+  overflow-x: scroll;
 }
 </style>

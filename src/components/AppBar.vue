@@ -65,7 +65,11 @@
           <!-- </v-list-item-group> -->
           <!-- <v-list-item-group > -->
           <!-- <v-btn @click="isShowDialog = true" icon> -->
-          <v-list-item v-if="isLoggedIn" @click="isShowDialog = true">
+          <v-list-item
+            id="open-create-job"
+            v-if="isLoggedIn"
+            @click="openCreateJob"
+          >
             <v-list-item-title>Create Job</v-list-item-title>
           </v-list-item>
           <!-- <v-icon size="30">mdi-plus</v-icon> -->
@@ -109,6 +113,7 @@ export default Vue.extend({
       group: null,
       items: [], // items is populated in populateNavItems - we require route resolving
       isShowDialog: false,
+      first: true,
     };
   },
   // data: () => ({
@@ -120,6 +125,17 @@ export default Vue.extend({
     },
   },
   methods: {
+    openCreateJob() {
+      if (this.first) {
+        // simulate another click
+        this.first = false;
+        document.getElementById("open-create-job").click();
+      } else {
+        this.isShowDialog = true;
+        this.first = true;
+      }
+    },
+
     determineUserName() {
       //getting the user name
       getUser()
