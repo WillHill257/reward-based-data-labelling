@@ -6,6 +6,7 @@
         id="AppBarlogo"
         src="../assets/images/JinxLogo.png"
         @click="$router.push({ name: 'HomePage' })"
+        :class= "this.$vuetify.theme.dark ? 'invertedLogo' : ''"
       />
       
       <v-spacer></v-spacer>
@@ -197,5 +198,9 @@ export default Vue.extend({
 
 #AppBarButton {
   font-weight: 600;
+}
+
+.invertedLogo{
+  filter:invert(1) hue-rotate(180deg);
 }
 </style>
