@@ -1,20 +1,16 @@
 <template>
   <v-container fill-height>
-    <v-row align="center" justify="center" class="pb-2">
-      <v-btn
-        color="primary"
-        large
-        rounded
-        id="btnAccept"
-        @click.native="onAccept"
-        pd-1
+    <v-row align="center" justify="space-between" class="pb-2">
+      <BackButton />
+
+      <v-btn color="primary" id="btnAccept" @click.native="onAccept" pd-1
         >Accept Job
       </v-btn>
     </v-row>
 
     <v-row align="center" justify="center" class="my4">
       <!-- card for the jobs descriptions and Title -->
-      <v-card width="95%" height="75%" class="jobs" id="job-summary">
+      <v-card width="100%" height="75%" class="jobs" id="job-summary">
         <v-card-title class=""> {{ jobTitle }}</v-card-title>
         <v-card-subtitle class="pb-1 pt-1">
           Reward: {{ reward }}
@@ -33,7 +29,7 @@
       </v-card>
     </v-row>
 
-    <v-row>
+    <v-row justify="centre">
       <!-- this handles the formating of the images -->
 
       <v-col
@@ -82,9 +78,10 @@ import { Job } from "@/store/modules/job";
 import { acceptJob } from "@/api/Job.api";
 import { findReward } from "@/api/Batch.api";
 import ErrorDialog from "@/components/ErrorDialog.vue";
+import BackButton from "@/components/BackButton.vue";
 
 export default Vue.extend({
-  components: { ErrorDialog },
+  components: { ErrorDialog, BackButton },
   props: { jobID: String },
   data() {
     // these are the return vars used to the jobs information

@@ -187,7 +187,7 @@ export default Vue.extend({
   },
 });
 </script>
-<style>
+<style scoped>
 #AppBarIntro.theme--light {
   background-color: rgb(80, 200, 200);
 }
@@ -216,13 +216,15 @@ export default Vue.extend({
   font-weight: 600;
 }
 
+.invertedLogo {
+  filter: invert(1) hue-rotate(180deg);
+}
+</style>
+
+<style>
 .theme-switch-wrapper .v-input__control {
   width: auto;
   flex-grow: 0;
   transform: translateX(10%);
-}
-
-.invertedLogo {
-  filter: invert(1) hue-rotate(180deg);
 }
 </style>

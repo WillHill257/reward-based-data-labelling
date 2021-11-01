@@ -1,9 +1,14 @@
 <template>
   <v-sheet class="mx-auto pa-2" elevation="2" rounded max-width="500">
-    <div class="text-h5 text-center mb-6 font-weight-bold">Leaderboard</div>
+    <div
+      v-if="!$vuetify.breakpoint.smAndDown"
+      class="text-h5 text-center mb-6 font-weight-bold"
+    >
+      Leaderboard
+    </div>
 
     <div v-if="items.length != 0" id="leaderboard">
-      <v-row class="mx-2" :align="'center'" :style="thisIsMe(items[0])">
+      <v-row class="mx-2" :align="'center'">
         <v-col cols="1" class="mr-2"
           ><v-icon color="primary">mdi-trophy</v-icon>
         </v-col>
@@ -27,7 +32,7 @@
         :style="thisIsMe(items[i])"
       >
         <v-col cols="1" class="mr-2"
-          ><div class="text-subtitle-2 text--disabled">{{ i + 1 }}.</div>
+          ><div class="text-subtitle-2 text--disabled">{{ i + 1 }}</div>
         </v-col>
         <v-col class="text-left">
           <div class="text-subtitle-1">{{ items[i].firstName }}</div></v-col
@@ -38,7 +43,11 @@
         </v-col>
       </v-row>
     </div>
-    <div v-else class="text-body-1 text--secondary text-center" id = "unavailable">
+    <div
+      v-else
+      class="text-body-1 text--secondary text-center"
+      id="unavailable"
+    >
       Currently no users
     </div>
   </v-sheet>
@@ -64,9 +73,9 @@ export default {
       selectedItem: 0,
       items: [],
       userInfo: [],
-      userFirstName:"",
-      userLastName:"",
-      userRewardCount:0,
+      userFirstName: "",
+      userLastName: "",
+      userRewardCount: 0,
     };
   },
 
@@ -74,35 +83,35 @@ export default {
     rewardRounded(num) {
       //console.log(items);
       return Number(num).toFixed();
-      
     },
-    thisIsMe(item){
+    thisIsMe(item) {
       var isItMe = false;
-      var firstMatch =false;
-      var lastMatch =false;
+      var firstMatch = false;
+      var lastMatch = false;
       var rewardMatch = false;
-    
+
       //check if the first name matches
-      if(item.firstName === this.userFirstName){
-        firstMatch =true;
+      if (item.firstName === this.userFirstName) {
+        firstMatch = true;
       }
       //check if the surname matches
-      if(item.surname === this.userLastName){
+      if (item.surname === this.userLastName) {
         lastMatch = true;
       }
       //check if the reward count matches
-      if(item.rewardCount === this.userRewardCount){
+      if (item.rewardCount === this.userRewardCount) {
         rewardMatch = true;
       }
       // if all three match then that is me
-      if(firstMatch== true &&lastMatch== true&& rewardMatch == true){
-        isItMe =true;
+      if (firstMatch == true && lastMatch == true && rewardMatch == true) {
+        isItMe = true;
       }
+
       //if it is me highlight me on the leaderboard
-      if(isItMe){
-        return "background-color:#4baaf3;"
-      }else{
-        return null
+      if (isItMe) {
+        return "background-color: #4baaf3;";
+      } else {
+        return null;
       }
     },
   },

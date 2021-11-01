@@ -30,15 +30,29 @@
                 {{ rewardRounded(rating) }}
               </v-card-title>
             </v-card-title>
-            <Leaderboard />
+            <div v-if="$vuetify.breakpoint.smAndDown">
+              <v-expansion-panels accordion>
+                <v-expansion-panel>
+                  <v-expansion-panel-header
+                    class="text-h5 text-center mb-6 font-weight-bold"
+                  >
+                    Leaderboard
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <Leaderboard />
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </div>
+            <Leaderboard v-else />
           </v-card>
         </v-col>
-        <v-col class="col-xl-9 col-lg-9 col-md-9"  >
+        <v-col class="col-xl-9 col-lg-9 col-md-9">
           <v-card id="dashboard-tabs">
             <v-toolbar flat>
-              <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon>
+              <!-- <v-app-bar-nav-icon color="cyan"></v-app-bar-nav-icon> -->
 
-              <v-toolbar-title>Your Dashboard</v-toolbar-title>
+              <v-toolbar-title class="pl-4">Your Dashboard</v-toolbar-title>
 
               <v-spacer></v-spacer>
 
@@ -46,12 +60,10 @@
                 <v-icon color="cyan">mdi-magnify</v-icon>
               </v-btn> -->
             </v-toolbar>
-            <v-tabs v-model="tab" center-active fixed-tabs
-          
-            >      
+            <v-tabs v-model="tab" center-active fixed-tabs show-arrows="">
               <v-tabs-slider color="cyan"></v-tabs-slider>
 
-              <v-tab >Mine</v-tab>
+              <v-tab>Mine</v-tab>
               <v-tab-item>
                 <DashboardList
                   class="authored"

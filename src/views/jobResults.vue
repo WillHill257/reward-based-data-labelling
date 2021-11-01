@@ -1,9 +1,9 @@
 <template>
   <v-container fill-height>
-    <v-row align="center" justify="center" class="pb-2">
-      <goBack />
+    <v-row justify="space-between" style="padding: 0 12px">
+      <BackButton />
       <ExportToCSV
-        class="results-export-button pr-1 pb-1"
+        class="results-export-button"
         :jobID="jobID"
         :jobProgress="progress"
       />
@@ -29,8 +29,8 @@
         >
         </v-img>
 
-        <v-btn v-bind:id="'label' + index" style="width: 270px"> </v-btn>
-        <v-btn v-bind:id="'rating' + index" style="width: 270px"> </v-btn>
+        <v-btn class="results-button" v-bind:id="'label' + index"> </v-btn>
+        <v-btn class="results-button" v-bind:id="'rating' + index"> </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -42,10 +42,10 @@ import { Job } from "@/store/modules/job";
 import { getRating } from "@/api/Users.api";
 import ExportToCSV from "@/components/ExportToCSV.vue";
 import { getAvgRatings } from "@/api/Job.api";
-import goBack from "@/components/BackButton.vue";
+import BackButton from "@/components/BackButton.vue";
 
 export default Vue.extend({
-  components: { ExportToCSV, goBack },
+  components: { ExportToCSV, BackButton },
   props: {
     jobID: String,
     progress: String,
@@ -178,8 +178,10 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.results-export-button {
-  margin-left: auto;
-  margin-right: 0;
+.results-button {
+  width: 100%;
+  border-radius: 0;
+  /* box-shadow: none; */
+  margin-top: 4px;
 }
 </style>

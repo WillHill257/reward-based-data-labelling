@@ -4,7 +4,7 @@
       :loading="loading"
       :disabled="loading"
       color="primary"
-      class="export-button ma-2 white--text"
+      class="export-button white--text"
       @click.native="loader = 'loading'"
     >
       Export to CSV
