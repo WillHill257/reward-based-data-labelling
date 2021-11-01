@@ -6,6 +6,7 @@ import Vuetify from "vuetify";
 import Vuex from "vuex";
 import { UserModule } from "@/store/modules/user";
 
+const vuetify = new Vuetify();
 Vue.use(Vuetify);
 
 describe("Testing basic visual aspects of login screen", () => {
@@ -80,12 +81,63 @@ describe("Testing basic visual aspects of login screen", () => {
       //spy on user module to check for changes
       const loginSpy = jest.spyOn(UserModule, "loginUser");
       //enter dummy data
-      wrapper.vm.validate = jest.fn().mockReturnValue(true);
+      wrapper.vm.validate = jest.fn().mockReturnValue("true");
       wrapper.vm.$data.email = "fname@gmail.com";
       wrapper.vm.$data.password = "fnamefname1";
       //module function having worked
       await wrapper.find("#login-confirm-button").trigger("click");
       expect(loginSpy).toHaveBeenCalled();
     });
+
+    test("testing null fields", ()=>
+    {
+      const wrapper: any = shallowMount(Login);
+      wrapper.vm.$data.email = "";
+      wrapper.vm.$data.password = "";
+      wrapper.find("#login-confirm-button").trigger("click");
+      expect(wrapper.vm.$data.Error).toEqual("Please complete form")
+    });
+
+    test("testing invalid email", ()=>
+    {
+      const wrapper: any = shallowMount(Login);
+      wrapper.vm.$data.email = "fnamegmail.com";
+      wrapper.vm.$data.password = "12345678";
+      wrapper.find("#login-confirm-button").trigger("click");
+      expect(wrapper.vm.$data.Error).toEqual("Please enter a valid email")
+    });
+    
+    test("testing password length", ()=>
+    {
+      const wrapper: any = shallowMount(Login);
+      wrapper.vm.$data.email = "fname@gmail.com";
+      wrapper.vm.$data.password = "1234567";
+      wrapper.find("#login-confirm-button").trigger("click");
+      expect(wrapper.vm.$data.Error).toEqual("Email and password combination incorrect")
+    });
+    test("testing correct input", ()=>
+    {
+      const mockRouter = {
+        push: jest.fn()
+      }
+      const wrapper: any = shallowMount(Login,{vuetify,
+        mocks:{
+          $route: mockRouter
+        }});
+     // wrapper.vm.$router = mockRouter
+     // const pushSpy = jest.spyOn(mockRouter, "push");
+      wrapper.vm.$data.email = "fname@gmail.com";
+      wrapper.vm.$data.password = "12345678";
+      wrapper.vm.loginOnClick()
+      expect(wrapper.vm.$data.Error).toEqual("")
+      //expect(pushSpy).toHaveBeenCalled()
+
+
+    
+
+
+    });
+    
+
   });
 });
