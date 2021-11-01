@@ -6,18 +6,14 @@
         id="AppBarlogo"
         src="../assets/images/JinxLogo.png"
         @click="$router.push({ name: 'HomePage' })"
+        :class= "this.$vuetify.theme.dark ? 'invertedLogo' : ''"
       />
-
+      
       <v-spacer></v-spacer>
-      <v-switch
-        inset
-        :prepend-icon="'mdi-weather-sunny'"
-        :append-icon="'mdi-moon-waning-crescent'"
-        @change="toggleTheme()"
-        v-model="this.$vuetify.theme.dark"
-        id="theme-switcher"
-        class="pt-5"
-      ></v-switch>
+      <div v-if="isLoggedIn">
+        Hello, {{ firstName }}!
+      </div>
+      <v-spacer></v-spacer>
 
       <!-- if the user is not logged in we show them the logout button only -->
       <div v-if="!isLoggedIn">
@@ -52,6 +48,15 @@
       id="drawer"
     >
       <v-list nav dense>
+        <v-switch
+          inset
+          :prepend-icon="'mdi-weather-sunny'"
+          :append-icon="'mdi-moon-waning-crescent'"
+          @change="toggleTheme()"
+          v-model="this.$vuetify.theme.dark"
+          id="theme-switcher"
+          class="pt-5"
+        ></v-switch>
         <v-list-item-group v-model="group">
           <!-- these are the items in the nav bar -->
           <v-list-item v-for="item in items" :key="item.text" :to="item.link">
@@ -78,6 +83,8 @@
 import CreateJob from "@/components/CreateJob/CreateJob";
 import Vue from "vue";
 import { UserModule } from "@/store/modules/user";
+import {getUser} from "@/api/Users.api";
+
 export default Vue.extend({
   name: "AppBar",
   components: { CreateJob },
@@ -86,13 +93,20 @@ export default Vue.extend({
       return UserModule.isLoggedIn;
     },
   },
-  data: () => ({
-    // these are the names and the directories for the buttons in the side bar.
-    drawer: false,
-    group: null,
-    items: [], // items is populated in populateNavItems - we require route resolving
-    isShowDialog: false,
-  }),
+  data (){
+    return{
+      firstName: "",
+      // these are the names and the directories for the buttons in the side bar.
+      drawer: false,
+      group: null,
+      items: [], // items is populated in populateNavItems - we require route resolving
+      isShowDialog: false,
+    }
+  },
+  // data: () => ({
+    
+    
+  // }),
   watch: {
     group() {
       this.drawer = false;
@@ -129,8 +143,12 @@ export default Vue.extend({
     logout() {
       UserModule.logoutUser();
     },
+
+    
   },
   mounted() {
+    
+
     this.populateNavItems();
     const theme = localStorage.getItem("dark_theme");
     if (theme) {
@@ -140,7 +158,17 @@ export default Vue.extend({
         this.$vuetify.theme.dark = false;
       }
     }
+
+    //getting the user name
+    getUser()
+      .then((res) => {
+        this.firstName = res.data.firstName;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
+  
 });
 </script>
 <style scoped>
@@ -170,5 +198,9 @@ export default Vue.extend({
 
 #AppBarButton {
   font-weight: 600;
+}
+
+.invertedLogo{
+  filter:invert(1) hue-rotate(180deg);
 }
 </style>

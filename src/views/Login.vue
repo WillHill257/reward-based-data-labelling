@@ -139,3 +139,10 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style>
+/* get rid of the autofill coloured box */
+input:-internal-autofill-selected {
+  transition: all 0s 50000s;
+}
+</style>

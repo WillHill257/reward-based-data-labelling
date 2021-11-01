@@ -14,19 +14,20 @@
         :item-height="cardHeight"
       >
         <template v-slot:default="{ item }">
-          <JobSummaryCard
-            v-if="item.title !== sentinel"
-            class="job-card"
-            :id="item._id"
-            :title="item.title"
-            :type="item.type"
-            :labels="item.labels"
-            :description="item.description"
-            :batchID="item.batch_id"
-            :isMine="endpoint == 'authored'"
-          ></JobSummaryCard>
+          <v-list-item>
+            <JobSummaryCard
+              class="job-card"
+              :id="item._id"
+              :title="item.title"
+              :type="item.type"
+              :labels="item.labels"
+              :description="item.description"
+              :batchID="item.batch_id"
+              :isMine="endpoint == 'authored'"
+            ></JobSummaryCard>
+          </v-list-item>
+
           <v-row
-            v-else
             class="view-more-container"
             :style="{ height: cardHeight + 'px' }"
             align="center"
@@ -69,7 +70,7 @@ export default Vue.extend({
   computed: {
     items(): Array<any> {
       let returns: Array<any>;
-
+      console.log(this.jobs.length);
       // add the correct number of jobs to the array
       if (this.jobs.length <= this.limit) returns = this.jobs;
       else returns = this.jobs.slice(0, this.limit);
@@ -81,7 +82,7 @@ export default Vue.extend({
       }
 
       // add the View All button
-      returns.push({ title: this.sentinel });
+      // returns.push({ title: this.sentinel });
 
       return returns;
     },

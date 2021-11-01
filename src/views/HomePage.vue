@@ -5,11 +5,7 @@
       <v-row class="flex-row-reverse">
         <v-col class="col-xl-3 col-lg-3 col-md-3">
           <v-card>
-            <v-card-text id="user-greeting">
-              <!-- Hello username -->
-              Hello, {{ firstName }}!
-            </v-card-text>
-            <v-card-text id="heading" class="pt-0 pb-0">
+            <v-card-text id="heading" class="pb-0">
               <!-- Hello username -->
               Your available rewards<span
                 class="float-right"
