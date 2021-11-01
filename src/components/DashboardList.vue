@@ -2,7 +2,9 @@
   <v-container>
     <v-list>
       <!-- Title -->
-      <h3 class="title">{{ title }}</h3>
+      <h3 v-if="items.length === 0" class="title">
+        Nothing to see here yet :)
+      </h3>
       <!-- Content -->
       <!-- Scrollable list of job cards -->
       <!-- Ends with button to view all -->
