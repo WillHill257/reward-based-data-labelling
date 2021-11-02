@@ -99,9 +99,10 @@ export default {
         lastMatch = true;
       }
       //check if the reward count matches
-      if (item.rewardCount === this.userRewardCount) {
+      if (item.rewardCount !== 0 && item.rewardCount === this.userRewardCount) {
         rewardMatch = true;
       }
+
       // if all three match then that is me
       if (firstMatch == true && lastMatch == true && rewardMatch == true) {
         isItMe = true;

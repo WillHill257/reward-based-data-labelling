@@ -29,7 +29,7 @@
       </v-card>
     </v-row>
 
-    <v-row justify="centre">
+    <v-row justify="center">
       <!-- this handles the formating of the images -->
 
       <v-col
@@ -40,7 +40,7 @@
         lg="3"
         md="4"
         sm="6"
-        xs="12"
+        xs="1"
       >
         <!-- this is where the images are set to load -->
         <v-img

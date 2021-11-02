@@ -18,7 +18,7 @@
         lg="3"
         md="4"
         sm="6"
-        xs="12"
+        xs="1"
       >
         <!-- this is where the images are set to load -->
         <v-img

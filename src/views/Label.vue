@@ -12,17 +12,17 @@
             <v-row justify="center" align="center">
               <!--Appears underneath one another in portrait and side by side in landscape -->
               <!-- Images that need to be labelled in the batch -->
-              <v-col class="col-md-6 col-lg-6 col-xl-6">
+              <v-col class="col-lg-6 col-xl-6">
                 <v-img
                   :src="images[imagenext]"
                   id="labelImage"
                   aspect-ratio="1"
-                  min-height="200"
-                  min-width="200"
+                  min-height="300"
+                  min-width="300"
                 ></v-img>
               </v-col>
               <!-- Instruction, labels and buttons -->
-              <v-col class="col-md-6 col-lg-6 col-xl-6">
+              <v-col class="col-lg-6 col-xl-6">
                 <v-card-text id="instruction">
                   <!-- Reward -->
                   <v-row>
