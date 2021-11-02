@@ -1,13 +1,13 @@
 <template>
   <section id="list-jobs">
-    <goBack />
+    <BackButton />
 
-    <h1 v-if="!jobs.length">There are no jobs available</h1>
+    <h1 v-if="!jobs.length">There are no jobs to view</h1>
     <!--if there are no jobs availiable this heading will be displayed-->
-    <h1 v-else>Jobs</h1>
+    <!-- <h1 v-else>Jobs</h1> -->
     <!--when jobs are avaliable this heading will be displayed along with a list of jobs to accept-->
 
-    <section class="basic-grid">
+    <section class="basic-grid pt-2">
       <div v-for="job in jobs" :key="job._id">
         <!--for every job that is avaliable the JobSummary compnent will be called and process the job-->
         <!-- when this component  is called it takes in the job info, processes it and returns the job in a summary card format-->
@@ -34,7 +34,7 @@
 </style>
 
 <script lang="ts">
-import goBack from "@/components/BackButton.vue";
+import BackButton from "@/components/BackButton.vue";
 
 import Vue from "vue";
 import JobSummaryCard from "@/components/JobSummaryCard.vue";
@@ -47,7 +47,7 @@ import {
 
 export default Vue.extend({
   components: {
-    goBack,
+    BackButton,
     JobSummaryCard,
   },
 

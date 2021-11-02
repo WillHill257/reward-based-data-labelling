@@ -15,12 +15,10 @@
     </v-card-subtitle>
 
     <!-- labels available to label these images with -->
-    <v-chip-group class="mx-4" active-class="primary--text" column>
-      <v-col style="padding: 0 0">
-        <v-chip class="pill" v-for="label in labels" :key="label" x-small>
-          {{ label }}
-        </v-chip>
-      </v-col>
+    <v-chip-group class="jsc-label-group mx-4">
+      <v-chip class="pill" v-for="label in labels" :key="label" x-small>
+        {{ label }}
+      </v-chip>
     </v-chip-group>
 
     <!-- description summary for the job -->
@@ -33,8 +31,8 @@
       v-if="isMine"
       id="jobProgress"
       rotate="-90"
-      size="110"
-      width="15"
+      size="60"
+      width="5"
       :value="calcProgress()"
     >
       {{ calcProgress() }}%
@@ -42,40 +40,54 @@
 
     <v-card-actions class="card-actions" flat>
       <!-- button to view more details -->
-      <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
-        View job
-      </v-btn>
+      <v-row style="margin-bottom: 5%">
+        <v-btn class="btn-view-job" color="blue" text @click="goToJob(id)">
+          View job
+        </v-btn>
 
-      <!-- button to begin/continue labelling job -->
-      <v-btn
-        v-if="canLabel"
-        class="btn-label-job"
-        color="blue"
-        text
-        @click="goToLabel(id, batchID)"
-      >
-        Label
-      </v-btn>
-      <v-btn
-        v-if="isMine"
-        id="btn-job-results"
-        color="blue"
-        text
-        @click="gotToResults(id)"
-      >
-        Results
-      </v-btn>
+        <!-- button to begin/continue labelling job -->
 
-      <!-- button to quit/leave labelling job -->
-      <v-btn
-        v-if="canLabel"
-        class="btn-quit-job"
-        color="blue"
-        text
-        @click="quitJob"
-      >
-        <v-icon left> mdi-minus-circle </v-icon>Quit Job
-      </v-btn>
+        <v-btn
+          v-if="canLabel"
+          class="btn-label-job"
+          color="blue"
+          text
+          @click="goToLabel(id, batchID)"
+        >
+          Label
+        </v-btn>
+        <v-btn
+          v-if="isMine"
+          id="btn-job-results"
+          color="blue"
+          text
+          @click="gotToResults(id)"
+        >
+          Results
+        </v-btn>
+
+        <!-- button to quit/leave labelling job -->
+
+        <v-btn
+          v-if="canLabel && $vuetify.breakpoint.smAndDown"
+          class="btn-quit-job"
+          color="blue"
+          text
+          @click="quitJob"
+        >
+          <v-icon left> mdi-minus-circle </v-icon>Quit
+        </v-btn>
+
+        <v-btn
+          v-if="canLabel && $vuetify.breakpoint.mdAndUp"
+          class="btn-quit-job"
+          color="blue"
+          text
+          @click="quitJob"
+        >
+          <v-icon left> mdi-minus-circle </v-icon>Quit Job
+        </v-btn>
+      </v-row>
     </v-card-actions>
     <QuitJobDialog :isShowDialog.sync="isShowDialog" :batchID="batchID" />
   </v-card>
@@ -131,7 +143,7 @@ export default Vue.extend({
     gotToResults(jobID: string) {
       this.$router.push({
         name: "jobResults",
-        params: { jobID: jobID },
+        params: { jobID: jobID, progress: this.calcProgress() },
       });
     },
 
@@ -141,7 +153,7 @@ export default Vue.extend({
     },
 
     calcProgress() {
-      if (this.id === "0") return;
+      if (this.id === "0") return "0";
       getprogress(this.id).then((response: any) => {
         this.progressValue = Math.round(response.data[0].progress);
         //this.progressValue = val.toString();
@@ -159,14 +171,23 @@ export default Vue.extend({
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-line-clamp: 1; /* number of lines to show */
   -webkit-box-orient: vertical;
 }
 
 .progress {
   position: absolute;
-  right: 10%;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 5%;
+  top: 10%;
+  transform: translateY(-10%);
+}
+</style>
+
+<style>
+.jsc-label-group .v-slide-group__wrapper {
+  overflow: scroll !important;
+}
+.jsc-label-group .v-slide-group__wrapper::-webkit-scrollbar {
+  display: none;
 }
 </style>

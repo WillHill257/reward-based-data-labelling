@@ -84,11 +84,11 @@
         v-show="$vuetify.breakpoint.xs ? true : false"
       >
         <v-col>
-          <v-text>Step 1 <br /></v-text>
-          <v-text style="font-size: 11px">
+          <p>Step 1 <br /></p>
+          <p style="font-size: 11px">
             View the available jobs. Pick a job that matches your skillset best.
-            Accept the job.</v-text
-          >
+            Accept the job.
+          </p>
         </v-col>
         <v-col>
           <v-card :height="100" :width="100" elevation="0">
@@ -105,11 +105,11 @@
         v-show="$vuetify.breakpoint.xs ? true : false"
       >
         <v-col>
-          <v-text>Step 2 <br /></v-text>
-          <v-text style="font-size: 11px">
+          <p>Step 2 <br /></p>
+          <p style="font-size: 11px">
             Match the given labels to the images. Complete the set of pictures
-            given.</v-text
-          >
+            given.
+          </p>
         </v-col>
         <v-col>
           <v-card :height="100" :width="100" elevation="0">
@@ -126,10 +126,10 @@
         v-show="$vuetify.breakpoint.xs ? true : false"
       >
         <v-col>
-          <v-text>Step 3 <br /></v-text>
-          <v-text style="font-size: 11px">
-            Your work is verified. You are rewarded. It's that simple.</v-text
-          >
+          <p>Step 3 <br /></p>
+          <p style="font-size: 11px">
+            Your work is verified. You are rewarded. It's that simple.
+          </p>
         </v-col>
         <v-col>
           <v-card :height="100" :width="100" elevation="0">

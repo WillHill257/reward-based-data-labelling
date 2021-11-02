@@ -44,7 +44,8 @@ export default Vue.extend({
       this.fab = top > 20;
     },
     toTop() {
-      this.$vuetify.goTo(0);
+      const item = document.getElementById("AppBarIntro");
+      if (item) item.scrollIntoView({ block: "end", behavior: "smooth" });
     },
   },
 });

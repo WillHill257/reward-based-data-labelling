@@ -1,7 +1,12 @@
 <template>
   <v-container fill-height>
-    <v-row align="center" justify="center" class="pb-2">
-      <ExportToCSV class="results-export-button pr-1 pb-1" :jobID="jobID" />
+    <v-row justify="space-between" style="padding: 0 12px">
+      <BackButton />
+      <ExportToCSV
+        class="results-export-button"
+        :jobID="jobID"
+        :jobProgress="progress"
+      />
     </v-row>
     <v-row>
       <!-- this handles the formating of the images -->
@@ -13,7 +18,7 @@
         lg="3"
         md="4"
         sm="6"
-        xs="12"
+        xs="1"
       >
         <!-- this is where the images are set to load -->
         <v-img
@@ -24,8 +29,8 @@
         >
         </v-img>
 
-        <v-btn v-bind:id="'label' + index" style="width: 270px"> </v-btn>
-        <v-btn v-bind:id="'rating' + index" style="width: 270px"> </v-btn>
+        <v-btn class="results-button" v-bind:id="'label' + index"> </v-btn>
+        <v-btn class="results-button" v-bind:id="'rating' + index"> </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -37,10 +42,14 @@ import { Job } from "@/store/modules/job";
 import { getRating } from "@/api/Users.api";
 import ExportToCSV from "@/components/ExportToCSV.vue";
 import { getAvgRatings } from "@/api/Job.api";
+import BackButton from "@/components/BackButton.vue";
 
 export default Vue.extend({
-  components: { ExportToCSV },
-  props: { jobID: String },
+  components: { ExportToCSV, BackButton },
+  props: {
+    jobID: String,
+    progress: String,
+  },
 
   data() {
     // these are the return vars used to the jobs information
@@ -106,15 +115,13 @@ export default Vue.extend({
       }
     },
 
-	async fetchRatings(){
-      	const jobID = this.$props.jobID;
-		let temp = await getAvgRatings(jobID);
+    async fetchRatings() {
+      const jobID = this.$props.jobID;
+      let temp = await getAvgRatings(jobID);
 
-		this.ratings = temp.data;
-		this.addRatings();
-
-	},
-
+      this.ratings = temp.data;
+      this.addRatings();
+    },
 
     bottomVisible() {
       const scrollY = window.scrollY;
@@ -141,15 +148,15 @@ export default Vue.extend({
       }
     },
 
-	addRatings() {
-		for (var i = 0; i < this.images.length; i++) {
-			if(document.getElementById("rating" + i) != null)
-			{
-				document.getElementById("rating" + i).innerText = this.ratings[i].toFixed(2);
-				// console.log(this.ratings[i]);
-			}
-		}
-	},
+    addRatings() {
+      for (var i = 0; i < this.images.length; i++) {
+        if (document.getElementById("rating" + i) != null) {
+          document.getElementById("rating" + i).innerText = this.ratings[
+            i
+          ].toFixed(2);
+        }
+      }
+    },
   },
 
   watch: {
@@ -171,8 +178,10 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.results-export-button {
-  margin-left: auto;
-  margin-right: 0;
+.results-button {
+  width: 100%;
+  border-radius: 0;
+  /* box-shadow: none; */
+  margin-top: 4px;
 }
 </style>

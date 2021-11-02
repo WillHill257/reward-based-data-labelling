@@ -53,8 +53,8 @@ describe("When loaded", () => {
 
   //all the ui elements should appear on the page as expected
   it("should have all the necessary UI elements", () => {
-    expect(wrapper.find(".title").exists()).toBe(true);
-    expect(wrapper.find(".title").html()).toContain(title);
+    // expect(wrapper.find(".title").exists()).toBe(true);
+    // expect(wrapper.find(".title").html()).toContain(title);
     expect(wrapper.find(".recycler-view").exists()).toBe(true);
     expect(
       (wrapper.find(".recycler-view").attributes("items") as string).split(",")

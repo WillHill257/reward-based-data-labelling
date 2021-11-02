@@ -12,17 +12,17 @@
             <v-row justify="center" align="center">
               <!--Appears underneath one another in portrait and side by side in landscape -->
               <!-- Images that need to be labelled in the batch -->
-              <v-col class="col-md-6 col-lg-6 col-xl-6">
+              <v-col class="col-lg-6 col-xl-6">
                 <v-img
                   :src="images[imagenext]"
                   id="labelImage"
                   aspect-ratio="1"
-                  min-height="200"
-                  min-width="200"
+                  min-height="300"
+                  min-width="300"
                 ></v-img>
               </v-col>
               <!-- Instruction, labels and buttons -->
-              <v-col class="col-md-6 col-lg-6 col-xl-6">
+              <v-col class="col-lg-6 col-xl-6">
                 <v-card-text id="instruction">
                   <!-- Reward -->
                   <v-row>
@@ -41,7 +41,7 @@
                     <v-progress-linear
                       id="progressBar"
                       height="25"
-                      :value="calcProgress()"
+                      :value="progressCount"
                     >
                       <strong>{{ progressCount }}%</strong>
                     </v-progress-linear>
@@ -55,7 +55,7 @@
                           @click.native="addToSelection(label)"
                           v-for="label in availableLabels"
                           :key="label"
-                          :class="label + ' labelling-label'"
+                          :class="'label-' + label + ' labelling-label'"
                         >
                           {{ label }}
                         </v-chip>
@@ -193,11 +193,10 @@ export default Vue.extend({
     });
 
     //get the reward amount
-    await findReward(jobID)
-        .then((res) =>{
-          this.reward = res.data;
-
-      });
+    await findReward(jobID).then((res) => {
+      this.reward = res.data;
+    });
+    this.calcProgress();
   },
 
   methods: {
@@ -236,22 +235,26 @@ export default Vue.extend({
       }
     },
 
-    updateLabels(index: number) {
+    async updateLabels(index: number) {
       if (this.batchData) {
         const data: any = this.batchData;
-        sendLabels(data.images[index]._id, this.selectedLabels)
-          .then((res: any) => {
-            // update the stored label data
-            (this.batchData as any).images[index].labels.value = res.data;
-            this.canFinish = this.canFinishMethod();
-          })
-          .catch((error: any) => {
-            console.error(error);
-          });
+        try {
+          let res: any = await sendLabels(
+            data.images[index]._id,
+            this.selectedLabels
+          );
+          (this.batchData as any).images[index].labels.value = res.data;
+          this.canFinish = this.canFinishMethod();
+        } catch (error) {
+          console.log(error);
+        }
+
+        // update the stored label data
       }
     },
 
     setLabelActive(label: string) {
+      if (label != "labelling-label") label = "label-" + label;
       document.querySelectorAll("." + label).forEach((element: any) => {
         if (element) {
           element.classList.add("primary");
@@ -262,6 +265,7 @@ export default Vue.extend({
     },
 
     setLabelInactive(label: string) {
+      if (label != "labelling-label") label = "label-" + label;
       document.querySelectorAll("." + label).forEach((element: any) => {
         if (element) {
           element.classList.remove("primary");
@@ -296,9 +300,9 @@ export default Vue.extend({
       });
     },
 
-    nextImage() {
+    async nextImage() {
       // update the labels for the current image
-      this.updateLabels(this.imagenext);
+      await this.updateLabels(this.imagenext);
 
       this.imagenext += 1;
 
@@ -308,10 +312,11 @@ export default Vue.extend({
 
       // update the labels
       this.loadLabels(this.imagenext);
+      this.calcProgress();
     },
-    prevImage() {
+    async prevImage() {
       // update the labels for the current image
-      this.updateLabels(this.imagenext);
+      await this.updateLabels(this.imagenext);
 
       this.imagenext -= 1;
 
@@ -321,6 +326,7 @@ export default Vue.extend({
 
       // update the labels
       this.loadLabels(this.imagenext);
+      this.calcProgress();
     },
 
     async finishBatchDialog() {
@@ -363,8 +369,8 @@ export default Vue.extend({
       prog = Math.round(prog * 100) / 100;
       this.progressCount = prog;
 
-      //return the progress as a percentage
-      return prog;
+      // //return the progress as a percentage
+      // return prog;
     },
   },
 });

@@ -2,7 +2,9 @@
   <v-container>
     <v-list>
       <!-- Title -->
-      <h3 class="title">{{ title }}</h3>
+      <h3 v-if="items.length === 0" class="title">
+        Nothing to see here yet :)
+      </h3>
       <!-- Content -->
       <!-- Scrollable list of job cards -->
       <!-- Ends with button to view all -->
@@ -14,19 +16,20 @@
         :item-height="cardHeight"
       >
         <template v-slot:default="{ item }">
-          <JobSummaryCard
-            v-if="item.title !== sentinel"
-            class="job-card"
-            :id="item._id"
-            :title="item.title"
-            :type="item.type"
-            :labels="item.labels"
-            :description="item.description"
-            :batchID="item.batch_id"
-            :isMine="endpoint == 'authored'"
-          ></JobSummaryCard>
+          <v-list-item>
+            <JobSummaryCard
+              class="job-card"
+              :id="item._id"
+              :title="item.title"
+              :type="item.type"
+              :labels="item.labels"
+              :description="item.description"
+              :batchID="item.batch_id"
+              :isMine="endpoint == 'authored'"
+            ></JobSummaryCard>
+          </v-list-item>
+
           <v-row
-            v-else
             class="view-more-container"
             :style="{ height: cardHeight + 'px' }"
             align="center"
@@ -69,7 +72,6 @@ export default Vue.extend({
   computed: {
     items(): Array<any> {
       let returns: Array<any>;
-
       // add the correct number of jobs to the array
       if (this.jobs.length <= this.limit) returns = this.jobs;
       else returns = this.jobs.slice(0, this.limit);
@@ -81,7 +83,7 @@ export default Vue.extend({
       }
 
       // add the View All button
-      returns.push({ title: this.sentinel });
+      // returns.push({ title: this.sentinel });
 
       return returns;
     },
