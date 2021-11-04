@@ -18,7 +18,7 @@
           :type="job.type"
           :labels="job.labels"
           :description="job.description"
-          :batchID="'undefined'"
+          :batchID="endpoint === 'accepted' ? job.batch_id : 'undefined'"
           :isMine="endpoint == 'authored'"
         ></JobSummaryCard>
       </div>

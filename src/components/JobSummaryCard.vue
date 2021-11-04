@@ -15,7 +15,7 @@
     </v-card-subtitle>
 
     <!-- labels available to label these images with -->
-    <v-chip-group class="jsc-label-group mx-4">
+    <v-chip-group class="jsc-label-group mx-4" mobile-breakpoint="5000">
       <v-chip class="pill" v-for="label in labels" :key="label" x-small>
         {{ label }}
       </v-chip>
